@@ -1,0 +1,26 @@
+---
+syntax-definition: aqa.xml
+geometry: margin=1in    # margin = 1 inch
+
+title: AQA 'Pseudo-code' Translator
+author: |
+    |   SCHOOL_NAME
+    |   Candidate Number: CANDIDATE_NUMBER
+    |   Centre Number: CENTRE_NUMBER
+    |   Qualification Code: 7517
+    |   FULL_NAME
+date: 19 September 2022
+
+header-includes: |
+    \usepackage{fontspec}
+    \setmainfont{Carlito}
+    \setmonofont{Fira Code}
+    \usepackage{scrlayer-scrpage}
+    \pagestyle{scrheadings}
+    \chead{FULL_NAME | Candidate Number: CANDIDATE_NUMBER | Centre number: CENTRE_NUMBER}
+    \cfoot{7517 | 2022}
+
+include-before:
+- '\newpage{}'
+
+---
