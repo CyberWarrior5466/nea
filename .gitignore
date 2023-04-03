@@ -1,9 +1,10 @@
+# *.yaml
 *.pdf
 report/mermaid
-report/metadata_private.yaml
-report/metadata_no_font_private.yaml
 dist/
 __pycache__/
 .pytest_cache/
 AQAInterpreter/__pycache__/
 AQAInterpreter/.pytest_cache/
+report/metadata_no_font.yaml
+report/metadata.yaml

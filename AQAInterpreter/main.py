@@ -1,9 +1,8 @@
 from AQAInterpreter.tokens import *
-from AQAInterpreter import scanner
+from AQAInterpreter.scanner import Scanner
 from AQAInterpreter import parser
 from pprint import pprint
 import click
-import sys
 
 DEBUG = True
 
@@ -12,7 +11,10 @@ def run(had_error: bool, source: str):
     source += "\n"
     if DEBUG:
         print(source)
-    tokens = scanner.scan_tokens(source)
+    tokens = Scanner(source).scan_tokens()
+    pprint(tokens)
+    quit()
+
     if DEBUG:
         pprint(tokens)
         print()
@@ -32,7 +34,7 @@ def run(had_error: bool, source: str):
 def main(filename, cmd):
     had_error = False
     if filename and cmd:
-        raise click.UsageError("cannot specify both filename and cmd")
+        raise click.UsageError("cannot specify both filename and command")
     
     if filename:
         with open(filename, encoding="utf-8") as infp:

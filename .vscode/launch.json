@@ -8,9 +8,9 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            // "program": "AQAInterpreter${pathSeparator}main.py",
+            // "program": "${file}",
+            "program": "AQAInterpreter${pathSeparator}main.py",
             "args": ["input.txt"],
-            "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
         }

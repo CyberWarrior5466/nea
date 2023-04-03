@@ -25,7 +25,7 @@ def main() -> None:
         "report",
         r"""
         cd report &&\
-        pandoc metadata.yaml report.md \
+        pandoc metadata_private.yaml report.md \
                --output=out.pdf \
                --syntax-definition=aqa.xml \
                --pdf-engine=xelatex \
@@ -35,21 +35,21 @@ def main() -> None:
         """,
     )
 
-    # compile_on(
-    #     "report",
-    #     r"""
-    #     cd report &&\
-    #     cp report.md temp_report.md &&\
-    #     sed -i -e 's/≠/!=/g; s/≤/<=/g; s/≥/>=/g; s/╭/ /g; s/─/ /g; s/├/ /g; s/└/ /g' temp_report.md &&\
-    #     pandoc metadata_no_font.yaml report.md \
-    #            --output=out.pdf \
-    #            --syntax-definition=aqa.xml \
-    #            --table-of-contents \
-    #            --number-sections \
-    #     rm temp_report.md &&\
-    #     cd ..
-    #     """,
-    # )
+    compile_on(
+        "report",
+        r"""
+        cd report &&\
+        cp report.md temp_report.md &&\
+        sed -i -e 's/≠/!=/g; s/≤/<=/g; s/≥/>=/g; s/╭/ /g; s/─/ /g; s/├/ /g; s/└/ /g' temp_report.md &&\
+        pandoc metadata_no_font_private.yaml temp_report.md \
+               --output=out.pdf \
+               --syntax-definition=aqa.xml \
+               --table-of-contents \
+               --number-sections &&\
+        rm temp_report.md &&\
+        cd ..
+        """,
+    )
 
 
 if __name__ == "__main__":

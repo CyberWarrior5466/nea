@@ -44,6 +44,10 @@
   - [ ] repeat loop
   - [ ] div and mod functions
 
+**First**
+- [ ] finish match statements refactor then push to PyPi then update site
+
+
 \pagebreak
 
 # Analysis
@@ -355,7 +359,7 @@ Options:
 
 
 # incorrect usage
-$ python aqainterpreter.py filename -c cmd
+`$` python aqainterpreter.py filename -c cmd
 Usage: aqainterpreter.py [OPTIONS] [FILENAME]
 Try 'aqainterpreter.py --help' for help.
 
