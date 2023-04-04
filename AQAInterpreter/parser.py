@@ -1,7 +1,6 @@
 from AQAInterpreter.interpreter import *
 from AQAInterpreter.tokens import *
 from AQAInterpreter import errors
-from AQAInterpreter import main
 
 
 def parse(tokens: list[Token]):
@@ -269,8 +268,8 @@ def parse(tokens: list[Token]):
 
     def statement():
         try:
-            for token in tokens[current:]:
-                if token.type in {FOR, NEWLINE}:
+            for token in tokens[current :]:
+                if token.type in {PRINT, WHILE, FOR, IF}:
                     return statement_not_var()
                 elif token.type == ASSIGNMENT:
                     return var_declaration()

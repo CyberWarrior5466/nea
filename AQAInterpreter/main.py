@@ -7,17 +7,17 @@ import click
 DEBUG = True
 
 
-def run(had_error: bool, source: str):
+def run(source: str):
+    had_error = False
     source += "\n"
     if DEBUG:
         print(source)
-    tokens = Scanner(source).scan_tokens()
-    pprint(tokens)
-    quit()
 
+    tokens = Scanner(source).scan_tokens()
     if DEBUG:
         pprint(tokens)
         print()
+        
     statements = parser.parse(tokens)
     if statements is not None:
         if DEBUG:
@@ -27,6 +27,9 @@ def run(had_error: bool, source: str):
             if statement is not None:
                 statement.interpret()
 
+    if had_error:
+        exit(65)
+
 
 @click.command()
 @click.argument("filename", required=False)
@@ -35,17 +38,15 @@ def main(filename, cmd):
     had_error = False
     if filename and cmd:
         raise click.UsageError("cannot specify both filename and command")
-    
+
     if filename:
         with open(filename, encoding="utf-8") as infp:
             cmd = infp.read()
     else:
         while True:
-            run(had_error, input("> "))
+            run(input("> "))
 
-    run(had_error, cmd)
-    if had_error:
-        exit(65)
+    run(cmd)
 
 
 if __name__ == "__main__":

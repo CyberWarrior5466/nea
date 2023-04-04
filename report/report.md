@@ -56,19 +56,47 @@
 
 Pseudo-code is a series of code like statements used to describe an existing algorithm or plan out a new one. Everyone has their own unique style of writing pseudo-code. It might look something like a recipe books with clear individual steps to follow. Or it could look something like an existing high level language, with compilers or interpreters already available.
 
-Pseudo-code is 'problem-oriented', writing it gives you room to focus on the problem. Then when the time comes to program a solution,  your brain is free to think about the specific implementation details in your language.
+Pseudo-code is 'problem-oriented', the idea being you first write your solution in pseudo-code, and then when the time comes to program a solution,  your brain is free to think about the specific implementation details of the chosen high-level language. Therefore, the purpose of writing pseudo-code is to prototype and plan.
 
-However this is a very different concept to *AQA pseudo-code*; where the code snippets in exam papers follow a specification. Since the specification is consistently applied, *AQA pseudo-code* looks practically the same everywhere it is used. The only thing stopping *AQA pseudo-code* from being a real language therefore, is the existence of a compiler or interpreter.
+However some people find writing pseudo-code may be tedious or boring, and would prefer going straight into an  interpreted weakly-typed scripting languages such as python or java-script that trade robustness for rapid iteration speeds, enabling faster prototyping. The outp
 
-Some people may argue that having a compiler or translator available would be unnecessary as *AQA pseudo-code* is commonly exclusively used during examinations without a computer. Therefore having  a tool to generate machine code would not be needed. Where a working algorithm is needed it would be sufficient to manually translate *AQA pseudo-code* to an existing language where a compiler or translator is already available.
+Pseudo-code can also have ambiguity. For example some languages like lua start array indexing at `1` so `array[1]` returns the first element `"a"`.
+```lua
+-- lua code
+array = {"a", "b", "c"}
+print(array[1]   -- prints`a`
+```
 
-However, I believe a *AQA pseudo-code* translator would have many benefits. It could 
+However other languages like python start array indexing  at `0` so `array[1]` in this case returns the second element `"b"`
 
-In this project I will investigate the feasibility of creating  an *AQA pseudo-code* tran
+```python
+# python code
+array = ["a", "b", "c"]
+print(array[1])  # prints `b`
+```
 
-Pseudo-code varies in abstraction between clear english and lower level program code. The meaning of pseudo-code can be ambiguous. Do arrays start indexing starts at 0 or 1? Are for-range loops inclusive or exclusive? The imprecision of pseudo-code and natural language also cannot be solved by artificial intelligence, where the output of models like chat-gpt are impossible to guarantee correctness.
+Imagine if both of these snippets where written in pseudo-code instead of a well defined language. It would be impossible to determine correctly whether the program was intended to print `a` or `b`. There are many other ways ambiguity can be introduced in pseudo-code, for example inclusive/exclusive for loops, rounding floats or the use of `Nil` or `None` types. 
 
-Therefore, this project will focus on AQA's specific style of 'pseudo-code' which is well defined and features a specification. Currently algorithms written in 'Pseudo-code' are difficult to check for correctness and needs to be manually hand traced to see the output. This is tedious and can often lead to mistakes. Often one would rewrite a 'pseudo-code' algorithm in a different language but that could of been done in the first place.
+However general purpose pseudo-code is very different to AQA's pseudo-code, which is both referred to as Pseudo-code and has strict rules. 
+
+```AQA
+# AQA Pseudo-code
+array = ["a", "b", "c"]
+OUTPUT array[1]
+```
+
+Following the spec, arrays in AQA Pseudo-code start indexing at `0` so therefore the  is `b`.  Due to the consistency of the spec, we where  able to unambiguously determine the output. 
+
+This consistency means that it would be possible to write a translator, that would take any set of pseudo-code following the AQA's style and convert it to the corresponding machine code. This blurs the lines between the pseudo-code and *real languages*. So henceforth correct AQA Pseudo-code, following the spec will just be referred to as AQA code.
+
+## Justification
+
+Some people may argue that a translator for AQA code would be unnecessary and would hinder students. It is mainly used for offline on-paper examinations without a computer. So having  a tool to generate machine code would not be needed. Moreover it may confuse students to what pseudo-code is. Furthermore where a working algorithm is needed it would be sufficient to manually translate AQA pseudo-code to an existing high level language where a compiler or translator is already available.
+
+However I would argue that an AQA code translator would have real world uses not just as a research project. For example using this tool,  it would give students more experience and knowledge of AQA code, which would aid reading and comprehension skills. Moreover, it would mean that manually rewriting AQA code into another high level language for example python would be unheeded. And it would avoid the chances of bugs being introduced in the rewrite and would save students a large amount of time.
+
+In this project, I am going to explore the feasibility and attempt to implement my own AQA code translator.
+
 
 This problem could be solved if an AQA 'pseudo-code' translator was available. This would allow students to run their code to check for correct output. Teachers could better explain pseudo-code using the same step  by step 
 

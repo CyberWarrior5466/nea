@@ -2,4 +2,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-from . import *
+from AQAInterpreter import main
+
+__all__ = ["main"]
