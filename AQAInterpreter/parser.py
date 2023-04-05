@@ -145,6 +145,8 @@ def parse(tokens: list[Token]):
         return (Print(value),)
 
     def while_statement():
+        nonlocal tokens
+        nonlocal current
         condition = expression()
         statements = []
 
@@ -269,7 +271,7 @@ def parse(tokens: list[Token]):
     def statement():
         try:
             for token in tokens[current :]:
-                if token.type in {PRINT, WHILE, FOR, IF}:
+                if token.type in {PRINT, WHILE, FOR, IF, NEWLINE}:
                     return statement_not_var()
                 elif token.type == ASSIGNMENT:
                     return var_declaration()
