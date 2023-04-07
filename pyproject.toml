@@ -17,13 +17,6 @@ Documentation = "https://github.com/CyberWarrior5466/nea"
 Issues = "https://github.com/CyberWarrior5466/nea/issues"
 Source = "https://github.com/CyberWarrior5466/nea"
 
-dependencies = ["click==8.*"]
-
-[project.urls]
-Documentation = "https://github.com/CyberWarrior5466/nea"
-Issues = "https://github.com/CyberWarrior5466/nea/issues"
-Source = "https://github.com/CyberWarrior5466/nea"
-
 
 [tool.hatch.envs.default]
 dependencies = ["black", "inotify", "pytest"]

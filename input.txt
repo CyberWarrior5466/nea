@@ -1,13 +1,9 @@
-a <- 1
-b <- 1
-c <- 2
-count <- 0
-WHILE count != 2 DO
-    OUTPUT a
-    a <- b + c
-    OUTPUT b
-    b <- c + a
-    OUTPUT c
-    c <- a + b
-    count <- count + 1
+index <- 1
+WHILE index <= 5
+    IF index = 3
+        PRINT "3 is a lucky number"
+    ELSE
+        PRINT index
+    ENDIF
+    index <- index + 1
 ENDWHILE

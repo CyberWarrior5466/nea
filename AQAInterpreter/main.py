@@ -4,12 +4,10 @@ from pprint import pprint
 import click
 
 
-
 def run(source: str, debug: bool = False) -> str:
     source += "\n"
     if debug:
         print(source)
-
 
     tokens = Scanner(source).scan_tokens()
     if debug:
@@ -23,11 +21,8 @@ def run(source: str, debug: bool = False) -> str:
 
     for statement in statements:
         statement.interpret(output)
-    
-    return "".join(output)
 
-    if had_error:
-        exit(65)
+    return "".join(output)
 
 
 @click.command()
@@ -38,7 +33,6 @@ def main(filename: str, cmd: str, debug: bool):
     if filename and cmd:
         raise click.UsageError("cannot specify both filename and command")
 
-
     if filename:
         with open(filename, encoding="utf-8") as infp:
             cmd = infp.read()
@@ -46,7 +40,7 @@ def main(filename: str, cmd: str, debug: bool):
         while True:
             click.echo(run(input("> "), debug=debug).rstrip())
 
-    click.echo((run(cmd, debug=debug)))
+    click.echo(run(cmd, debug=debug).rstrip())
 
 
 if __name__ == "__main__":

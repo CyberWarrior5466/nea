@@ -7,7 +7,10 @@ class AQARuntimeError(RuntimeError):
     token: Token
     message: str
 
-class AQAParseError(AQARuntimeError): ...
+class AQAParseError(RuntimeError):
+    token: Token
+    message: str
+
 
 def report(line: int, where: str, message: str) -> None:
     print(f"[line {line}] Error {where}: {message}", file=sys.stderr)
