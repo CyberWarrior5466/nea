@@ -1,0 +1,108 @@
+classDiagram
+  class AQAParseError {
+  }
+  class AQARuntimeError {
+    message : str
+    token
+  }
+  class Binary {
+    left
+    operator
+    right
+    interpret()
+  }
+  class Environment {
+    values : dict[str, object]
+    define(name: str, value: object) None
+    get(name: Token) object
+  }
+  class Expr {
+    interpret() object
+  }
+  class Grouping {
+    expression
+    interpret()
+  }
+  class If {
+    condition
+    else_branch : list[Stmt]
+    then_branch : list[Stmt]
+    interpret()
+  }
+  class Literal {
+    value : object
+    interpret()
+  }
+  class Logical {
+    left
+    operator
+    right
+    interpret()
+  }
+  class Parser {
+    tokens : list[Token]
+  }
+  class Print {
+    expression
+    interpret()
+  }
+  class Scanner {
+    character_list : list
+    source : str
+    scan_tokens() list[Token]
+  }
+  class Stmt {
+    interpret() object
+  }
+  class Token {
+    lexeme : str
+    line : int
+    literal : Optional[str | None]
+    type : str
+  }
+  class Unary {
+    operator
+    right
+    interpret()
+  }
+  class Var {
+    initialiser
+    name
+    interpret()
+  }
+  class Variable {
+    name
+    interpret() object
+  }
+  class While {
+    body : list[Stmt]
+    condition
+    interpret() object
+  }
+  AQAParseError --|> AQARuntimeError
+  Binary --|> Expr
+  Grouping --|> Expr
+  If --|> Stmt
+  Literal --|> Expr
+  Logical --|> Expr
+  Print --|> Stmt
+  Unary --|> Expr
+  Var --|> Stmt
+  Variable --|> Expr
+  While --|> Stmt
+  Expr --* Binary : left
+  Expr --* Binary : right
+  Expr --* Grouping : expression
+  Expr --* If : condition
+  Expr --* Logical : left
+  Expr --* Logical : right
+  Expr --* Print : expression
+  Expr --* Unary : right
+  Expr --* Var : initialiser
+  Expr --* While : condition
+  Token --* AQARuntimeError : token
+  Token --* Binary : operator
+  Token --* Logical : operator
+  Token --* Unary : operator
+  Token --* Var : name
+  Token --* Variable : name

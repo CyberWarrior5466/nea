@@ -214,7 +214,7 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 6. Add syntax highlighting to highlight keywords and constructs, following the colours of the atom text editor, as it was my clients preference. 
 
-# Design
+# Documented design
 
 ## Language Choice
 
@@ -454,3 +454,7 @@ class Environment:
     def define(self, name: str, value: object) -> None:
         self.values[name] = value 
 ```
+
+## Testing
+
+## Evaluation

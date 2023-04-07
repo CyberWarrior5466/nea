@@ -1,0 +1,35 @@
+classDiagram
+  class AQAInterpreter {
+  }
+  class environment {
+  }
+  class errors {
+  }
+  class interpreter {
+  }
+  class main {
+  }
+  class parser {
+  }
+  class scanner {
+  }
+  class tests {
+  }
+  class tokens {
+  }
+  AQAInterpreter --> AQAInterpreter
+  AQAInterpreter --> main
+  environment --> errors
+  errors --> tokens
+  interpreter --> environment
+  interpreter --> errors
+  main --> AQAInterpreter
+  main --> parser
+  main --> scanner
+  main --> tokens
+  parser --> AQAInterpreter
+  parser --> errors
+  parser --> interpreter
+  scanner --> errors
+  tests --> AQAInterpreter
+  tests --> main

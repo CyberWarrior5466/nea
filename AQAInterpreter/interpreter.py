@@ -4,7 +4,6 @@ from AQAInterpreter.errors import *
 from AQAInterpreter.environment import Environment
 from abc import abstractmethod
 
-
 environment = Environment()
 
 
@@ -16,25 +15,8 @@ class Expr:
 
 class Stmt:
     @abstractmethod
-    def interpret(self) -> object:
+    def interpret(self, output: list[str]) -> object:
         ...
-
-
-def paren(name: str, *exprs: Expr) -> str:
-    string = "(" + name
-    for expr in exprs:
-        string += " "
-        string += expr.dump()
-    string += ")"
-
-    return string
-
-
-def check_number(operator: Token, *operands: object):
-    try:
-        [float(operand) for operand in operands]
-    except Exception:
-        raise AQARuntimeError(operator, "operand must be a number")
 
 
 @dataclass
@@ -71,9 +53,9 @@ class Unary(Expr):
     operator: Token
     right: Expr
 
-    def interpret(self):
+    def interpret(self) -> object:
         if (type := self.operator.type) == MINUS:
-            return -self.right.interpret()
+            return -self.right.interpret()  # type: ignore
         elif type == NOT:
             return not self.right.interpret()
 
@@ -84,7 +66,7 @@ class Binary(Expr):
     operator: Token
     right: Expr
 
-    def interpret(self):
+    def interpret(self) -> object:
         left = self.left.interpret()
         right = self.right.interpret()
 
@@ -92,21 +74,21 @@ class Binary(Expr):
             if (type(left), type(right)) in {(str, int), (int, str)}:
                 return str(left) + str(right)
             else:
-                return left + right
+                return left + right  # type: ignore
         elif token_type == MINUS:
-            return left - right
+            return left - right  # type: ignore
         elif token_type == TIMES:
-            return left * right
+            return left * right  # type: ignore
         elif token_type == DIVIDE:
-            return left / right
+            return left / right  # type: ignore
         elif token_type == GREATER:
-            return left > right
+            return left > right  # type: ignore
         elif token_type == GREATER_EQUAL:
-            return left >= right
+            return left >= right  # type: ignore
         elif token_type == LESS:
-            return left < right
+            return left < right  # type: ignore
         elif token_type == LESS_EQUAL:
-            return left <= right
+            return left <= right  # type: ignore
         elif token_type == EQUAL:
             return left == right
         elif token_type == NOT_EQUAL:
@@ -133,8 +115,8 @@ class Variable(Expr):
 class Print(Stmt):
     expression: Expr
 
-    def interpret(self):
-        print(self.expression.interpret())
+    def interpret(self, output: list[str]):
+        output.append(str(self.expression.interpret()) + "\n")
 
 
 @dataclass
@@ -142,10 +124,10 @@ class While(Stmt):
     condition: Expr
     body: list[Stmt]
 
-    def interpret(self) -> object:
+    def interpret(self, output: list[str]) -> object:
         while self.condition.interpret():
             for stmt in self.body:
-                stmt.interpret()
+                stmt.interpret(output)
 
 
 @dataclass
@@ -154,14 +136,14 @@ class If(Stmt):
     then_branch: list[Stmt]
     else_branch: list[Stmt]
 
-    def interpret(self):
+    def interpret(self, output: list[str]):
         if self.condition.interpret():
             for stmt in self.then_branch:
-                stmt.interpret()
+                stmt.interpret(output)
 
         else:
             for stmt in self.else_branch:
-                stmt.interpret()
+                stmt.interpret(output)
 
 
 @dataclass
@@ -169,56 +151,6 @@ class Var(Stmt):
     name: Token
     initialiser: Expr
 
-    def interpret(self):
-        value = None
-        if self.initialiser != None:
-            value = self.initialiser.interpret()
-
+    def interpret(self, output: list[str]):
+        value = self.initialiser.interpret()
         environment.define(self.name.lexeme, value)
-
-
-if __name__ == "__main__":
-    [
-        Var(
-            Token(type="IDENTIFIER", lexeme="i", line=1),
-            initialiser=Literal(value=1),
-        ),
-        While(
-            condition=Binary(
-                left=Variable(name=Token(type="IDENTIFIER", lexeme="i", line=2)),
-                operator=Token(type="LESS_EQUAL", lexeme="<=", line=2),
-                right=Literal(value=5),
-            ),
-            body=[
-                If(
-                    condition=Binary(
-                        left=Variable(
-                            name=Token(type="IDENTIFIER", lexeme="i", line=3)
-                        ),
-                        operator=Token(type="EQUAL", lexeme="=", line=3),
-                        right=Literal(value=3),
-                    ),
-                    then_branch=[
-                        Print(expression=Literal(value="3 is a lucky number"))
-                    ],
-                    else_branch=[
-                        Print(
-                            expression=Variable(
-                                name=Token(type="IDENTIFIER", lexeme="i", line=6)
-                            )
-                        )
-                    ],
-                ),
-                Var(
-                    name=Token(type="IDENTIFIER", lexeme="i", line=8),
-                    initialiser=Binary(
-                        left=Variable(
-                            name=Token(type="IDENTIFIER", lexeme="i", line=8)
-                        ),
-                        operator=Token(type="ADD", lexeme="+", line=8),
-                        right=Literal(value=1),
-                    ),
-                ),
-            ],
-        ),
-    ]

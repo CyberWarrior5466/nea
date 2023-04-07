@@ -22,4 +22,3 @@ def error(token: Token | int, message: str) -> None:
     else:
         line = token
         report(line, "", message)
-    had_error = True

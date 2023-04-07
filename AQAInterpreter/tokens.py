@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 @dataclass
 class Token:
     type: str
-    literal: str | None = field(repr=False, default=None)
+    literal: str = field(repr=False, default="")
     lexeme: str = ""
     line: int = 0
 

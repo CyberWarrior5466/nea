@@ -1,172 +1,159 @@
 from AQAInterpreter.interpreter import *
-from AQAInterpreter.tokens import *
 from AQAInterpreter import errors
 
+@dataclass
+class Parser:
+    tokens: list[Token]
+    _current: int = 0
 
-def parse(tokens: list[Token]):
-    current = 0
-
-    def error(token: Token, message: str):
+    def _error(self, token: Token, message: str):
         errors.error(token, message)
-        had_error = True
         return AQAParseError(token, message)
 
-    def match_token(*token_types: str) -> bool:
+    def _match_token(self, *token_types: str) -> bool:
         for token_type in token_types:
-            if check(token_type):
-                advance()
+            if self._check(token_type):
+                self._advance()
                 return True
         return False
 
-    def consume(token_type: str, message: str) -> Token:
-        if check(token_type):
-            return advance()
-        raise AQAParseError(peek(), message)
+    def _consume(self, token_type: str, message: str) -> Token:
+        if self._check(token_type):
+            return self._advance()
+        raise AQAParseError(self._peek(), message)
 
-    def synchronize() -> None:
-        advance()
+    def _synchronize(self) -> None:
+        self._advance()
 
-        while not at_end():
-            if previous().type == NEWLINE:
+        while not self._at_end():
+            if self._previous().type == NEWLINE:
                 return
-            advance()
+            self._advance()
 
-
-    def check(token_type: str) -> bool:
-        if at_end():
+    def _check(self, token_type: str) -> bool:
+        if self._at_end():
             return False
-        return peek().type == token_type
+        return self._peek().type == token_type
 
-    def advance() -> Token:
-        nonlocal current
-        if not at_end():
-            current += 1
-        return previous()
+    def _advance(self) -> Token:
+        if not self._at_end():
+            self._current += 1
+        return self._previous()
 
-    def at_end() -> bool:
-        return peek().type == EOF
+    def _at_end(self) -> bool:
+        return self._peek().type == EOF
 
-    def peek() -> Token:
-        return tokens[current]
+    def _peek(self) -> Token:
+        return self.tokens[self._current]
 
-    def previous() -> Token:
-        return tokens[current - 1]
+    def _previous(self) -> Token:
+        return self.tokens[self._current - 1]
 
-    def primary() -> Expr:
-        if match_token(FALSE):
+    def _primary(self) -> Expr:
+        if self._match_token(FALSE):
             return Literal(False)
-        elif match_token(TRUE):
+        elif self._match_token(TRUE):
             return Literal(True)
-        elif match_token(NONE):
+        elif self._match_token(NONE):
             return Literal(None)
-        elif match_token(STRING):
-            return Literal(previous().literal)
-        elif match_token(NUMBER):
-            if previous().literal.isdecimal():
-                return Literal(int(previous().literal))
+        elif self._match_token(STRING):
+            return Literal(self._previous().literal)
+        elif self._match_token(NUMBER):
+            if self._previous().literal.isdecimal():
+                return Literal(
+                    int(self._previous().literal)
+                )
             else:
-                return Literal(float(previous().literal))
-        elif match_token(LEFT_PAREN):
-            expr = expression()
-            consume(RIGHT_PAREN, "Expected ')' after expression.")
+                return Literal(float(self._previous().literal))
+        elif self._match_token(LEFT_PAREN):
+            expr = self._expression()
+            self._consume(RIGHT_PAREN, "Expected ')' after expression.")
             return Grouping(expr)
-        elif match_token(IDENTIFIER):
-            return Variable(previous())
+        elif self._match_token(IDENTIFIER):
+            return Variable(self._previous())
 
-        raise error(peek(), "Expect expression")
+        raise error(self._peek(), "Expect expression")
 
-    def unary() -> Expr:
-        if match_token(NOT, MINUS):
-            operator = previous()
-            right = unary()
-            return Unary(operator, right)
+    def _unary(self) -> Expr:
+        if self._match_token(NOT, MINUS):
+            return Unary(self._previous(), self._unary())
 
-        return primary()
+        return self._primary()
 
-    def factor():
-        expr = unary()
+    def _factor(self) -> Expr:
+        expr = self._unary()
 
-        while match_token(DIVIDE, TIMES):
-            expr = Binary(expr, previous(), factor())
+        while self._match_token(DIVIDE, TIMES):
+            expr = Binary(expr, self._previous(), self._factor())
 
         return expr
 
-    def term():
-        expr = factor()
+    def _term(self) -> Expr:
+        expr = self._factor()
 
-        while match_token(MINUS, ADD):
-            operator = previous()
-            right = factor()
-            expr = Binary(expr, operator, right)
+        while self._match_token(MINUS, ADD):
+            expr = Binary(expr, self._previous(), self._factor())
 
         return expr
 
-    def comparison():
-        expr = term()
+    def _comparison(self) -> Expr:
+        expr = self._term()
 
-        while match_token(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL):
-            operator = previous()
-            right = term()
-            expr = Binary(expr, operator, right)
+        while self._match_token(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL):
+            expr = Binary(expr, self._previous(), self._term())
 
         return expr
 
-    def equality():
-        expr = comparison()
+    def _equality(self) -> Expr:
+        expr = self._comparison()
 
-        while match_token(NOT_EQUAL, EQUAL):
-            operator = previous()
-            right = comparison()
-            expr = Binary(expr, operator, right)
+        while self._match_token(NOT_EQUAL, EQUAL):
+            expr = Binary(expr, self._previous(), self._comparison())
 
         return expr
 
-    def and_():
-        expr = equality()
+    def _and(self) -> Expr:
+        expr = self._equality()
 
-        while match_token(AND):
-            expr = Logical(expr, previous(), equality())
-
-        return expr
-
-    def or_():
-        expr = and_()
-
-        while match_token(OR):
-            expr = Logical(expr, previous(), and_())
+        while self._match_token(AND):
+            return Logical(expr, self._previous(), self._equality())
 
         return expr
 
-    def expression():
-        return or_()
+    def _or(self) -> Expr:
+        expr = self._and()
 
-    def print_statement():
-        value = expression()
-        return (Print(value),)
+        while self._match_token(OR):
+            expr = Logical(expr, self._previous(), self._and())
 
-    def while_statement():
-        nonlocal tokens
-        nonlocal current
-        condition = expression()
+        return expr
+
+    def _expression(self) -> Expr:
+        return self._or()
+
+    def _print_statement(self) -> tuple[Print]:
+        return (Print(self._expression()),)
+
+    def _while_statement(self) -> tuple[While]:
+        condition = self._expression()
         statements = []
 
-        if peek().type in {DO, COLON}:
-            match_token(DO, COLON)
+        if self._peek().type in {DO, COLON}:
+            self._match_token(DO, COLON)
 
-        while not match_token(END):
-            if peek().type == EOF:
-                raise error(peek(), "Expected END after WHILE loop")
+        while not self._match_token(END):
+            if self._peek().type == EOF:
+                raise error(self._peek(), "Expected END after WHILE loop")
 
-            stmt = statement()
-            if stmt is not None:
+            if (stmt := self._statement()) is not None:
                 statements.extend(stmt)
 
         return (While(condition, statements),)
 
-    def for_statement():
-        initialiser = var_declaration()[0]
-        consume(TO, "Expect TO inside of FOR loop. ")
-        stop = expression()
+    def _for_statement(self) -> tuple[Var, While]:
+        initialiser = self._var_declaration()[0]
+        self._consume(TO, "Expect TO inside of FOR loop. ")
+        stop = self._expression()
         statements = []
 
         # if start and stop are constant expressions interpreting them won't raise an undeclared variable error
@@ -183,21 +170,20 @@ def parse(tokens: list[Token]):
                 condition = GREATER_EQUAL
                 step = Literal(value=-1)
 
-            if match_token(STEP):
-                step = expression()
+            if self._match_token(STEP):
+                step = self._expression()
         except:
-            consume(
+            self._consume(
                 STEP,
                 "step needs to be specified where start or stop are not constant expressions",
             )
-            step = expression()
+            step = self._expression()
             condition = LESS_EQUAL if step.value > 0 else GREATER_EQUAL
 
-        while not match_token(END):
-            if peek().type == EOF:
-                raise error(peek(), "Expected TO inside FOR loop")
-            stmt = statement()
-            if stmt is not None:
+        while not self._match_token(END):
+            if self._peek().type == EOF:
+                raise self._error(self._peek(), "Expected TO inside FOR loop")
+            if (stmt := self._statement()) is not None:
                 statements += stmt
 
         out = initialiser, While(
@@ -220,72 +206,70 @@ def parse(tokens: list[Token]):
         )
         return out
 
-    def if_statement():
-        condition = expression()
-        then_branch, else_branch = [], []
+    def _if_statement(self) -> tuple[If]:
+        condition = self._expression()
+        then_branch: list[Stmt] = []
+        else_branch: list[Stmt] = []
 
-        if peek().type in {THEN, COLON}:
-            match_token(THEN, COLON)
+        if self._peek().type in {THEN, COLON}:
+            self._match_token(THEN, COLON)
 
-        while not match_token(END):
-            if peek().type == EOF:
-                raise error(peek(), "Expected END after IF statement")
+        while not self._match_token(END):
+            if self._peek().type == EOF:
+                raise self._error(self._peek(), "Expected END after IF statement")
 
-            stmt = statement()
-            if stmt is not None:
+            if (stmt := self._statement()) is not None:
                 then_branch.extend(stmt)
 
-            if match_token(ELSE):
-                while not match_token(END):
-                    if peek().type == EOF:
-                        raise error(peek(), "Expected END after IF statement")
-                    stmt = statement()
+            if self._match_token(ELSE):
+                while not self._match_token(END):
+                    if self._peek().type == EOF:
+                        raise error(self._peek(), "Expected END after IF statement")
+                    stmt = self._statement()
                     if stmt is not None:
                         else_branch.extend(stmt)
                 break
 
         return (If(condition, then_branch, else_branch),)
 
-    def statement_not_var():
-        nonlocal current
+    def _statement_not_var(self) -> tuple[Print] | tuple[While] | tuple[Var, While] | tuple[If] | None:
         while True:
-            if match_token(PRINT):
-                return print_statement()
-            elif match_token(WHILE):
-                return while_statement()
-            elif match_token(FOR):
-                return for_statement()
-            elif match_token(IF):
-                return if_statement()
-            elif tokens[current].type == EOF:
+            if self._match_token(PRINT):
+                return self._print_statement()
+            elif self._match_token(WHILE):
+                return self._while_statement()
+            elif self._match_token(FOR):
+                return self._for_statement()
+            elif self._match_token(IF):
+                return self._if_statement()
+            elif self.tokens[self._current].type == EOF:
                 return
-            current += 1
+            self._current += 1
             return
 
-    def var_declaration():
-        name = consume(IDENTIFIER, "Expect variable name. ")
-        initialiser = expression() if match_token(ASSIGNMENT) else None
+    def _var_declaration(self) -> tuple[Var]:
+        name = self._consume(IDENTIFIER, "Expect variable name. ")
+        initialiser = self._expression() if self._match_token(ASSIGNMENT) else None
         # consume(NEWLINE, "Expect newline after variable deceleration")
         return (Var(name, initialiser),)
 
-    def statement():
+    def _statement(self):
         try:
-            for token in tokens[current :]:
+            for token in self.tokens[self._current:]:
                 if token.type in {PRINT, WHILE, FOR, IF, NEWLINE}:
-                    return statement_not_var()
+                    return self._statement_not_var()
                 elif token.type == ASSIGNMENT:
-                    return var_declaration()
+                    return self._var_declaration()
         except AQAParseError as e:
             errors.error(e.token, e.message)
-            synchronize()
+            self._synchronize()
             return None
 
-    def parse():
+    def parse(self):
         statements: list[Stmt] = []
-        while not at_end():
-            stmt = statement()
+        while not self._at_end():
+            stmt = self._statement()
             if stmt is not None:
                 statements.extend(stmt)
         return statements
 
-    return parse()

@@ -1,31 +1,30 @@
-from AQAInterpreter.tokens import *
 from AQAInterpreter.scanner import Scanner
-from AQAInterpreter import parser
+from AQAInterpreter.parser import Parser
 from pprint import pprint
 import click
 
-DEBUG = True
 
 
-def run(source: str):
-    had_error = False
+def run(source: str, debug: bool = False) -> str:
     source += "\n"
-    if DEBUG:
+    if debug:
         print(source)
 
+
     tokens = Scanner(source).scan_tokens()
-    if DEBUG:
+    if debug:
         pprint(tokens)
         print()
-        
-    statements = parser.parse(tokens)
-    if statements is not None:
-        if DEBUG:
-            # pprint(statements)
-            print(statements)
-        for statement in statements:
-            if statement is not None:
-                statement.interpret()
+
+    output: list[str] = []
+    statements = Parser(tokens).parse()
+    if debug:
+        print(statements)
+
+    for statement in statements:
+        statement.interpret(output)
+    
+    return "".join(output)
 
     if had_error:
         exit(65)
@@ -34,19 +33,20 @@ def run(source: str):
 @click.command()
 @click.argument("filename", required=False)
 @click.option("-c", "--cmd")
-def main(filename, cmd):
-    had_error = False
+@click.option("-d", "--debug", is_flag=True, default=False, help="Show tokens and ast")
+def main(filename: str, cmd: str, debug: bool):
     if filename and cmd:
         raise click.UsageError("cannot specify both filename and command")
+
 
     if filename:
         with open(filename, encoding="utf-8") as infp:
             cmd = infp.read()
     else:
         while True:
-            run(input("> "))
+            click.echo(run(input("> "), debug=debug).rstrip())
 
-    run(cmd)
+    click.echo((run(cmd, debug=debug)))
 
 
 if __name__ == "__main__":

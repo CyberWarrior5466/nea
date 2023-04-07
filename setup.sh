@@ -7,9 +7,11 @@ sudo dnf copr enable adrienverge/some-nice-fonts -y
 sudo dnf install hatch pandoc texlive-xetex fira-code-fonts some-nice-fonts npm librsvg2-tools texlive-scheme-medium -y
 
 
-# build mermaid flowcharts
+cd report
+mkdir mermaid
+cd mermaid
 # https://github.com/mermaid-js/mermaid-cli#install-locally
-sudo npm install @mermaid-js/mermaid-cli
+sudo npm install -g @mermaid-js/mermaid-cli
 
 cd report/assets
 for i in *.mmd; do

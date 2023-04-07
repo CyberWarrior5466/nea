@@ -1,21 +1,12 @@
 """ Run these tests with
-pytest AQAInterpreter/tests.py --verbose
+pytest AQAInterpreter --verbose
 """
 
-from contextlib import redirect_stdout
-from AQAInterpreter import main
-from io import StringIO
+import AQAInterpreter
 
 
-def run(*lines):
-    code = "\n".join(list(lines))
-    with redirect_stdout(io := StringIO()):
-        main.run(code)
-    return io.getvalue()
-
-
-# Do not show tokens list or ast
-main.DEBUG = False
+def run(*lines: str) -> str:
+    return AQAInterpreter.run("\n".join(lines))
 
 
 def test_expressions():
@@ -55,8 +46,11 @@ def test_if_statements():
 
 
 def test_while_loops():
-    assert run("a <- 1", "while a <= 3 DO", "output a", "a <- a + 1", "endwhile") == "1\n2\n3\n"
-    
+    assert (
+        run("a <- 1", "while a <= 3 DO", "output a", "a <- a + 1", "endwhile")
+        == "1\n2\n3\n"
+    )
+
     # fibonacci sequence
     assert (
         run(
@@ -120,7 +114,6 @@ def test_for_loops():
 #         OUTPUT a + " × " + b + " = " + (a * b)
 #     END
 # END
-
 
 
 # for i <- 1 to 5

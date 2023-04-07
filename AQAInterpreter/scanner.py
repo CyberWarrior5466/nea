@@ -47,95 +47,130 @@ class Scanner:
 
     def _scan_token(self):
         charachter_list = list(self.source[self._start :])
+        charachter_list = list(self.source[self._start :])
         match charachter_list:
             case ["(", *_]:
+                self._add(LEFT_PAREN)
                 self._add(LEFT_PAREN)
                 self._current += 1
             case [")", *_]:
                 self._add(RIGHT_PAREN)
+                self._add(RIGHT_PAREN)
                 self._current += 1
             case ["-", *_]:
+                self._add(MINUS)
                 self._add(MINUS)
                 self._current += 1
             case ["+", *_]:
                 self._add(ADD)
+                self._add(ADD)
                 self._current += 1
+            case ["*" | "×", *_]:
+                self._add(TIMES)
             case ["*" | "×", *_]:
                 self._add(TIMES)
                 self._current += 1
             case ["/" | "÷", *_]:
                 self._add(DIVIDE)
+            case ["/" | "÷", *_]:
+                self._add(DIVIDE)
                 self._current += 1
             case ["=", *_]:
+                self._add(EQUAL)
                 self._add(EQUAL)
                 self._current += 1
             case ["≠", *_]:
                 self._add(NOT_EQUAL)
+                self._add(NOT_EQUAL)
                 self._current += 1
             case ["≤", *_]:
+                self._add(LESS_EQUAL)
                 self._add(LESS_EQUAL)
                 self._current += 1
             case ["≥", *_]:
                 self._add(GREATER_EQUAL)
+                self._add(GREATER_EQUAL)
                 self._current += 1
             case [":", *_]:
+                self._add(COLON)
                 self._add(COLON)
                 self._current += 1
             case ["!", "=", *_]:
                 self._add(NOT_EQUAL)
+                self._add(NOT_EQUAL)
                 self._current += 1
             case ["<", "-", *_]:
+                self._add(ASSIGNMENT)
                 self._add(ASSIGNMENT)
                 self._current += 2
             case ["<", "=", *_]:
                 self._add(LESS_EQUAL)
+                self._add(LESS_EQUAL)
                 self._current += 2
             case ["<", *_]:
+                self._add(LESS)
                 self._add(LESS)
                 self._current += 1
             case [">", "=", *_]:
                 self._add(GREATER_EQUAL)
+                self._add(GREATER_EQUAL)
                 self._current += 2
             case [">", *_]:
+                self._add(GREATER)
                 self._add(GREATER)
                 self._current += 1
 
             case ["#", *_]:
                 while self._peek() != "\n" and not self._at_end():
                     self._current += 1
+                    self._current += 1
 
             case ['"', *_]:
+                self._current += 1
                 self._current += 1
                 while self._peek() != '"' and not self._at_end():
                     if self._peek() == "\n":
                         errors.error(self._line, "unterminated string")
                     self._current += 1
+                    self._current += 1
 
+                if self._at_end():
+                    errors.error(self._line, "unterminated string")
                 if self._at_end():
                     errors.error(self._line, "unterminated string")
 
                 # the closing `"`
                 self._current += 1
                 self._add(STRING, self.source[self._start + 1 : self._current - 1])
+                # the closing `"`
+                self._current += 1
+                self._add(STRING, self.source[self._start + 1 : self._current - 1])
 
             case ["'", *_]:
+                self._current += 1
                 self._current += 1
                 while self._peek() != "'" and not self._at_end():
                     if self._peek() == "\n":
                         errors.error(self._line, "unterminated string")
                     self._current += 1
+                    self._current += 1
 
+                if self._at_end():
+                    errors.error(self._line, "unterminated string")
                 if self._at_end():
                     errors.error(self._line, "unterminated string")
 
                 # the closing `'`
                 self._current += 1
                 self._add(STRING, self.source[self._start + 1 : self._current - 1])
+                # the closing `'`
+                self._current += 1
+                self._add(STRING, self.source[self._start + 1 : self._current - 1])
 
             case ["\n", *_]:
-                self._add(NEWLINE)
                 self._current += 1
                 self._line += 1
+                return
                 return
 
             case [" ", *_] | ["\r", *_] | ["\t", *_]:
@@ -146,17 +181,21 @@ class Scanner:
                 # variable
                 while self._peek().isdigit():
                     self._current += 1
+                    self._current += 1
 
                 if self._peek() == "." and self._peek_next().isdigit():
                     # consume the '.'
                     self._current += 1
+                    self._current += 1
 
                     while self._peek().isdigit():
+                        self._current += 1
                         self._current += 1
                 self._add(NUMBER, self.source[self._start : self._current])
 
             case [character, *_] if character.isalpha() or character == "_":
                 while self._peek().isalpha() or self._peek() == "_":
+                    self._current += 1
                     self._current += 1
 
                 text = self.source[self._start : self._current].lower()
@@ -203,7 +242,9 @@ class Scanner:
                 errors.error(self._line, "Unexpected character")
 
     def scan_tokens(self) -> list[Token]:
+    def scan_tokens(self) -> list[Token]:
         while self._current < len(self.source):
             self._start = self._current
             self._scan_token()
+        return self._tokens + [Token(EOF, line=self._line)]
         return self._tokens + [Token(EOF, line=self._line)]
