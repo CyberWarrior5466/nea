@@ -61,12 +61,8 @@ class Scanner:
                 self._current += 1
             case ["*" | "×", *_]:
                 self._add(TIMES)
-            case ["*" | "×", *_]:
-                self._add(TIMES)
                 self._current += 1
-            case ["/" | "÷", *_]:
-                self._add(DIVIDE)
-            case ["/" | "÷", *_]:
+            case ["/" | "∕" | "÷", *_]:
                 self._add(DIVIDE)
                 self._current += 1
             case ["=", *_]:
