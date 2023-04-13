@@ -1,10 +1,12 @@
-ubuntu
-sudo apt install hatch pandoc texlive-xetex fonts-firacode ttf-mscorefonts-installer npm -y 
+#!/bin/bash
 
-# fedora
-sudo dnf install 'dnf-command(copr)'
-sudo dnf copr enable adrienverge/some-nice-fonts -y
-sudo dnf install hatch pandoc texlive-xetex fira-code-fonts some-nice-fonts npm librsvg2-tools texlive-scheme-medium -y
+# # ubuntu
+# sudo apt install hatch pandoc texlive-xetex fonts-firacode ttf-mscorefonts-installer npm -y 
+
+# # fedora
+# sudo dnf install 'dnf-command(copr)'
+# sudo dnf copr enable adrienverge/some-nice-fonts -y
+# sudo dnf install hatch pandoc texlive-xetex fira-code-fonts some-nice-fonts npm librsvg2-tools texlive-scheme-medium -y
 
 
 cd report
@@ -15,10 +17,9 @@ sudo npm install -g @mermaid-js/mermaid-cli
 
 cd report/assets
 for i in *.mmd; do
-    ../mermaid/node_modules/.bin/mmdc \
-      -c mermaid_config.json \
-      -i "$i" \
-      -o "${i%.*}.svg"
+    mmdc -c mermaid_config.json \
+         -i "$i" \
+         -o "${i%.*}.svg"
 done
 cd ../..
 
@@ -26,12 +27,12 @@ cd ../..
 # becuase otherwise renders as `&lt;`
 
 
-# setup project
-hatch shell
+# # setup project
+# hatch shell
 
-# publish to pypi
-hatch build
-hatch publish -r 
-  # go on https://pypi.org
-  # get a token https://pypi.org/help/#apitoke
-  # copy paste the username and token in this command
+# # publish to pypi
+# hatch build
+# hatch publish -r 
+#   # go on https://pypi.org
+#   # get a token https://pypi.org/help/#apitoke
+#   # copy paste the username and token in this command

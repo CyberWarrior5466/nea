@@ -56,47 +56,19 @@
 
 Pseudo-code is a series of code like statements used to describe an existing algorithm or plan out a new one. Everyone has their own unique style of writing pseudo-code. It might look something like a recipe books with clear individual steps to follow. Or it could look something like an existing high level language, with compilers or interpreters already available.
 
-Pseudo-code is 'problem-oriented', the idea being you first write your solution in pseudo-code, and then when the time comes to program a solution,  your brain is free to think about the specific implementation details of the chosen high-level language. Therefore, the purpose of writing pseudo-code is to prototype and plan.
+Pseudo-code is 'problem-oriented', writing it gives you room to focus on the problem. Then when the time comes to program a solution,  your brain is free to think about the specific implementation details in your language.
 
-However some people find writing pseudo-code may be tedious or boring, and would prefer going straight into an  interpreted weakly-typed scripting languages such as python or java-script that trade robustness for rapid iteration speeds, enabling faster prototyping. The outp
+However this is a very different concept to *AQA pseudo-code*; where the code snippets in exam papers follow a specification. Since the specification is consistently applied, *AQA pseudo-code* looks practically the same everywhere it is used. The only thing stopping *AQA pseudo-code* from being a real language therefore, is the existence of a compiler or interpreter.
 
-Pseudo-code can also have ambiguity. For example some languages like lua start array indexing at `1` so `array[1]` returns the first element `"a"`.
-```lua
--- lua code
-array = {"a", "b", "c"}
-print(array[1]   -- prints`a`
-```
+Some people may argue that having a compiler or translator available would be unnecessary as *AQA pseudo-code* is commonly exclusively used during examinations without a computer. Therefore having  a tool to generate machine code would not be needed. Where a working algorithm is needed it would be sufficient to manually translate *AQA pseudo-code* to an existing language where a compiler or translator is already available.
 
-However other languages like python start array indexing  at `0` so `array[1]` in this case returns the second element `"b"`
+However, I believe a *AQA pseudo-code* translator would have many benefits. It could 
 
-```python
-# python code
-array = ["a", "b", "c"]
-print(array[1])  # prints `b`
-```
+In this project I will investigate the feasibility of creating  an *AQA pseudo-code* tran
 
-Imagine if both of these snippets where written in pseudo-code instead of a well defined language. It would be impossible to determine correctly whether the program was intended to print `a` or `b`. There are many other ways ambiguity can be introduced in pseudo-code, for example inclusive/exclusive for loops, rounding floats or the use of `Nil` or `None` types. 
+Pseudo-code varies in abstraction between clear english and lower level program code. The meaning of pseudo-code can be ambiguous. Do arrays start indexing starts at 0 or 1? Are for-range loops inclusive or exclusive? The imprecision of pseudo-code and natural language also cannot be solved by artificial intelligence, where the output of models like chat-gpt are impossible to guarantee correctness.
 
-However general purpose pseudo-code is very different to AQA's pseudo-code, which is both referred to as Pseudo-code and has strict rules. 
-
-```AQA
-# AQA Pseudo-code
-array = ["a", "b", "c"]
-OUTPUT array[1]
-```
-
-Following the spec, arrays in AQA Pseudo-code start indexing at `0` so therefore the  is `b`.  Due to the consistency of the spec, we where  able to unambiguously determine the output. 
-
-This consistency means that it would be possible to write a translator, that would take any set of pseudo-code following the AQA's style and convert it to the corresponding machine code. This blurs the lines between the pseudo-code and *real languages*. So henceforth correct AQA Pseudo-code, following the spec will just be referred to as AQA code.
-
-## Justification
-
-Some people may argue that a translator for AQA code would be unnecessary and would hinder students. It is mainly used for offline on-paper examinations without a computer. So having  a tool to generate machine code would not be needed. Moreover it may confuse students to what pseudo-code is. Furthermore where a working algorithm is needed it would be sufficient to manually translate AQA pseudo-code to an existing high level language where a compiler or translator is already available.
-
-However I would argue that an AQA code translator would have real world uses not just as a research project. For example using this tool,  it would give students more experience and knowledge of AQA code, which would aid reading and comprehension skills. Moreover, it would mean that manually rewriting AQA code into another high level language for example python would be unheeded. And it would avoid the chances of bugs being introduced in the rewrite and would save students a large amount of time.
-
-In this project, I am going to explore the feasibility and attempt to implement my own AQA code translator.
-
+Therefore, this project will focus on AQA's specific style of 'pseudo-code' which is well defined and features a specification. Currently algorithms written in 'Pseudo-code' are difficult to check for correctness and needs to be manually hand traced to see the output. This is tedious and can often lead to mistakes. Often one would rewrite a 'pseudo-code' algorithm in a different language but that could of been done in the first place.
 
 This problem could be solved if an AQA 'pseudo-code' translator was available. This would allow students to run their code to check for correct output. Teachers could better explain pseudo-code using the same step  by step 
 
@@ -203,9 +175,9 @@ Another disadvantage is that both solutions are limited to the IB computer scien
    | :---------: | :-----: |
    |      *      |    ×    |
    |      /      |    ÷    |
-   |     !=      |    ≠    |
-   |     <=      |    ≤    |
-   |     >=      |    ≥    |
+   |     !=      |    !=    |
+   |     <=      |    <=    |
+   |     >=      |    >=    |
    |     <-      |        |
 
 4. Robust error handling, informing the user of what line syntax errors have occurred.
@@ -214,7 +186,7 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 6. Add syntax highlighting to highlight keywords and constructs, following the colours of the atom text editor, as it was my clients preference. 
 
-# Documented design
+# Design
 
 ## Language Choice
 
@@ -230,21 +202,25 @@ STRING and  NUMBER literals are made up of a variable number of characters and n
 
 **Source code**
 
+\
+
 ```aqa
    IDENTIFIER `i`
-         |  ╭───── ASSIGNMENT token
+         |         ASSIGNMENT token
          ↓  ↓
          i <- 1
          WHILE i <= 5
-             IF i = 3                          ←─ INTEGER literal
-                 OUTPUT "3 is a lucky number"  ←─ STRING literal
-             ELSE                              ←─ ELSE token
-                 OUTPUT i                      ←─ IDENTIFIER token
-             ENDIF                             ←─ ENDIF token
+             IF i = 3                          ←  INTEGER literal
+                 OUTPUT "3 is a lucky number"  ←  STRING literal
+             ELSE                              ←  ELSE token
+                 OUTPUT i                      ←  IDENTIFIER token
+             ENDIF                             ←  ENDIF token
              i <- i + 1
-         ENDWHILE                              ←─ ENDWHILE token
+         ENDWHILE                              ←  ENDWHILE token
       
 ```
+
+
 
 **Table of tokens**
 
@@ -278,25 +254,33 @@ STRING and  NUMBER literals are made up of a variable number of characters and n
 
 **Abstract Syntax Tree**
 
+![](assets/sytax_tree_edit.svg)
+
+
 Looking in the table, the scanner has produced 18 separate tokens including an EOF (End Of File) token. The variable `i` also given a special  IDENTIFIER token. We can use a hashmap  data structure to store the value of `i` as it is incremented at the end of the for loop, so that it is printed correctly on the fifth line.
 
 **Parsing**
 
-The next step is parsing, where we convert the alphabet of tokens into expressions.  This will be modelled using an as an Abstract Syntax Tree (AST). This nesting of the nodes inside a tree allows us to represent the nesting or or `FOR` and `IF` blocks. As well as correctly defining the order of operations of expressions following BIDMAS.
+The next step is parsing, where we convert the alphabet of tokens into expressions.  This will be modelled using an as an Abstract Syntax Tree (AST). This nesting of the nodes inside a tree allows us to represent the nesting or or *FOR* and *IF* blocks. As well as correctly defining the order of operations of expressions to follow BIDMAS.
 
-To do this the parser could use two possible methods to recognise the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
+To do this the parser could use two possible methods to recognise the start and end of out *FOR* and *IF* blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of *ENFOR* and *ENDIF* keywords optional. 
 
-The second method is completely ignoring the indentation and only looking at the `ENDFOR` and `ENDIF` to determine the end of our `FOR` and `IF` blocks. This is simpler and less error-prone as it makes leading spaces or tab optional, but the user can still include them for readability. Therefore, this is the design i'll chose to use.
+The second method is completely ignoring the indentation and only looking at the *ENDFOR* and *ENDIF* to determine the end of our *FOR* and *IF* blocks. This is simpler and less error-prone as it makes leading spaces or tab optional, but the user can still include them for readability. I also feel this method is more natural these *END* tokens are part of the AQA 'pseudo-code' specification anyway. So it is the method I'll chose to use.
 
-That aside, after parsing our AST looks like this:
-\
-
-![](assets/syntax_tree_edit.svg)
-
-During this stage the parser performs syntactic analysis, mapping tokens to `WHILE` and `IF` The parser sees a `WHILE` token so it knows what follows has to be a condition. Every statement thereafter is nested inside of the `WHILE` block until the parser sees the `ENDWHILE` token, A Tree data structure to represent the order of operations. The final stage is interpreting this tree.
+That aside, after parsing our AST should look something like:
 
 ```julia
-[OUTPUT, 1, +, 1] ─→ OUTPUT  # Keyword
+[OUTPUT, 1, +, 1]  → OUTPUT  # Keyword
+                       |
+                       +     # Binary operation
+                      / \
+                     1   1   # Numeric Literals
+```
+
+During this stage the parse performs syntactic analysis. The parser sees an `OUTPUT` token so it knows what follows has to be an expression. It matches the next three tokens to a binary operation. It then create tree data structure to represent the order of operations. The final stage is interpreting this tree.
+
+```julia
+[OUTPUT, 1, +, 1]  → OUTPUT  # Keyword
                        |
                        2     # Numeric Literals
 ```
@@ -308,38 +292,47 @@ The tree is interpreted from the leaves to the root. First, the operation  `1 + 
 Backus-naur (BNF) is useful notation for describing the grammar of languages. BNF is a series of rules, consisting of a head and a body making up a production. The head is on the LHS of the `'=>'` and the body is on RHS of the `'=>'`. A rule can either be *terminal* or *non-terminal*. A *terminal* production matches string literals, number literals or tokens. A *non-terminal* production matches other rules. Note: keywords are case insensitive so `PRINT` or `print` or any other casing is perfectly valid. Although this gives the user less options for valid variable names, this gives the language greater flexibility.
 
 ```aqa
-program        => declarations EOF
+program        => declaration* EOF
 
-declarations => (variable_declaration | statement)*
+declaration    => varDecl | statement
 
 statement      => printStatement | ifStatement |
                   whileStatement | forStatement
 
-variable_declaration        => IDENTIFIER "<-" expression
-
-end => "END" | "ENDIF" | "ENDWHILE" | "ENDFOR"
+varDecl        => IDENTIFIER "<-" expression
 
 printStatement => ( PRINT | OUTPUT ) expression
 
 ifStatement
    => IF expression ( THEN | ":" )?
-          declarations
+          declaration*
     ( ELSE 
-          declarations )?
-    end
+          declaration* )?
+    ( END | ENDIF )
+eg IF True THEN
+       ...
+    ELSE
+       ...
+    ENDIF
 
 whileStatement 
    => WHILE expression ( DO | ":" )?
-         declarations
-    end
+         declaration*
+    ( END | ENDWHILE )
+eg WHILE True DO
+        ...
+    ENDWHILE
 
 forStatement
-   => FOR variable_declaration TO expression ( STEP expression )?
-         declarations
-    end
+   => FOR varDecl TO expression ( STEP expression )?
+         declaration*
+    ( END | ENDFOR )
+eg FOR i <- 1 TO 5 STEP 2
+        ...
+    ENDFOR
     
 # expression syntax
-expression  =>  logic_or
+expression  =>  assignment
 logic_or    =>  logic_and ( OR logic_and )*
 logic_and   =>  equality ( AND equality )*
 equality    =>  comparison ( ( "==" | "!=" ) comparison )*
@@ -366,7 +359,7 @@ Options:
 
 
 # incorrect usage
-$ python aqainterpreter.py filename -c cmd
+`$` python aqainterpreter.py filename -c cmd
 Usage: aqainterpreter.py [OPTIONS] [FILENAME]
 Try 'aqainterpreter.py --help' for help.
 
@@ -396,20 +389,20 @@ Additionally, If I create an online IDE I will need to create a web site using *
 
 ```
 .
-├── AQAInterpreter
-|   ├── __about__.py
-|   ├── __init__.py
-|   ├── environment.py
-|   ├── errors.py
-|   ├── interpreter.py
-|   ├── main.py
-|   ├── parser.py
-|   ├── scanner.py
-|   ├── tests.py
-|   └── tokens.py
-├── .gitignore
-├── LICENSE
-└── pyproject.toml
+    AQAInterpreter
+|       __about__.py
+|       __init__.py
+|       environment.py
+|       errors.py
+|       interpreter.py
+|       main.py
+|       parser.py
+|       scanner.py
+|       tests.py
+|       tokens.py
+    .gitignore
+    LICENSE
+    pyproject.toml
 ```
 
 ## **environment.py**
@@ -433,7 +426,3 @@ class Environment:
     def define(self, name: str, value: object) -> None:
         self.values[name] = value 
 ```
-
-## Testing
-
-## Evaluation

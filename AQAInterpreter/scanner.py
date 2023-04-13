@@ -178,23 +178,17 @@ class Scanner:
                     self._add(IF)
                 elif text == "then":
                     self._add(THEN)
-                elif text == "end":
-                    self._add(END)
-                elif text == "endif":
-                    self._add(END)
                 elif text == "else":
                     self._add(ELSE)
                 elif text == "while":
                     self._add(WHILE)
-                elif text == "endwhile":
-                    self._add(END)
                 elif text == "for":
                     self._add(FOR)
                 elif text == "to":
                     self._add(TO)
                 elif text == "step":
                     self._add(STEP)
-                elif text == "endfor":
+                elif text in {"end", "endif", "endwhile", "endfor"}:
                     self._add(END)
                 elif text in {"print", "output"}:
                     self._add(PRINT)
