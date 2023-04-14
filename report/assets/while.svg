@@ -1,0 +1,32 @@
+<svg xmlns='http://www.w3.org/2000/svg' class="pikchr" viewBox="0 0 300.485 203.256">
+<circle cx="27" cy="5" r="3.6"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<polygon points="27,45 23,33 32,33" style="fill:rgb(0,0,0)"/>
+<path d="M27,9L27,39"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<path d="M27,75A15 15 0 0 0 42 60A15 15 0 0 0 27 45A15 15 0 0 0 12 60A15 15 0 0 0 27 75Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="27" y="60" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">IF</text>
+<polygon points="78,60 67,64 67,56" style="fill:rgb(0,0,0)"/>
+<path d="M42,60L73,60"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<path d="M78,75L181,75L181,45L78,45Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="130" y="60" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">expression</text>
+<path d="M234,51L268,51A15 15 0 0 0 283 36A15 15 0 0 0 268 21L234,21A15 15 0 0 0 219 36A15 15 0 0 0 234 51Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="251" y="36" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">THEN</text>
+<path d="M251,99A15 15 0 0 0 266 84A15 15 0 0 0 251 69A15 15 0 0 0 236 84A15 15 0 0 0 251 99Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="251" y="84" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">:</text>
+<path d="M72,137L187,137L187,107L72,107Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="130" y="122" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">declarations</text>
+<path d="M2,201L53,201L53,170L2,170Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="27" y="185" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">END</text>
+<polygon points="187,122 199,118 199,126" style="fill:rgb(0,0,0)"/>
+<path d="M181,60 L 283,60 Q 298,60 298,75 L 298,107 Q 298,122 283,122 L 208,122 L 193,122"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<polygon points="219,36 208,40 208,31" style="fill:rgb(0,0,0)"/>
+<path d="M181,60 L 188,60 Q 196,60 196,48 Q 196,36 205,36 L 213,36"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<polygon points="236,84 224,88 224,80" style="fill:rgb(0,0,0)"/>
+<path d="M181,60 L 188,60 Q 196,60 196,72 Q 196,84 211,84 L 215,84 L 230,84"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<path d="M283,36 L 290,36 Q 298,36 298,51 L 298,92 L 298,107"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<path d="M266,84 L 283,84 Q 298,84 298,92 L 298,99"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<polygon points="27,170 23,159 32,159" style="fill:rgb(0,0,0)"/>
+<path d="M72,122 L 42,122 Q 27,122 27,137 L 27,150 L 27,165"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<circle cx="93" cy="185" r="3.6"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<polygon points="89,185 77,190 77,181" style="fill:rgb(0,0,0)"/>
+<path d="M53,185L83,185"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+</svg>

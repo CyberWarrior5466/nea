@@ -1,28 +1,40 @@
 #!/bin/bash
 
 # # ubuntu
-# sudo apt install hatch pandoc texlive-xetex fonts-firacode ttf-mscorefonts-installer npm fossil -y 
+# sudo apt install hatch pandoc texlive-xetex fonts-firacode ttf-mscorefonts-installer yarnpkg fossil -y 
 
 # # fedora
 # sudo dnf install 'dnf-command(copr)'
 # sudo dnf copr enable adrienverge/some-nice-fonts -y
-# sudo dnf install hatch pandoc texlive-xetex fira-code-fonts some-nice-fonts npm librsvg2-tools texlive-scheme-medium fossil -y
+# sudo dnf install hatch pandoc texlive-xetex fira-code-fonts some-nice-fonts yarnpkg librsvg2-tools texlive-scheme-medium fossil -y
 
 
+# cd report
+# mkdir mermaid
+# cd mermaid
 # cd report
 # mkdir mermaid
 # cd mermaid
 # https://github.com/mermaid-js/mermaid-cli#install-locally
 # sudo dnf install yarnpkg
 # sudo npm install -g @mermaid-js/mermaid-cli
+# sudo dnf install yarnpkg
+# sudo npm install -g @mermaid-js/mermaid-cli
 
 cd report/assets/diagrams
+cd report/assets/diagrams
 for i in *.mmd; do
-    mmdc -c ../mermaid_config.json \
+    ~/.yarn/bin/mmdc -c ../mermaid_config.json \
          -i "$i" \
-         -o "..${i%.*}.svg"
+         -o "../${i%.*}.svg"
 done
+
+for i in *.pikchr; do
+    fossil pikchr "$i" "../${i%.*}.svg"
+done
+
 cd ../../..
+
 
 
 
