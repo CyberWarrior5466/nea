@@ -1,0 +1,13 @@
+linewid *= 2
+fileht *= 0.5
+filewid *= 0.5
+
+down
+file "src"
+A1: arrow
+oval "tokens" fit
+arrow
+oval "statements" fit
+move
+
+" Hi" with .w at (A1, A1) 
