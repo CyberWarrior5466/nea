@@ -5,7 +5,7 @@ $h = 0.21
 C1: circle rad 10%
 down
 arrow linewid
-IF: oval "IF" fit
+IF: oval "WHILE" fit
 right
 arrow
 

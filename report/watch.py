@@ -21,23 +21,8 @@ def compile_on(dir: str, cmd: str) -> None:
 
 
 def main() -> None:
-    compile_on("report", "./compile_report.sh")
-
-    # compile_on(
-    #     "report",
-    #     r"""
-    #     cd report &&\
-    #     cp report.md temp_report.md &&\
-    #     sed -i -e 's/≠/!=/g; s/≤/<=/g; s/≥/>=/g; s/╭/ /g; s/─/ /g; s/├/ /g; s/└/ /g' temp_report.md &&\
-    #     pandoc metadata_no_font.yaml temp_report.md \
-    #            --output=out.pdf \
-    #            --syntax-definition=aqa.xml \
-    #            --table-of-contents \
-    #            --number-sections &&\
-    #     rm temp_report.md &&\
-    #     cd ..
-    #     """,
-    # )
+    # compile_on("report", "./report/compile_report.sh")
+    compile_on("report", "./report/compile_report_no_font.sh")
 
 
 if __name__ == "__main__":

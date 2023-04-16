@@ -12,7 +12,9 @@ for i in *.pikchr; do
     fossil pikchr "$i" "../${i%.*}.svg"
 done
 
-cd ../..
+cd ../../..
+
+cd report
 
 pandoc metadata.yaml report.md \
         --output=out.pdf \
@@ -23,4 +25,4 @@ pandoc metadata.yaml report.md \
 
 cd ..
 
-#xdg-open report/out.pdf
+# xdg-open report/out.pdf

@@ -137,8 +137,10 @@ I have chosen to involve as student named Reece in year 10, who is interested in
    I would like a translucent background because they look cool.
 
 
+
 ## Analysis of research
 
+Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customizable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritize core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
 Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customizable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritize core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
 
 
@@ -149,6 +151,7 @@ There are three methods that could be used to convert AQA pseudo-code to machine
 **compilers**
 
 ![](assets/compiler.svg)
+![](assets/compiler.svg)
 
 
 - **Compilers** first scan/tokenize the source code producing a list of tokens which are then parsed producing an intermediary format such as byte-code. This is then converted into *machine code*. For example the *clang* compiler for *C++* converts the source code to *LLVM byte-codes* which is then converted to standalone *machine code* for each system, for example *X-86*. However *Java byte-code* is distributed standalone and each system requires a *JVM* (Java Virtual Machine) installed to do the final conversion step to *machine code*.
@@ -158,12 +161,13 @@ There are three methods that could be used to convert AQA pseudo-code to machine
 - **Transpilers** scan and parse but the intermediary form is converted to another high level language where a compiler or interpreter already available. For example, the *Nim* programming language works by first transpiling to either *C*, *C++* or *Java-Script*.
 
 - Other notes: languages can be expressed with regular grammar. Tools like yacc and lex are known as compiler compilers as they create a compiler given regular grammar of the language to be built as input. However I will not be using these and I am interesting in learning how a translator works.
+- Other notes: languages can be expressed with regular grammar. Tools like yacc and lex are known as compiler compilers as they create a compiler given regular grammar of the language to be built as input. However I will not be using these and I am interesting in learning how a translator works.
 
 **Advantages and disadvantages of each approach**
 
 The advantages of a compiler is that is can optimize the resulting machine code, making the executable more efficient. However a disadvantage of machine code is that the machine code is not portable, and cannot be copied over to different systems. Furthermore,  the compilation step may take a large amount of time for complex projects, which means that errors, also will take a long time to show up. This reduces iteration speeds and can result in a worse developer experience than an interpreter where the errors show up much quicker. 
 
-Therefor
+Therefore I will create an interpreter as its the simplest to implement and based on my user research usability and develop experience are more important factors than performance.
 
 
 
@@ -221,7 +225,7 @@ Another disadvantage is that both solutions are limited to the IB computer scien
    |     !=      |    ≠    |
    |     <=      |    ≤    |
    |     >=      |    ≥    |
-   |     <-      |        |
+   |     <-      |      `←`  |
 
 4. Robust error handling, informing the user of what line syntax errors have occurred.
 
@@ -233,7 +237,7 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 ## Language Choice
 
-To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming allowing me to model language constructs as classes, and functional programming which allows me to make my program more robust using pure functions with no side effects.
+To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming which is the main language feature I will use to structure my code. I also intend to use modules and split my code across multiple files to separate concerns.
 
 ## High level system overview
 
@@ -258,7 +262,6 @@ STRING and  NUMBER literals are made up of a variable number of characters and n
              ENDIF                             ←─ ENDIF token
              i <- i + 1
          ENDWHILE                              ←─ ENDWHILE token
-      
 ```
 
 **Table of tokens**
@@ -300,65 +303,102 @@ Looking in the table, the scanner has produced 18 separate tokens including an E
 The next step is parsing, where we convert the alphabet of tokens into expressions.  This will be modelled using an as an Abstract Syntax Tree (AST). This nesting of the nodes inside a tree allows us to represent the nesting or or `FOR` and `IF` blocks. As well as correctly defining the order of operations of expressions following BIDMAS.
 
 To do this the parser could use two possible methods to recognize the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
+To do this the parser could use two possible methods to recognize the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
 
 The second method is completely ignoring the indentation and only looking at the `ENDFOR` and `ENDIF` to determine the end of our `FOR` and `IF` blocks. This is simpler and less error-prone as it makes leading spaces or tab optional, but the user can still include them for readability. Therefore, this is the design i'll chose to use.
 
 That aside, after parsing our AST looks like this:
-\
 
 ![](assets/syntax_tree_edit.svg)
 
 During this stage the parser performs syntactic analysis, mapping tokens to `WHILE` and `IF` The parser sees a `WHILE` token so it knows what follows has to be a condition. Every statement thereafter is nested inside of the `WHILE` block until the parser sees the `ENDWHILE` token, A Tree data structure to represent the order of operations. The final stage is interpreting this tree.
 
-The tree is interpreted from the leaves to the root. The source doe is made up of two statements. The first is the variable declaration `i <- 1`. 
+The tree is interpreted from the leaves to the root. The source doe is made up of two statements. The first is the variable declaration `i <- 1` and the next is the `WHILE` loop. The while loop is then made of the condition `i <= 5` and two statements. The two statements are the `IF` statement and another assignment `i <- i + 1`. The `IF` statement also consists of a condition `i = 3`, only a single `=` and not a double `==`. This is because an `<-` is used as the assignment operator, and so the comparison operator hence is a single equal sign, compared to other languages. The `IF` statement has a then and else branch each consisting of a single `OUTPUT` statement. Each construct like the `WHILE` and the `IF` can nest any amount of statements.
+
+A symbol table is used to keep track of the `i` variable as its value changes throughout the program. From here instead of traversing the tree and emitting byte code, we'll take a simpler but less efficient approach and run the python equivalent for each statement. So the `OUTPUT` is then mapped to the python `print()` statement.
 
 ## Language syntax
 
-Backus-naur (BNF) is useful notation for describing the grammar of languages. BNF is a series of rules, consisting of a head and a body making up a production. The head is on the LHS of the `'=>'` and the body is on RHS of the `'=>'`. A rule can either be *terminal* or *non-terminal*. A *terminal* production matches string literals, number literals or tokens. A *non-terminal* production matches other rules. Note: keywords are case insensitive so `PRINT` or `print` or any other casing is perfectly valid. Although this gives the user less options for valid variable names, this gives the language greater flexibility.
+Backus-naur (BNF) is useful notation for describing the grammar of languages. BNF is a series of rules, consisting of a head and a body making up a production. The head is on the LHS of the `'::='` and the body is on RHS of the `'::='`. A rule can either be *terminal* or *non-terminal*. A *terminal* production matches string literals, number literals or tokens. A *non-terminal* production matches other rules. Note: keywords are case insensitive so `PRINT` or `print` or any other casing is perfectly valid. Although this gives the user less options for valid variable names, this gives the language more flexibility in the valid source code it accepts. Each BNF statement will be accompanied by a syntax diagram, for a clearer explanation.
 
-```aqa
-program        => declarations EOF
+Moreover the meta-characters `(*)`,  `(?)` and `(|)` will be used. The `(*)` means zero or more, the `(?)` means zero or one and the `(|)` means or.
 
-declarations => (variable_declaration | statement)*
+`<program> ::= <declarations> "EOF"`
 
-statement      => printStatement | ifStatement |
-                  whileStatement | forStatement
+![](assets/program.svg)
 
-variable_declaration        => IDENTIFIER "<-" expression
+`<declarations> ::= <declaration>*`
 
-end => "END" | "ENDIF" | "ENDWHILE" | "ENDFOR"
+![](assets/declarations.svg)
 
-printStatement => ( PRINT | OUTPUT ) expression
+`<declaration> ::= (<variable_declaration> | <statement>)?`
 
-ifStatement
-   => IF expression ( THEN | ":" )?
-          declarations
-    ( ELSE 
-          declarations )?
-    end
+![](assets/declaration.svg)
 
-whileStatement 
-   => WHILE expression ( DO | ":" )?
-         declarations
-    end
+`<statement> ::= (<printStatement> | < whileStatement> | <forStatement> | <ifStatement>)?`  
 
-forStatement
-   => FOR variable_declaration TO expression ( STEP expression )?
-         declarations
-    end
-    
-# expression syntax
-expression  =>  logic_or
-logic_or    =>  logic_and ( OR logic_and )*
-logic_and   =>  equality ( AND equality )*
-equality    =>  comparison ( ( "==" | "!=" ) comparison )*
-comparison  =>  term ( ( ">" | ">=" | "<" | "<=" ) term )*
-term        =>  factor ( ( "-" | "+" ) factor )*
-factor      =>  unary ( ( "/" | "*" ) unary )*
-unary       =>   ( NOT | "-" ) unary |  primary
-primary     =>   INTEGER | REAL | STRING | None |
-                 True | False | "(" expression ")"
-```
+![](assets/statement.svg)  
+
+`<variable declaration> ::= "IDENTIFIER" "<-" <expression>`
+
+![](assets/variable_declaration.svg)  
+
+`<end> ::= "END" | "ENDIF" | "ENDWHILE" | "ENDFOR"`
+
+![](assets/end.svg)  
+
+`<printStatement> ::= ( "OUTPUT" | "PRINT" ) <expression>`
+
+![](assets/print.svg)  
+
+`<ifStatement> ::= "IF" <expression> ("THEN" | ":")? <declarations> ("ELSE" ":"? <declarations>)? <end>`  
+
+![](assets/if.svg)
+
+`<whileStatement> ::= "WHILE" <expression> ("THEN" | ":")? <declarations> <end> `
+
+![](assets/while.svg)
+
+`<forStatement> ::= "FOR" <variable declaration> "TO" <expression> ("STEP" <expression>)? <declarations> <end>`
+
+![](assets/for.svg)
+
+`<expression> ::= <logic_or>`
+
+![](assets/expression.svg)
+
+`<logic or> ::=  <logic and> ( OR <logic and> )*`
+
+![](assets/logic_or.svg)
+
+`<logic and> ::=  <equality ( AND <equality> )*`
+
+![](assets/logic_and.svg)
+
+`<equality> ::=  <comparison> ( ( "==" | "!=" ) <comparison> )*`
+
+![](assets/equality.svg)
+
+`<comparison> ::=  <term> ( ( ">" | ">=" | "<" | "<=" ) <term> )*`
+
+![](assets/comparison.svg)
+
+`<term> ::=  <factor> ( ( "-" | "+" ) <factor> )*`
+
+![](assets/term.svg)
+
+`<factor> ::=  <unary> ( ( "/" | "*" ) <unary> )*`
+
+![](assets/factor.svg)
+
+`<unary> ::=   ( NOT | "-" ) <unary> |  <primary>`
+
+![](assets/unary.svg)
+
+`<primary> ::=   INTEGER | REAL | STRING | None | True | False | "(" <expression> ")"`
+
+![](assets/primary.svg)
+
 
 ## User Interface
 
