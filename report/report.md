@@ -91,16 +91,12 @@ This consistency means that it would be possible to write a translator, that wou
 
 ## Justification
 
-Some people may argue that a translator for AQA code would be unnecessary and would hinder students. It is mainly used for offline on-paper examinations without a computer. So having  a tool to generate machine code would not be needed. Moreover it may confuse students to what pseudo-code is. Furthermore where a working algorithm is needed it would be sufficient to manually translate AQA pseudo-code to an existing high level language where a compiler or translator is already available.
+Some people may argue that a translator for AQA code would be unnecessary and would hinder students. It is mainly used for offline on-paper examinations without a computer. So having  a tool to generate machine code would not be needed as it  may confuse students to what the purpose of pseudo-code is. Furthermore where a working algorithm is needed it would be sufficient to manually translate AQA pseudo-code to an existing high level language where a compiler or translator is already available.
 
-However I would argue that an AQA code translator would have real world uses not just as a research project. For example using this tool,  it would give students more experience and knowledge of AQA code, which would aid reading and comprehension skills. Moreover, it would mean that manually rewriting AQA code into another high level language for example python would be unheeded. And it would avoid the chances of bugs being introduced in the rewrite and would save students a large amount of time.
+However I would argue that an AQA code translator would have real world uses not just as a research project. For example using this tool,  it would give students more experience and knowledge of AQA code, which would aid reading and comprehension skills. Moreover, it would mean that manually rewriting AQA code into another high level language for example python would be unheeded. And it would avoid the chances of bugs being introduced in the rewrite saving students a large amount of time.
 
-In this project, I am going to explore the feasibility and attempt to implement my own AQA code translator.
+It could also help teachers help teachers who could demonstrate automatically tracing an algorithm using a debugger or aid examiners in marking. However the problem is mainly begin solved for students to aid learning, so I will attempt to find a student as my primary client.
 
-
-This problem could be solved if an AQA 'pseudo-code' translator was available. This would allow students to run their code to check for correct output. Teachers could better explain pseudo-code using the same step  by step 
-
-And aid educators who could using It could also aid teachers who could demonstrate automatically tracing an algorithm using a debugger or aid examiners in marking. However the problem is mainly begin solved for students to aid learning.
 
 ## Research
 
@@ -140,9 +136,14 @@ I have chosen to involve as student named Reece in year 10, who is interested in
    
    I would like a translucent background because they look cool.
 
+## Analysis of research
+
+Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customisable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritise core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
+
+
 ## Background
 
-There are many different types of translators such as **Compilers**, **Interpreters** or **Transpilers**:
+There are three methods that could be used to convert AQA pseudo-code to machine code. Writing a **compilers**, **interpreters** or a **source-to-source compiler**. Compilers and interpreters produce a lower level representation of the source code, such as an  intermediary representation (IR) or machine code. A source-to-source compiler also known as a transpiler converts the source to a different high level language, for example converting AQA pseudo-code to python. Then if the resultant high-level language has a compiler or interpreter already available 
 
 - **Compilers** first scan/tokenize the source code producing a list of tokens which are then parsed producing an intermediary format such as byte-code. This is then converted into *machine code*. For example the *clang* compiler for *C++* converts the source code to *LLVM byte-codes* which is then converted to standalone *machine code* for each system, for example *X-86*. However *Java byte-code* is distributed standalone and each system requires a *JVM* (Java Virtual Machine) installed to do the final conversion step to *machine code*.
 
