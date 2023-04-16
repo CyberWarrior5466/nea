@@ -136,9 +136,10 @@ I have chosen to involve as student named Reece in year 10, who is interested in
    
    I would like a translucent background because they look cool.
 
+
 ## Analysis of research
 
-Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customisable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritise core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
+Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customizable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritize core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
 
 
 ## Background
@@ -147,10 +148,8 @@ There are three methods that could be used to convert AQA pseudo-code to machine
 
 **compilers**
 
+![](assets/compiler.svg)
 
-
-<!-- in more detail
- -->
 
 - **Compilers** first scan/tokenize the source code producing a list of tokens which are then parsed producing an intermediary format such as byte-code. This is then converted into *machine code*. For example the *clang* compiler for *C++* converts the source code to *LLVM byte-codes* which is then converted to standalone *machine code* for each system, for example *X-86*. However *Java byte-code* is distributed standalone and each system requires a *JVM* (Java Virtual Machine) installed to do the final conversion step to *machine code*.
 
@@ -158,10 +157,13 @@ There are three methods that could be used to convert AQA pseudo-code to machine
 
 - **Transpilers** scan and parse but the intermediary form is converted to another high level language where a compiler or interpreter already available. For example, the *Nim* programming language works by first transpiling to either *C*, *C++* or *Java-Script*.
 
-- Other notes: languages can be expressed with regular grammar. Tools like yacc and lex are known as compiler compilers as they create a compiler given regular grammar of the language to be built as input. However I will not be using these and I am interesting in learning how an interpreter works.
+- Other notes: languages can be expressed with regular grammar. Tools like yacc and lex are known as compiler compilers as they create a compiler given regular grammar of the language to be built as input. However I will not be using these and I am interesting in learning how a translator works.
 
 **Advantages and disadvantages of each approach**
 
+The advantages of a compiler is that is can optimize the resulting machine code, making the executable more efficient. However a disadvantage of machine code is that the machine code is not portable, and cannot be copied over to different systems. Furthermore,  the compilation step may take a large amount of time for complex projects, which means that errors, also will take a long time to show up. This reduces iteration speeds and can result in a worse developer experience than an interpreter where the errors show up much quicker. 
+
+Therefor
 
 
 
@@ -297,7 +299,7 @@ Looking in the table, the scanner has produced 18 separate tokens including an E
 
 The next step is parsing, where we convert the alphabet of tokens into expressions.  This will be modelled using an as an Abstract Syntax Tree (AST). This nesting of the nodes inside a tree allows us to represent the nesting or or `FOR` and `IF` blocks. As well as correctly defining the order of operations of expressions following BIDMAS.
 
-To do this the parser could use two possible methods to recognise the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
+To do this the parser could use two possible methods to recognize the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
 
 The second method is completely ignoring the indentation and only looking at the `ENDFOR` and `ENDIF` to determine the end of our `FOR` and `IF` blocks. This is simpler and less error-prone as it makes leading spaces or tab optional, but the user can still include them for readability. Therefore, this is the design i'll chose to use.
 
@@ -308,13 +310,7 @@ That aside, after parsing our AST looks like this:
 
 During this stage the parser performs syntactic analysis, mapping tokens to `WHILE` and `IF` The parser sees a `WHILE` token so it knows what follows has to be a condition. Every statement thereafter is nested inside of the `WHILE` block until the parser sees the `ENDWHILE` token, A Tree data structure to represent the order of operations. The final stage is interpreting this tree.
 
-```julia
-[OUTPUT, 1, +, 1] ─→ OUTPUT  # Keyword
-                       |
-                       2     # Numeric Literals
-```
-
-The tree is interpreted from the leaves to the root. First, the operation  `1 + 1 = 2` is carried out. The tree now only has an `OUTPUT` token and the Numeric literal `2`. After this the `OUTPUT` function is performed displaying the value `2` to the user.  The tree for this line of code has now been completely evaluated. This process is then carried out for each corresponding statement in the users source code.
+The tree is interpreted from the leaves to the root. The source doe is made up of two statements. The first is the variable declaration `i <- 1`. 
 
 ## Language syntax
 

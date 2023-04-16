@@ -21,21 +21,6 @@
 # sudo dnf install yarnpkg
 # sudo npm install -g @mermaid-js/mermaid-cli
 
-cd report/assets/diagrams
-cd report/assets/diagrams
-for i in *.mmd; do
-    ~/.yarn/bin/mmdc -c ../mermaid_config.json \
-         -i "$i" \
-         -o "../${i%.*}.svg"
-done
-
-for i in *.pikchr; do
-    fossil pikchr "$i" "../${i%.*}.svg"
-done
-
-cd ../../..
-
-
 
 
 # then manually change `==` to `<=` for syntax_tree.svg with inspect element
