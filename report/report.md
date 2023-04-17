@@ -151,7 +151,6 @@ There are three methods that could be used to convert AQA pseudo-code to machine
 **compilers**
 
 ![](assets/compiler.svg)
-![](assets/compiler.svg)
 
 
 - **Compilers** first scan/tokenize the source code producing a list of tokens which are then parsed producing an intermediary format such as byte-code. This is then converted into *machine code*. For example the *clang* compiler for *C++* converts the source code to *LLVM byte-codes* which is then converted to standalone *machine code* for each system, for example *X-86*. However *Java byte-code* is distributed standalone and each system requires a *JVM* (Java Virtual Machine) installed to do the final conversion step to *machine code*.
