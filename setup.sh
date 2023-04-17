@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # # ubuntu
-# sudo apt install hatch pandoc texlive-xetex fonts-firacode ttf-mscorefonts-installer yarnpkg fossil -y 
+# sudo apt update && sudo apt upgrade -y
+# sudo apt install hatch pandoc texlive-xetex fonts-firacode yarnpkg fossil -y 
 
 # # fedora
 # sudo dnf install 'dnf-command(copr)'
@@ -15,17 +16,12 @@
 # cd report
 # mkdir mermaid
 # cd mermaid
+
 # https://github.com/mermaid-js/mermaid-cli#install-locally
-# sudo dnf install yarnpkg
-# sudo npm install -g @mermaid-js/mermaid-cli
-# sudo dnf install yarnpkg
-# sudo npm install -g @mermaid-js/mermaid-cli
-
-
+# sudo yarn global add -g @mermaid-js/mermaid-cli
 
 # then manually change `==` to `<=` for syntax_tree.svg with inspect element
 # becuase otherwise renders as `&lt;`
-
 
 # # setup project
 # hatch shell

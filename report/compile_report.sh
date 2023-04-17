@@ -15,7 +15,7 @@ done
 cd ../../..
 
 cd report
-
+cp report.md temp_report.md
 pandoc metadata.yaml report.md \
         --output=out.pdf \
         --syntax-definition=aqa.xml \
@@ -24,5 +24,7 @@ pandoc metadata.yaml report.md \
         --number-sections
 
 cd ..
+
+python report/add_code.py > 
 
 # xdg-open report/out.pdf
