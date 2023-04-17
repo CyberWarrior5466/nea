@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language>
-<language name="AQA" section="Markup" version="7" kateversion="2.4" extensions="*.aqa" mimetype="application/json" author="Sebastian Pipping (sebastian@pipping.org)" license="GPL">
+<language name="AQA" section="Markup" version="7" kateversion="2.4"
+  extensions="*.aqa" mimetype="application/json">
   <highlighting>
     <list name="Constants">
       <item>NOT</item>
@@ -54,25 +55,30 @@
     <contexts>
 
       <context name="Normal" lineEndContext="#stay">
-        <DetectChar char="&quot;"  context="String_Value" attribute="Style_String_Value" />
-        <DetectChar char="&quot;"  context="String_Value" attribute="Style_String_Value" />
+        <DetectChar char="&quot;" context="String_Value"
+          attribute="Style_String_Value"/>
+        <DetectChar char="&quot;" context="String_Value"
+          attribute="Style_String_Value"/>
 
         <DetectSpaces context="#stay" attribute="Style_Normal" />
 
-        <keyword String="Constants"    context="#stay" attribute="Style_Keyword" />
-        <keyword String="Built_In"     context="#stay" attribute="Style_Function" />
-        <keyword String="Control_Flow" context="#stay" attribute="Style_Control_Flow" />
-        <keyword String="Data_Types"   context="#stay" attribute="Style_String_Key" />
-        <keyword String="Operators"    context="#stay" attribute="Style_Operator" />
-        <DetectChar char="&lt;&lt;"        context="#stay" attribute="Style_Operator" />
+        <keyword String="Constants"    context="#stay" attribute="Style_Keyword"/>
+        <keyword String="Built_In"     context="#stay" attribute="Style_Function"/>
+        <keyword String="Control_Flow" context="#stay" attribute="Style_Control_Flow"/>
+        <keyword String="Data_Types"   context="#stay" attribute="Style_String_Key"/>
+        <keyword String="Operators"    context="#stay" attribute="Style_Operator"/>
+        <DetectChar char="&lt;&lt;"    context="#stay" attribute="Style_Operator"/>
 
-        <RegExpr String="-?[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?" context="#stay" attribute="Style_Float" />
-        <RegExpr String="-?[0-9]+(?:[eE][+-]?[0-9]+)?" context="#stay" attribute="Style_Decimal" />
+        <RegExpr String="-?[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?" context="#stay"
+          attribute="Style_Float" />
+        <RegExpr String="-?[0-9]+(?:[eE][+-]?[0-9]+)?" context="#stay"
+          attribute="Style_Decimal"/>
       </context>
 
       <context name="String_Value" lineEndContext="#pop" attribute="Style_String_Value">
         <DetectChar char="&quot;"  context="#pop" attribute="Style_String_Value" />
-        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-f]{4})" context="#stay" attribute="Style_String_Value_Char" />
+        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-f]{4})" context="#stay"
+          attribute="Style_String_Value_Char" />
       </context>
 
       <!-- <context name="Comment" lineEndContext="#pop" attribute="Style_Comment">
@@ -106,4 +112,3 @@
   </general>
 
 </language>
-

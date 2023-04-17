@@ -1,6 +1,7 @@
 from AQAInterpreter.interpreter import *
 from AQAInterpreter import errors
 
+
 @dataclass
 class Parser:
     tokens: list[Token]
@@ -60,9 +61,7 @@ class Parser:
             return Literal(self._previous().literal)
         elif self._match_token(NUMBER):
             if self._previous().literal.isdecimal():
-                return Literal(
-                    int(self._previous().literal)
-                )
+                return Literal(int(self._previous().literal))
             else:
                 return Literal(float(self._previous().literal))
         elif self._match_token(LEFT_PAREN):
@@ -232,7 +231,9 @@ class Parser:
 
         return (If(condition, then_branch, else_branch),)
 
-    def _statement_not_var(self) -> tuple[Print] | tuple[While] | tuple[Var, While] | tuple[If] | None:
+    def _statement_not_var(
+        self,
+    ) -> tuple[Print] | tuple[While] | tuple[Var, While] | tuple[If] | None:
         while True:
             if self._match_token(PRINT):
                 return self._print_statement()
@@ -255,7 +256,7 @@ class Parser:
 
     def _statement(self):
         try:
-            for token in self.tokens[self._current:]:
+            for token in self.tokens[self._current :]:
                 if token.type in {PRINT, WHILE, FOR, IF, NEWLINE}:
                     return self._statement_not_var()
                 elif token.type == ASSIGNMENT:
@@ -272,4 +273,3 @@ class Parser:
             if stmt is not None:
                 statements.extend(stmt)
         return statements
-

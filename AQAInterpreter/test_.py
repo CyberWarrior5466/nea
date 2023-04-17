@@ -108,18 +108,15 @@ def test_for_loops():
         == "1\n1\n\n1\n2\n\n2\n1\n\n2\n2\n\n"
     )
 
-
-# FOR a <- 1 TO 12
-#     FOR b <- 1 TO 12
-#         OUTPUT a + " × " + b + " = " + (a * b)
-#     END
-# END
-
-
-# for i <- 1 to 5
-#     num <- 1
-#     for j <- 1 to (i)
-#         num <- num * -1
-#     endfor
-#     output i * num
-# endfor
+    assert (
+        run(
+            "FOR a <- 1 TO 2",
+            "   FOR b <- 1 TO 2",
+            "       OUTPUT a",
+            "       OUTPUT b",
+            "       OUTPUT ''",
+            "   ENDFOR",
+            "ENDFOR",
+        )
+        == "1\n1\n\n1\n2\n\n2\n1\n\n2\n2\n\n"
+    )

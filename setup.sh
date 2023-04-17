@@ -2,7 +2,7 @@
 
 # # ubuntu
 # sudo apt update && sudo apt upgrade -y
-# sudo apt install hatch pandoc texlive-xetex fonts-firacode yarnpkg fossil -y
+# sudo apt install hatch pandoc texlive-xetex fonts-firacode yarnpkg fossil -y 
 
 # # fedora
 # sudo dnf install 'dnf-command(copr)'
@@ -23,12 +23,15 @@
 # then manually change `==` to `<=` for syntax_tree.svg with inspect element
 # becuase otherwise renders as `&lt;`
 
+# # auto generate packages.mmd and classes.md
+# pyreverse ./AQAInterpreter/ -o mmd
+
 # # setup project
 # hatch shell
 
 # # publish to pypi
 # hatch build
-# hatch publish -r
+# hatch publish -r 
 #   # go on https://pypi.org
 #   # get a token https://pypi.org/help/#apitoke
 #   # copy paste the username and token in this command

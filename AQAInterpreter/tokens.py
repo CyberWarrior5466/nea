@@ -1,7 +1,10 @@
 from dataclasses import dataclass, field
 
+
 @dataclass
 class Token:
+    """token struct emitted by scanner"""
+
     type: str
     literal: str = field(repr=False, default="")
     lexeme: str = ""
@@ -22,16 +25,16 @@ NEWLINE = "NEWLINE"
 NOT = "NOT"
 NOT_EQUAL = "NOT_EQUAL"
 EQUAL = "EQUAL"
-ASSIGNMENT = "ASSIGNMENT" 
+ASSIGNMENT = "ASSIGNMENT"
 GREATER = "GREATER"
 GREATER_EQUAL = "GREATER_EQUAL"
 LESS = "LESS"
-LESS_EQUAL = "LESS_EQUAL" 
+LESS_EQUAL = "LESS_EQUAL"
 
 # Literals
 IDENTIFIER = "IDENTIFIER"
 STRING = "STRING"
-NUMBER = "NUMBER" 
+NUMBER = "NUMBER"
 
 # Keywords
 TRUE = "TRUE"
@@ -41,12 +44,12 @@ AND = "AND"
 OR = "OR"
 IF = "IF"
 THEN = "THEN"
-ELSE = "ELSE" 
+ELSE = "ELSE"
 WHILE = "WHILE"
 DO = "DO"
 END = "END"
 FOR = "FOR"
-TO = "TO" 
+TO = "TO"
 STEP = "STEP"
 PRINT = "PRINT"
 

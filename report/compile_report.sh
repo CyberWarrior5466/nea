@@ -14,17 +14,19 @@ done
 
 cd ../../..
 
+cp report/report.md report/temp_report.md
+python report/add_code.py report/temp_report.md
+
 cd report
-cp report.md temp_report.md
-pandoc metadata.yaml report.md \
+pandoc metadata.yaml temp_report.md \
         --output=out.pdf \
         --syntax-definition=aqa.xml \
         --pdf-engine=xelatex \
         --table-of-contents \
         --number-sections
 
+
+rm temp_report.md
 cd ..
 
-python report/add_code.py > 
-
-# xdg-open report/out.pdf
+xdg-open report/out.pdf

@@ -1,55 +1,5 @@
 \pagebreak
 
-**TODO:**
-
-- [x] Analysis
-  - [x] Produce a clear statement that describes the problem area and specific problem that is being solved or investigated.
-  - [x] Provide background in sufficient detail for a third party to understand the problem being solved
-  - [x] State for whom the problem is being solved
-  - [x] Outline how you researched the problem
-  - [x] Requirements determined based on the needs stated by the intended users of the system
-  - [x] Produce a numbered list of measurable, specific objectives
-  - [x] Report any modelling of the problem that will inform the design stage
-- [x] Design
-  - [x] A high-level overview of how different parts of the system interact
-  - [x] User interface
-  - [x] BNF notation
-- [ ] Technical Solution
-  - [ ] Code
-  - [ ] Completeness
-  - [ ] Techniques
-- [ ] Evaluation
-  - [ ] Consider and assess how well the outcome meets its requirements
-  - [ ] Obtain independent feedback on how well the outcome meets its requirements
-  - [ ] Discuss the independent feedback
-  - [ ] Consider and discuss how the outcome could be realistically improved if you were to revisit the problem
-
-**Other Todos**
- - [ ] monaco editor syntax highlighting, lsp stuff
-- [ ] more detail in report to match reading speed
-- [ ] make everything a class instead of a function
-- [ ] show tokens list and ast in tests
-- [ ] automatically add code section in nea
-
-- [ ] mermaid diagrams
-   - [ ] interpreter/translators (source) -> (intermediary code) -> (object code) -> (machine code) flowchart L-R
-   - [ ] class diagrams
-   - [ ] syntax diagrams
-
-- [ ] language features
-   - [ ] add arrays
-   - [ ] minor changes to nea, adding For() class and in parser make it so variable() are based on if there is a VAR token and not by looking ahead for `->`.
-   - [ ] add functions following book
-  - [ ] constants
-  - [ ] repeat loop
-  - [ ] div and mod functions
-
-**First**
-- [ ] finish match statements refactor then push to PyPi then update site
-
-
-\pagebreak
-
 # Analysis
 
 ## Background
@@ -58,7 +8,10 @@ Pseudo-code is a series of code like statements used to describe an existing alg
 
 Pseudo-code is 'problem-oriented', the idea being you first write your solution in pseudo-code, and then when the time comes to program a solution,  your brain is free to think about the specific implementation details of the chosen high-level language. Therefore, the purpose of writing pseudo-code is to prototype and plan.
 
-However some people find writing pseudo-code may be tedious or boring, and would prefer going straight into an  interpreted weakly-typed scripting languages such as python or java-script that trade robustness for rapid iteration speeds, enabling faster prototyping. The outp
+However some people find writing pseudo-code may be tedious or boring, and would prefer going straight into an  interpreted weakly-typed scripting languages such as python or java-script that trade robustness for rapid iteration speeds, enabling faster prototyping.
+
+
+**the imprecision of natural language**
 
 Pseudo-code can also have ambiguity. For example some languages like lua start array indexing at `1` so `array[1]` returns the first element `"a"`.
 ```lua
@@ -100,7 +53,7 @@ It could also help teachers help teachers who could demonstrate automatically tr
 
 ## Research
 
-I have chosen to involve as student named Reece in year 10, who is interested in testing my project. He is currently studying GCSE computer science and intents to take the A level. A so, he will be my primary end user. To research this problem I have chosen to produce a Questionnaire to gauge his needs. The responses were collected in person and have been summarised.
+I have chosen to involve as student named Reece in year 10, who is interested in testing my project. He is currently studying GCSE computer science and intents to take the A level. A so, he will be my primary end user. To research this problem I have chosen to produce a Questionnaire to gauge his needs. The responses were collected in person and have been summarized.
 
 1. **What is your opinion on AQA 'pseudo-code'?**
    
@@ -197,7 +150,7 @@ Both programs are website, making it convenient as the user does not have to dow
 
 Another disadvantage is that both solutions are limited to the IB computer science syllabus and not AQA's. Focusing my project on AQA's 'pseudo-code' will make my project unique. My solution should also be open source like the first example allowing the user to view the source code to better understand how their code was interpreted.
 
-**Project Requirements**
+## Project Requirements
 
 1. Create a tree-walk interpreter for all the features in AQA's 'pseudo-code' command set including but not limited to: 
    
@@ -219,12 +172,12 @@ Another disadvantage is that both solutions are limited to the IB computer scien
    
    | Traditional | Unicode |
    | :---------: | :-----: |
-   |      *      |    ×    |
-   |      /      |    ÷    |
-   |     !=      |    ≠    |
-   |     <=      |    ≤    |
-   |     >=      |    ≥    |
-   |     <-      |      `←`  |
+   |      *      |   ×     |
+   |      /      |   ÷     |
+   |     !=      |  `!=`   |
+   |     <=      |  `<=`   |
+   |     >=      |  `>=`   |
+   |     <-      |  `←`    |
 
 4. Robust error handling, informing the user of what line syntax errors have occurred.
 
@@ -236,7 +189,7 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 ## Language Choice
 
-To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming which is the main language feature I will use to structure my code. I also intend to use modules and split my code across multiple files to separate concerns.
+To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* (ISBN 9780990582939) by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming which is the main language feature I will use to structure my code. I also intend to use modules and split my code across multiple files to separate concerns.
 
 ## High level system overview
 
@@ -434,54 +387,570 @@ $ python aqainterpreter.py --cmd "OUTPUT 'Hi!'"
 Hi!
 ```
 
-Additionally, If I create an online IDE I will need to create a web site using *html* and *css*. The client side webpage will need to communicate to the server over the *HTTP* protocol. Which sends the users source code to the server. The server will need to interpret the code by running the `aqainterpreter.py` program, and send the output back to the client.
-
 # Technical Solution
 
-## **Project structure**
+## project structure
 
-<!-- tree -I playground -I report -I input.txt -I out.pdf -v -->
+\TECHNICAL_SOLUTION
 
+## syntax highlighting
+
+Another one my clients needs was to produce syntax highlighting for the vscode editor. Due to time limitations, I instead prioritised the syntax highlighting of the code snippets in this document. This document was produced in pandoc which accepts KDE-style XML syntax definition files so I wrote one AQA pseudo-code. Unfortunately I couldn't get comments to work which is why AQA pseudo-code comments appear black in this documents whereas they appear green in python snippets. The XML file below contains regular expressions and is a lot more of a declarative style compared to the tokenizer and parse I wrote in python. In fact its only 114 lines compared to my scanner which is 203.
+
+**aqa.xml**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language>
+<language name="AQA" section="Markup" version="7" kateversion="2.4"
+  extensions="*.aqa" mimetype="application/json">
+  <highlighting>
+    <list name="Constants">
+      <item>NOT</item>
+      <item>TRUE</item>
+      <item>FALSE</item>
+      <item>NONE</item>
+      <item>AND</item>
+      <item>OR</item>
+      <item>THEN</item>
+      <item>WHILE</item>
+      <item>DO</item>
+      <item>END</item>
+      <item>ENDIF</item>
+      <item>ENDWHILE</item>
+      <item>ENDFOR</item>
+      <item>FOR</item>
+      <item>TO</item>
+      <item>STEP</item>
+      <item>IDENTIFIER</item>
+      <item>EOF</item>
+    </list>
+    <list name="Built_In">
+      <item>OUTPUT</item>
+      <item>PRINT</item>
+    </list>
+    <list name="Control_Flow">
+      <item>IF</item>
+      <item>ELSE</item>
+    </list>
+    <list name="Data_Types">
+      <item>INTEGER</item>
+      <item>REAL</item>
+      <item>STRING</item>
+    </list>
+    <list name="Operators">
+      <item> +  </item>
+      <item> -  </item>
+      <item> *  </item>
+      <item> ×  </item>
+      <item> /  </item>
+      <item> ÷  </item>
+      <item> =  </item>
+      <item> >  </item>
+      <item> ≥  </item>
+      <item> >= </item>
+      <item> ≤  </item>
+      <item> ≠  </item>
+      <item> != </item>
+    </list>
+
+    <contexts>
+
+      <context name="Normal" lineEndContext="#stay">
+        <DetectChar char="&quot;" context="String_Value"
+          attribute="Style_String_Value"/>
+        <DetectChar char="&quot;" context="String_Value"
+          attribute="Style_String_Value"/>
+
+        <DetectSpaces context="#stay" attribute="Style_Normal" />
+
+        <keyword String="Constants"    context="#stay" attribute="Style_Keyword"/>
+        <keyword String="Built_In"     context="#stay" attribute="Style_Function"/>
+        <keyword String="Control_Flow" context="#stay" attribute="Style_Control_Flow"/>
+        <keyword String="Data_Types"   context="#stay" attribute="Style_String_Key"/>
+        <keyword String="Operators"    context="#stay" attribute="Style_Operator"/>
+        <DetectChar char="&lt;&lt;"    context="#stay" attribute="Style_Operator"/>
+
+        <RegExpr String="-?[0-9]+\.[0-9]+(?:[eE][+-]?[0-9]+)?" context="#stay"
+          attribute="Style_Float" />
+        <RegExpr String="-?[0-9]+(?:[eE][+-]?[0-9]+)?" context="#stay"
+          attribute="Style_Decimal"/>
+      </context>
+
+      <context name="String_Value" lineEndContext="#pop" attribute="Style_String_Value">
+        <DetectChar char="&quot;"  context="#pop" attribute="Style_String_Value" />
+        <RegExpr String="\\(?:[&quot;\\/bfnrt]|u[0-9a-fA-f]{4})" context="#stay"
+          attribute="Style_String_Value_Char" />
+      </context>
+
+      <!-- <context name="Comment" lineEndContext="#pop" attribute="Style_Comment">
+        <RegExpr String="." attribute="Style_Comment">
+      </context> -->
+    </contexts>
+
+    <itemDatas>
+      <itemData name="Style_Normal"             defStyleNum="dsNormal" />
+      <itemData name="Style_Comment"            defStyleNum="dsComment" />
+
+      <itemData name="Style_Decimal"            defStyleNum="dsDecVal" />
+      <itemData name="Style_Float"              defStyleNum="dsFloat" />
+      <itemData name="Style_String_Key"         defStyleNum="dsDataType" />
+      <itemData name="Style_String_Value"       defStyleNum="dsString" />
+      <itemData name="Style_Control_Flow"       defStyleNum="dsControlFlow" />
+      <itemData name="Style_Function"           defStyleNum="dsFunction" />
+      <itemData name="Style_Operator"           defStyleNum="dsOperator" />
+      <itemData name="Style_String_Value_Char"  defStyleNum="dsChar" />
+
+      <itemData name="Style_Keyword"            defStyleNum="dsKeyword" />
+
+    </itemDatas>
+  </highlighting>
+
+  <general>
+    <comments>
+      <comment name="singleLine" start="#"/>
+    </comments>
+    <keywords casesensitive="0"/>
+  </general>
+
+</language>
 ```
-.
-├── AQAInterpreter
-|   ├── __about__.py
-|   ├── __init__.py
-|   ├── environment.py
-|   ├── errors.py
-|   ├── interpreter.py
-|   ├── main.py
-|   ├── parser.py
-|   ├── scanner.py
-|   ├── tests.py
-|   └── tokens.py
-├── .gitignore
-├── LICENSE
-└── pyproject.toml
+
+Then to load this file into pandoc, the document generator used to create this document I use the following command.
+
+```bash
+pandoc metadata.yaml report.md \
+        --output=out.pdf \
+        --syntax-definition=aqa.xml \
+        --pdf-engine=xelatex \
+        --table-of-contents \
+        --number-sections
 ```
 
-## **environment.py**
+`metedata.yaml` describes extra information such as the headers and footers used in this document. And `aqa.xml` is the KDE style XML file previously.
 
+# Testing
+
+To perform quality assurance on my project, I created several unit tests inside of the `test_.py` file. These tests where run using pythons `pytest` library. The `pytest` library automatically runs all functions and files prefixed with `test_` hence the strange name `test_.py`. Here is a more detailed snippet of all the code samples that where used as testing. However as the set of string matched by a context free grammar is infinite, it is impossible to test every pseudo-code input that can be run by my program. Therefore my testing covers the main language features I managed to implement and a couple extra pseudo-code programs that make use of multiple language features at once.
+
+## testing expressions
+
+```aqa
+OUTPUT 1 + 1  # 2
+OUTPUT 1 - 1  # 0
+OUTPUT -1     # -1
+OUTPUT 2 * 1  # 2
+OUTPUT 2 × 1  # 2
+OUTPUT 2 / 1  # 2.0
+OUTPUT 2 ÷ 1  # 2.0
+
+OUTPUT "hi" + "÷"  # "hi÷"
+OUTPUT "a" * 3     # "aaa"
+
+OUTPUT 1 > 0    # True
+OUTPUT 1 ≥ 0    # True
+OUTPUT 1 >= 1   # True
+OUTPUT 1 < 0    # False
+OUTPUT 1 ≤ 0    # False
+OUTPUT 1 <= 1   # True
+```
+
+## testing comments
+```aqa
+# a comments
+```
+
+## testing assignment
+```aqa
+a <- 0
+a <- a + 1
+OUTPUT a   # 1
+```
+
+## testing assignment
+```aqa
+IF True
+   OUTPUT "yes"
+ENDIF  # yes
+
+IF False
+   OUTPUT "yes"
+ENDIF  # "yes"
+
+IF True
+   IF True
+      OUTPUT "yes"
+   ENDIF
+ENDIF  # "yes"
+```
+
+## testing while loops
+```aqa
+a <- 1
+WHILE a <= 3 DO
+   OUTPUT a
+   a <- a + 1
+ENDWHILE  # 1, 2, 3
+
+# fibonacci sequence
+a <- 1
+b <- 1
+c <- 2
+count <- 0
+WHILE count != 2
+    OUTPUT a
+    a <- b + c
+    OUTPUT b
+    b <- c + a
+    OUTPUT c
+    c <- a + b
+    count <- count + 1
+ENDWHILE  # 1, 1, 2, 3, 5, 8 
+```
+
+## testing for loops
+```aqa
+FOR a <- 1 TO 1
+   OUTPUT a
+ENDFOR # 1
+
+FOR a <- 1 TO 1 STEP 1
+   OUTPUT a
+ENDFOR # 1
+
+FOR a <- 1 TO 1 STEP -1
+   OUTPUT a
+ENDFOR # 1
+
+FOR a <- 1 TO 3
+   OUTPUT a
+ENDFOR # 1, 2, 3
+
+FOR a <- 1 TO 3 STEP 1
+   OUTPUT a
+ENDFOR # 1, 2, 3
+
+FOR a <- 3 TO 1
+   OUTPUT a
+ENDFOR # 3, 2, 1
+
+FOR a <- 3 TO 1 STEP -1
+   OUTPUT a
+ENDFOR # 3, 2, 1
+
+FOR a <- 1 TO 5 STEP 2
+   OUTPUT a
+ENDFOR # 1, 3, 5
+
+FOR a <- 5 TO 1 STEP -2
+   OUTPUT a
+ENDFOR # 5, 3, 1
+
+FOR a <- 1 TO 2
+   FOR b <- 1 TO 2
+       OUTPUT a
+       OUTPUT b
+       OUTPUT ''
+   ENDFOR
+ENDFOR  # 1,1  1,2  2,1  2,2
+
+FOR a <- 1 TO 12
+    FOR b <- 1 TO 12
+        OUTPUT a + " × " + b + " = " + (a * b)
+    END
+END
+# 1 × 1 = 1
+# 1 × 2 = 2
+# 1 × 3 = 3
+# 1 × 4 = 4
+# 1 × 5 = 5
+# 1 × 6 = 6
+# ... all the times tables up to 12 × 12
+```
+
+## Tokens and AST
+
+Here are the tokens and the ast generated by my program for a couple of the tests as showing them all would be too long.
+
+### program 1
+
+```aqa
+OUTPUT 1 + 2 * 3
+```
+
+**tokens**
+```python
+[Token(type='PRINT', lexeme='OUTPUT', line=1),
+ Token(type='NUMBER', lexeme='1', line=1),
+ Token(type='ADD', lexeme='', line=1),
+ Token(type='NUMBER', lexeme='2', line=1),
+ Token(type='TIMES', lexeme='', line=1),
+ Token(type='NUMBER', lexeme='3', line=1),
+ Token(type='EOF', lexeme='', line=2)]
+```
+
+**ast**
+```python
+[
+    Print(
+        expression=Binary(
+            left=Literal(value=1),
+            operator=Token(type="ADD", lexeme="", line=1),
+            right=Binary(
+                left=Literal(value=2),
+                operator=Token(type="TIMES", lexeme="", line=1),
+                right=Literal(value=3),
+            ),
+        )
+    )
+]
+```
+
+### program 2
+
+```aqa
+IF True
+   IF True
+      OUTPUT "yes"
+   ENDIF
+ENDIF
+```
+
+**tokens**
+```python
+[Token(type='IF', lexeme='IF', line=1),
+ Token(type='TRUE', lexeme='True', line=1),
+ Token(type='IF', lexeme='IF', line=2),
+ Token(type='TRUE', lexeme='True', line=2),
+ Token(type='PRINT', lexeme='OUTPUT', line=3),
+ Token(type='STRING', lexeme='"yes"', line=3),
+ Token(type='END', lexeme='ENDIF', line=4),
+ Token(type='END', lexeme='ENDIF', line=5),
+ Token(type='EOF', lexeme='', line=6)]
+```
+
+**ast**
+```python
+[
+    If(
+        condition=Literal(value=True),
+        then_branch=[
+            If(
+                condition=Literal(value=True),
+                then_branch=[Print(expression=Literal(value="yes"))],
+                else_branch=[],
+            )
+        ],
+        else_branch=[],
+    )
+]
+```
+
+### program 3
+
+```aqa
+FOR a <- 1 TO 12
+    FOR b <- 1 TO 12
+        OUTPUT a + " × " + b + " = " + (a * b)
+    END
+END
+```
+
+**tokens**
+```python
+[Token(type='FOR', lexeme='FOR', line=1),
+ Token(type='IDENTIFIER', lexeme='a', line=1),
+ Token(type='ASSIGNMENT', lexeme='', line=1),
+ Token(type='NUMBER', lexeme='1', line=1),
+ Token(type='TO', lexeme='TO', line=1),
+ Token(type='NUMBER', lexeme='12', line=1),
+ Token(type='FOR', lexeme='FOR', line=2),
+ Token(type='IDENTIFIER', lexeme='b', line=2),
+ Token(type='ASSIGNMENT', lexeme='', line=2),
+ Token(type='NUMBER', lexeme='1', line=2),
+ Token(type='TO', lexeme='TO', line=2),
+ Token(type='NUMBER', lexeme='12', line=2),
+ Token(type='PRINT', lexeme='OUTPUT', line=3),
+ Token(type='IDENTIFIER', lexeme='a', line=3),
+ Token(type='ADD', lexeme='', line=3),
+ Token(type='STRING', lexeme='" × "', line=3),
+ Token(type='ADD', lexeme='', line=3),
+ Token(type='IDENTIFIER', lexeme='b', line=3),
+ Token(type='ADD', lexeme='', line=3),
+ Token(type='STRING', lexeme='" = "', line=3),
+ Token(type='ADD', lexeme='', line=3),
+ Token(type='LEFT_PAREN', lexeme='', line=3),
+ Token(type='IDENTIFIER', lexeme='a', line=3),
+ Token(type='TIMES', lexeme='', line=3),
+ Token(type='IDENTIFIER', lexeme='b', line=3),
+ Token(type='RIGHT_PAREN', lexeme='', line=3),
+ Token(type='END', lexeme='END', line=4),
+ Token(type='END', lexeme='END', line=5),
+ Token(type='EOF', lexeme='', line=6)]
+```
+
+**ast (wow this is long)**
+```python
+[
+    Var(
+        name=Token(type="IDENTIFIER", lexeme="a", line=1), initialiser=Literal(value=1)
+    ),
+    While(
+        condition=Binary(
+            left=Variable(name=Token(type="IDENTIFIER", lexeme="a", line=1)),
+            operator=Token(type="LESS_EQUAL", lexeme="", line=0),
+            right=Literal(value=12),
+        ),
+        body=[
+            Var(
+                name=Token(type="IDENTIFIER", lexeme="b", line=2),
+                initialiser=Literal(value=1),
+            ),
+            While(
+                condition=Binary(
+                    left=Variable(name=Token(type="IDENTIFIER", lexeme="b", line=2)),
+                    operator=Token(type="LESS_EQUAL", lexeme="", line=0),
+                    right=Literal(value=12),
+                ),
+                body=[
+                    Print(
+                        expression=Binary(
+                            left=Binary(
+                                left=Binary(
+                                    left=Binary(
+                                        left=Variable(
+                                            name=Token(
+                                                type="IDENTIFIER", lexeme="a", line=3
+                                            )
+                                        ),
+                                        operator=Token(type="ADD", lexeme="", line=3),
+                                        right=Literal(value=" × "),
+                                    ),
+                                    operator=Token(type="ADD", lexeme="", line=3),
+                                    right=Variable(
+                                        name=Token(
+                                            type="IDENTIFIER", lexeme="b", line=3
+                                        )
+                                    ),
+                                ),
+                                operator=Token(type="ADD", lexeme="", line=3),
+                                right=Literal(value=" = "),
+                            ),
+                            operator=Token(type="ADD", lexeme="", line=3),
+                            right=Grouping(
+                                expression=Binary(
+                                    left=Variable(
+                                        name=Token(
+                                            type="IDENTIFIER", lexeme="a", line=3
+                                        )
+                                    ),
+                                    operator=Token(type="TIMES", lexeme="", line=3),
+                                    right=Variable(
+                                        name=Token(
+                                            type="IDENTIFIER", lexeme="b", line=3
+                                        )
+                                    ),
+                                )
+                            ),
+                        )
+                    ),
+                    Var(
+                        name=Token(type="IDENTIFIER", lexeme="b", line=2),
+                        initialiser=Binary(
+                            left=Variable(
+                                name=Token(type="IDENTIFIER", lexeme="b", line=2)
+                            ),
+                            operator=Token(type="ADD", lexeme="", line=0),
+                            right=Literal(value=1),
+                        ),
+                    ),
+                ],
+            ),
+            Var(
+                name=Token(type="IDENTIFIER", lexeme="a", line=1),
+                initialiser=Binary(
+                    left=Variable(name=Token(type="IDENTIFIER", lexeme="a", line=1)),
+                    operator=Token(type="ADD", lexeme="", line=0),
+                    right=Literal(value=1),
+                ),
+            ),
+        ],
+    ),
+]
+```
+
+
+# Evaluation
+
+My program achieves a large number of my project requirements so I consider it a success. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. I also didn't implement any of the functions including the call stack but i did have all the data types. Another thing that is missing where constants and arrays.
+Since I din't implement arrays, my solution wasn't turning complete, but it did feature control flow so at least we where half way there.
+
+My project was expressive enough to write some novel programs such a fibonacci sequence and display the times tables. And I successfully implemented a scanner, parser and a tree-walk interpreter.
+
+Objective two and three where met fully. My program has case insensitive keywords due to the `.lower()` in `self.source[self._start : self._current].lower()` in `scanner.py` on line 160. The capitalisation of all the keywords in this documents was purely stylistic. Objective three was also fully met, due to more effort in `scanner.py`. Infant there aren't any other languages that support special symbols like `<-`, `<=`, `!=`, `÷` unless you use a special font with ligatures. The support of these symbols means my projects is more suitable for the source code to be printed.
+
+Objective 4 was also met. My program shows helpful error messages. For example if the user entered:
+
+```aqa
+IF True
+    OUTPUT "HI"
+```
+
+Then due to the logic in line 218-9 (and 226) in `parser.py`:
 
 ```python
-from AQAInterpreter.errors import *
-from dataclasses import dataclass, field
-
-
-@dataclass
-class Environment:
-    values: dict[str, object] = field(default_factory=dict)
-
-    def get(self, name: Token) -> object:
-        if name.lexeme in self.values:
-            return self.values[name.lexeme]
-
-        raise AQARuntimeError(name, f"undefined variable '{name.lexeme}'")
-
-    def define(self, name: str, value: object) -> None:
-        self.values[name] = value 
+if self._peek().type == EOF:
+    raise self._error(self._peek(), "Expected END after IF statement")`
 ```
 
-## Testing
+The user would see the message `[line 3] Error  at '': Expected END after IF statement`. This message clearly informs to the programmer that he forgot and `END` statement and the end of his `IF` statement and shows the line the parser encountered this error. This is triggered because the parser ran in to the `EOF` (End Of File) token whilst the `IF` had not been closed. Due to this example and others in `parser.py` I would conclude that my program does indeed feature robust error handling and useful error messages.
 
-## Evaluation
+Objective five was not quite met. I did have a prototype of an online IDE that would allow people to run pseudo-code right in their browser without having to have a python environment setup. Below is a screenshot as well as the HTML. However I didn't have time to hook it to my AQA interpreter or deploy it live on the web.
+
+If the code editor looks familiar it is because it uses the monaco editor which also powers vscode for my client.
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>browser-amd-editor</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+</head>
+
+<body>
+	<h2>Monaco Editor Sample</h2>
+	<button onclick="run()">click me</button>
+	<div id="container" style="width: 800px; height: 600px; border: 1px solid grey">
+    </div>
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js'>
+    </script>
+
+	<script>
+		// fetch(document.URL + "api/run")
+
+		console.log(document.URL);
+		require.config({paths:{vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs'}});
+
+		require(['vs/editor/editor.main'], function () {
+			window.editor = monaco.editor.create(
+                document.getElementById('container'), {
+				value: 'print("Hi")',
+				language: 'python'
+			});
+		});
+
+		function run() {
+			console.log(window.editor.getValue());
+		}
+    </script>
+</body>
+
+</html>
+```
+
+![](assets/screenshot3.png)
+
+
+Objective 6 was also met as you can have no doubt seen the syntax highlighting for AQA code snippets many times in this document. The code for which is also explained in the technical solution.
+

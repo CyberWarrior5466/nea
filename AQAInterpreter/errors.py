@@ -2,10 +2,12 @@ from AQAInterpreter.tokens import *
 from dataclasses import dataclass
 import sys
 
+
 @dataclass
 class AQARuntimeError(RuntimeError):
     token: Token
     message: str
+
 
 class AQAParseError(RuntimeError):
     token: Token

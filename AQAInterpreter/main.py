@@ -1,10 +1,15 @@
-from AQAInterpreter.scanner import Scanner
-from AQAInterpreter.parser import Parser
+"""main program for AQAInterpreter module"""
+
 from pprint import pprint
 import click
 
+from AQAInterpreter.scanner import Scanner
+from AQAInterpreter.parser import Parser
+
 
 def run(source: str, debug: bool = False) -> str:
+    """evaluates `source` returning a string"""
+
     source += "\n"
     if debug:
         print(source)
@@ -30,6 +35,9 @@ def run(source: str, debug: bool = False) -> str:
 @click.option("-c", "--cmd")
 @click.option("-d", "--debug", is_flag=True, default=False, help="Show tokens and ast")
 def main(filename: str, cmd: str, debug: bool):
+    """source code can be read in from a file or a string
+    if `debug` is True, tokens and ast are also printed"""
+
     if filename and cmd:
         raise click.UsageError("cannot specify both filename and command")
 

@@ -195,6 +195,7 @@ class Scanner:
                 errors.error(self._line, "Unexpected character")
 
     def scan_tokens(self) -> list[Token]:
+        """takes in `source` and performs lexical analysis emitting tokens"""
         while self._current < len(self.source):
             self._start = self._current
             self._scan_token()

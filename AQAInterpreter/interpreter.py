@@ -1,10 +1,10 @@
 from AQAInterpreter.tokens import *
 from AQAInterpreter.scanner import *
 from AQAInterpreter.errors import *
-from AQAInterpreter.environment import Environment
+from AQAInterpreter.environment import SymbolTable
 from abc import abstractmethod
 
-environment = Environment()
+environment = SymbolTable()
 
 
 class Expr:
