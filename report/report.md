@@ -920,7 +920,7 @@ Objective five was not quite met. I did have a prototype of an online IDE that w
 
 If the code editor looks familiar it is because it uses the monaco editor which also powers vscode for my client.
 
-``` {.html .numberLines}
+``` html
 <!DOCTYPE html>
 <html>
 
@@ -935,14 +935,22 @@ If the code editor looks familiar it is because it uses the monaco editor which 
 	<div id="container" style="width: 800px; height: 600px; border: 1px solid grey">
     </div>
 
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js'>
+	<script
+    src=
+    'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js'
+    >
     </script>
 
 	<script>
 		// fetch(document.URL + "api/run")
 
 		console.log(document.URL);
-		require.config({paths:{vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs'}});
+		require.config(
+            {
+            paths:{
+             vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs'
+            }}
+        );
 
 		require(['vs/editor/editor.main'], function () {
 			window.editor = monaco.editor.create(
