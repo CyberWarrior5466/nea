@@ -5,8 +5,8 @@ import subprocess
 import sys
 
 lst = (
-    (".gitignore", ""),
-    ("LICENSE", ""),
+    (".gitignore", "text"),
+    ("LICENSE", "text"),
     ("pyproject.toml", "toml"),
     ("AQAInterpreter/__init__.py", "python"),
     ("AQAInterpreter/main.py", "python"),
@@ -32,12 +32,14 @@ out = (
     + "\n```"
 )
 
+
 TEMPLATE = """
 ## {}
-```{}
+``` {{.{} .numberLines}}
 {}
 ```
 """
+
 
 for file, file_ext in lst:
     out += TEMPLATE.format(file, file_ext, open(file, encoding="utf-8").read())
@@ -48,5 +50,5 @@ with open(sys.argv[1], encoding="utf-8") as infp:
 
 content = content.replace("\\TECHNICAL_SOLUTION", out)
 
-with open(sys.argv[1], "w", encoding="utf-8") as outfp:
-    outfp.write(content)
+with open(sys.argv[1], "w", encoding="utf-8") as outfile:
+    outfile.write(content)

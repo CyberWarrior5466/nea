@@ -14,15 +14,15 @@ However some people find writing pseudo-code may be tedious or boring, and would
 **the imprecision of natural language**
 
 Pseudo-code can also have ambiguity. For example some languages like lua start array indexing at `1` so `array[1]` returns the first element `"a"`.
-```lua
+``` {.lua .numberLines}
 -- lua code
 array = {"a", "b", "c"}
-print(array[1]   -- prints`a`
+print(array[1])   -- prints`a`
 ```
 
 However other languages like python start array indexing  at `0` so `array[1]` in this case returns the second element `"b"`
 
-```python
+``` {.python .numberLines}
 # python code
 array = ["a", "b", "c"]
 print(array[1])  # prints `b`
@@ -32,7 +32,7 @@ Imagine if both of these snippets where written in pseudo-code instead of a well
 
 However general purpose pseudo-code is very different to AQA's pseudo-code, which is both referred to as Pseudo-code and has strict rules. 
 
-```AQA
+``` {.python .numberLines}
 # AQA Pseudo-code
 array = ["a", "b", "c"]
 OUTPUT array[1]
@@ -129,7 +129,7 @@ Currently, there are no existing solutions for translating AQA 'pseudo-code'. Ho
 
 However as noted in the comments of the sample program, the algorithm works by transpiling the users code into  *Java-script* using a basic find and replace. This is not very robust and can lead to many bugs. For example, if the user enters `output "/ mod /"`, you would expect the string `"/ mod /"` to be printed out. However instead the string `/ % /` is printed out. This is because the `translate` function in the code calls `line.replace()` To fix this bug an algorithm would need to tokenize the input which is much more complicated. 
 
-```js
+``` {.js .numberLines}
 function translate(line) {
    line = line.replace(/ mod /g, " % ")    // The bug is here
     var lin = line.trim();
@@ -201,7 +201,7 @@ STRING and  NUMBER literals are made up of a variable number of characters and n
 
 **Source code**
 
-```aqa
+``` {.aqa .numberLines}
    IDENTIFIER `i`
          |  ╭───── ASSIGNMENT token
          ↓  ↓
@@ -356,7 +356,7 @@ Moreover the meta-characters `(*)`,  `(?)` and `(|)` will be used. The `(*)` mea
 
 My program will have a basic command line interface. It should let the user pick from running the program via the Read Eval Print Loop (REPl), passing in the program as a string, or reading in the program as a file. The program should also display a helpful message when the program is called with the `---help` flag. Below shows a draft of what this might look like.
 
-```bash
+``` {.bash .numberLines}
 # display help message
 $ python aqainterpreter.py --help
 Usage: aqainterpreter.py [OPTIONS] [FILENAME]
@@ -389,6 +389,18 @@ Hi!
 
 # Technical Solution
 
+**module hierarchy**
+
+![](assets/packages.svg){ width=30% }
+
+**Class diagrams**
+
+![](assets/scanner.svg){ width=30% }
+![](assets/parser.svg){ width=20% }
+![](assets/symbol_table.svg){ width=30% }
+
+![](assets/classes.svg)
+
 ## project structure
 
 \TECHNICAL_SOLUTION
@@ -398,7 +410,7 @@ Hi!
 Another one my clients needs was to produce syntax highlighting for the vscode editor. Due to time limitations, I instead prioritised the syntax highlighting of the code snippets in this document. This document was produced in pandoc which accepts KDE-style XML syntax definition files so I wrote one AQA pseudo-code. Unfortunately I couldn't get comments to work which is why AQA pseudo-code comments appear black in this documents whereas they appear green in python snippets. The XML file below contains regular expressions and is a lot more of a declarative style compared to the tokenizer and parse I wrote in python. In fact its only 114 lines compared to my scanner which is 203.
 
 **aqa.xml**
-```xml
+``` {.xml .numberLines}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language>
 <language name="AQA" section="Markup" version="7" kateversion="2.4"
@@ -517,7 +529,7 @@ Another one my clients needs was to produce syntax highlighting for the vscode e
 
 Then to load this file into pandoc, the document generator used to create this document I use the following command.
 
-```bash
+``` {.bash .numberLines}
 pandoc metadata.yaml report.md \
         --output=out.pdf \
         --syntax-definition=aqa.xml \
@@ -534,7 +546,7 @@ To perform quality assurance on my project, I created several unit tests inside 
 
 ## testing expressions
 
-```aqa
+``` {.aqa .numberLines}
 OUTPUT 1 + 1  # 2
 OUTPUT 1 - 1  # 0
 OUTPUT -1     # -1
@@ -555,19 +567,19 @@ OUTPUT 1 <= 1   # True
 ```
 
 ## testing comments
-```aqa
+``` {.aqa .numberLines}
 # a comments
 ```
 
 ## testing assignment
-```aqa
+``` {.aqa .numberLines}
 a <- 0
 a <- a + 1
 OUTPUT a   # 1
 ```
 
 ## testing assignment
-```aqa
+``` {.aqa .numberLines}
 IF True
    OUTPUT "yes"
 ENDIF  # yes
@@ -584,7 +596,7 @@ ENDIF  # "yes"
 ```
 
 ## testing while loops
-```aqa
+``` {.aqa .numberLines}
 a <- 1
 WHILE a <= 3 DO
    OUTPUT a
@@ -608,7 +620,7 @@ ENDWHILE  # 1, 1, 2, 3, 5, 8
 ```
 
 ## testing for loops
-```aqa
+``` {.aqa .numberLines}
 FOR a <- 1 TO 1
    OUTPUT a
 ENDFOR # 1
@@ -673,12 +685,12 @@ Here are the tokens and the ast generated by my program for a couple of the test
 
 ### program 1
 
-```aqa
+``` {.aqa .numberLines}
 OUTPUT 1 + 2 * 3
 ```
 
 **tokens**
-```python
+``` {.python .numberLines}
 [Token(type='PRINT', lexeme='OUTPUT', line=1),
  Token(type='NUMBER', lexeme='1', line=1),
  Token(type='ADD', lexeme='', line=1),
@@ -689,7 +701,7 @@ OUTPUT 1 + 2 * 3
 ```
 
 **ast**
-```python
+``` {.python .numberLines}
 [
     Print(
         expression=Binary(
@@ -707,7 +719,7 @@ OUTPUT 1 + 2 * 3
 
 ### program 2
 
-```aqa
+``` {.aqa .numberLines}
 IF True
    IF True
       OUTPUT "yes"
@@ -716,7 +728,7 @@ ENDIF
 ```
 
 **tokens**
-```python
+``` {.python .numberLines}
 [Token(type='IF', lexeme='IF', line=1),
  Token(type='TRUE', lexeme='True', line=1),
  Token(type='IF', lexeme='IF', line=2),
@@ -729,7 +741,7 @@ ENDIF
 ```
 
 **ast**
-```python
+``` {.python .numberLines}
 [
     If(
         condition=Literal(value=True),
@@ -747,7 +759,7 @@ ENDIF
 
 ### program 3
 
-```aqa
+``` {.aqa .numberLines}
 FOR a <- 1 TO 12
     FOR b <- 1 TO 12
         OUTPUT a + " × " + b + " = " + (a * b)
@@ -756,7 +768,7 @@ END
 ```
 
 **tokens**
-```python
+``` {.python .numberLines}
 [Token(type='FOR', lexeme='FOR', line=1),
  Token(type='IDENTIFIER', lexeme='a', line=1),
  Token(type='ASSIGNMENT', lexeme='', line=1),
@@ -789,7 +801,7 @@ END
 ```
 
 **ast (wow this is long)**
-```python
+``` {.python .numberLines}
 [
     Var(
         name=Token(type="IDENTIFIER", lexeme="a", line=1), initialiser=Literal(value=1)
@@ -890,14 +902,14 @@ Objective two and three where met fully. My program has case insensitive keyword
 
 Objective 4 was also met. My program shows helpful error messages. For example if the user entered:
 
-```aqa
+``` {.aqa .numberLines}
 IF True
     OUTPUT "HI"
 ```
 
-Then due to the logic in line 218-9 (and 226) in `parser.py`:
+Then due to the logic in line 217-8 (and 225-226) in `parser.py`:
 
-```python
+``` {.python .numberLines}
 if self._peek().type == EOF:
     raise self._error(self._peek(), "Expected END after IF statement")`
 ```
@@ -908,7 +920,7 @@ Objective five was not quite met. I did have a prototype of an online IDE that w
 
 If the code editor looks familiar it is because it uses the monaco editor which also powers vscode for my client.
 
-```html
+``` {.html .numberLines}
 <!DOCTYPE html>
 <html>
 
