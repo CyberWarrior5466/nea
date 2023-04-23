@@ -1,2 +1,1 @@
-IF True
-
+FOR i <- 1 TO 5 OUTPUT i ENDFOR

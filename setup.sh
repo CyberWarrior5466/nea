@@ -30,7 +30,7 @@
 # hatch shell
 
 # # publish to pypi
-# hatch build && hatch publish
+# hatch build && hatch publish && rm -rf dist
 #   # go on https://pypi.org
 #   # get a token https://pypi.org/help/#apitoke
 #   # copy paste the username and token in this command

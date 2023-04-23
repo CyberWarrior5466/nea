@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "AQAInterpreter"
 requires-python = ">=3.10"
 license = "MIT"
-version = "0.0.6"
+version = "0.0.7"
 authors = [
   { name = "CyberWarrior5466", email = "asaleen898@gmail.com" },
 ]

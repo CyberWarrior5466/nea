@@ -1,0 +1,38 @@
+- add \newpage after major sections analysis, design so next section starts on a fresh page
+- add a section explaining grade A algorithms used
+  - Expr and Stmt interface inherit .interpret() method which is defined for multiple classes (polymorphism)
+  - file handling used in main.py
+  - pattern matching used in scanner.py via * wildcard
+
+- explain using @dataclass and python's match statement to remove redundant code
+
+**using dataclass**
+```python
+from dataclasses import dataclass
+from typing import any
+
+class ExampleClass:
+    def __init__(attribute: Any) -> None:
+        self.attribute = attribute
+
+    def method(self):
+        ...
+
+    def __str__():
+        return f"ExampleClass({self.attribute_1}, {self.attribute_2})"
+
+
+@dataclass
+class ExampleDataClass:
+    attribute: Any
+
+    def method(self):
+        ...
+```
+
+**using match**
+```python
+```
+
+
+
