@@ -2,12 +2,10 @@
 
 # # ubuntu
 # sudo apt update && sudo apt upgrade -y
-# sudo apt install hatch pandoc texlive-xetex fonts-firacode yarnpkg fossil -y 
+# sudo apt install hatch pandoc texlive-xetex fonts-firacode librsvg2-tools yarnpkg fossil -y 
 
 # # fedora
-# sudo dnf install 'dnf-command(copr)'
-# sudo dnf copr enable adrienverge/some-nice-fonts -y
-# sudo dnf install hatch pandoc texlive-xetex fira-code-fonts some-nice-fonts yarnpkg librsvg2-tools texlive-scheme-medium fossil -y
+# sudo dnf install hatch pandoc texlive-xetex fira-code-fonts yarnpkg texlive-scheme-medium fossil -y
 
 
 # cd report

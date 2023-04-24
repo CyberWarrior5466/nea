@@ -35,4 +35,9 @@ class ExampleDataClass:
 ```
 
 
+- maybe move unit tests to design section, include the word unit tests in report.md
+- pyproject.toml is used to upload the project to pypi
+- add in the code dump that the code is also available in a github repo 'The code for this project is avalable in this document as well as in a github repo on github @ https://github.com/CyberWarrior5466/nea and '
+
+
 
