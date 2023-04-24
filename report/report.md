@@ -40,7 +40,7 @@ OUTPUT array[1]
 
 Following the spec, arrays in AQA Pseudo-code start indexing at `0` so therefore the  is `b`.  Due to the consistency of the spec, we where  able to unambiguously determine the output. 
 
-This consistency means that it would be possible to write a translator, that would take any set of pseudo-code following the AQA's style and convert it to the corresponding machine code. This blurs the lines between the pseudo-code and *real languages*. So henceforth correct AQA Pseudo-code, following the spec will just be referred to as AQA code.
+This consistency means that it would be possible to write a translator, that would take any set of pseudo-code following the AQA's style and convert it to the corresponding machine code. This blurs the lines between the pseudo-code and *real languages*.
 
 ## Justification
 
@@ -113,7 +113,6 @@ There are three methods that could be used to convert AQA pseudo-code to machine
 - **Transpilers** scan and parse but the intermediary form is converted to another high level language where a compiler or interpreter already available. For example, the *Nim* programming language works by first transpiling to either *C*, *C++* or *Java-Script*.
 
 - Other notes: languages can be expressed with regular grammar. Tools like yacc and lex are known as compiler compilers as they create a compiler given regular grammar of the language to be built as input. However I will not be using these and I am interesting in learning how a translator works.
-- Other notes: languages can be expressed with regular grammar. Tools like yacc and lex are known as compiler compilers as they create a compiler given regular grammar of the language to be built as input. However I will not be using these and I am interesting in learning how a translator works.
 
 **Advantages and disadvantages of each approach**
 
@@ -138,13 +137,17 @@ function translate(line) {
     if (startswith(lin, "if")) { first = "if" }
     ...
 }
-```
 
-![Website 1](assets/screenshot1.png){width=85% align=centre}
+```
+![http://ibcomp.fis.edu/pseudocode/pcode.html](assets/screenshot1.png){width=85% align=centre}
+
+\pagebreak
 
 Another solution, also for IB 'pseudo-code' is written by [Dep Jain](https://pseudocode.deepjain.com/). It is much more complicated and includes syntax highlighting and auto-completions powered by an open source project code editor called [ace](https://github.com/ajaxorg/ace). It defaults to dark mode which makes the website easier on the eyes. It has large buttons on the top and also has the ability to save and load files from the users cookies similar to the previous program. However the web page makes a *HTTP* request to a server to translate the code, making it closed source and also slower than the previous solution.
 
-![Website 2](assets/screenshot2.png){width=85% align=centre}
+![(https://pseudocode.deepjain.com/)](assets/screenshot2.png){width=70% align=centre}
+
+\pagebreak  <!-- this page break is so image goes on page    -->
 
 Both programs are website, making it convenient as the user does not have to download any language tools. Website are also portable and can be accessed on any computer with an internet connection. Therefore I would consider developing a simple online IDE as well, second to a programmed solution.
 
@@ -185,11 +188,37 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 6. Add syntax highlighting to highlight keywords and constructs, following the colours of the atom text editor, as it was my clients preference. 
 
+\pagebreak
+
 # Documented design
 
 ## Language Choice
 
 To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* (ISBN 9780990582939) by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming which is the main language feature I will use to structure my code. I also intend to use modules and split my code across multiple files to separate concerns.
+
+## Addresssing redundancy
+
+Python has a number of langauge features and libraries to help write more concise code. 
+
+# Rule 1
+\_\_Description\_\_ for rule 1.
+
+\Begin{multicols}{2}
+## Good
+```c
+int foo (void) 
+{
+    int i;
+}
+```
+
+## Bad
+```c
+int foo (void) {
+    int i;
+}
+```
+\End{multicols}
 
 ## High level system overview
 
@@ -387,6 +416,8 @@ $ python aqainterpreter.py --cmd "OUTPUT 'Hi!'"
 Hi!
 ```
 
+
+\pagebreak
 # Technical Solution
 
 **module hierarchy**
@@ -540,6 +571,7 @@ pandoc metadata.yaml report.md \
 
 `metedata.yaml` describes extra information such as the headers and footers used in this document. And `aqa.xml` is the KDE style XML file previously.
 
+\pagebreak
 # Testing
 
 To perform quality assurance on my project, I created several unit tests inside of the `test_.py` file. These tests where run using pythons `pytest` library. The `pytest` library automatically runs all functions and files prefixed with `test_` hence the strange name `test_.py`. Here is a more detailed snippet of all the code samples that where used as testing. However as the set of string matched by a context free grammar is infinite, it is impossible to test every pseudo-code input that can be run by my program. Therefore my testing covers the main language features I managed to implement and a couple extra pseudo-code programs that make use of multiple language features at once.
@@ -890,7 +922,7 @@ END
 ]
 ```
 
-
+\pagebreak
 # Evaluation
 
 My program achieves a large number of my project requirements so I consider it a success. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. I also didn't implement any of the functions including the call stack but i did have all the data types. Another thing that is missing where constants and arrays.

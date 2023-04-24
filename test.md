@@ -16,4 +16,4 @@ int foo (void) {
     int i;
 }
 ```
-\End{multicols}
+\End{multicols}1

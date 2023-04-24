@@ -29,4 +29,4 @@ pandoc metadata.yaml temp_report.md \
 rm temp_report.md
 cd ..
 
-xdg-open report/out.pdf
+# xdg-open report/out.pdf

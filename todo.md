@@ -1,4 +1,3 @@
-- add \newpage after major sections analysis, design so next section starts on a fresh page
 - add a section explaining grade A algorithms used
   - Expr and Stmt interface inherit .interpret() method which is defined for multiple classes (polymorphism)
   - file handling used in main.py

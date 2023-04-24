@@ -1,7 +1,7 @@
 {
-    // "[markdown]": {
-    //     "editor.fontFamily": "calibri, Carlito"
-    // },
+    "[markdown]": {
+        "editor.fontFamily": "calibri, Carlito"
+    },
     "cSpell.enabled": true,
     "cSpell.words": [
         "AQA's",

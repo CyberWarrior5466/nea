@@ -50,5 +50,9 @@ with open(sys.argv[1], encoding="utf-8") as infp:
 
 content = content.replace("\\TECHNICAL_SOLUTION", out)
 
+if len(sys.argv) == 3:
+    for char in ("│", "╭", "─", "├", "└", "∕", "≠", "≤", "≥"):
+        content = content.replace(char, "")
+
 with open(sys.argv[1], "w", encoding="utf-8") as outfile:
     outfile.write(content)
