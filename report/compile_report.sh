@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# cd report/assets/input
+cd report/assets/input
 
 # for i in *.mmd; do
 #     ~/.yarn/bin/mmdc -c ../mermaid_config.json \
@@ -8,11 +8,11 @@
 #          -o "../${i%.*}.svg"
 # done
 
-# for i in *.pikchr; do
-#     fossil pikchr "$i" "../${i%.*}.svg"
-# done
+for i in *.pikchr; do
+    fossil pikchr "$i" "../${i%.*}.svg"
+done
 
-# cd ../../..
+cd ../../..
 
 cp report/report.md report/temp_report.md
 python report/add_code.py report/temp_report.md

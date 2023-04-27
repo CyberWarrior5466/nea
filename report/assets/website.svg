@@ -1,0 +1,14 @@
+<svg xmlns='http://www.w3.org/2000/svg' class="pikchr" viewBox="0 0 466.32 376.56">
+<path d="M2,374L218,374L218,86L2,86Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="110" y="230" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">editor</text>
+<path d="M248,374L464,374L464,86L248,86Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="356" y="230" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">output</text>
+<path d="M2,86L80,86L80,56L2,56Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="41" y="71" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">Run  ▶️</text>
+<path d="M80,86L155,86L155,56L80,56Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="117" y="71" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">Docs  📄</text>
+<path d="M155,86L188,86L188,56L155,56Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="171" y="71" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central"> ⭕ </text>
+<path d="M17,32L449,32A15 15 0 0 0 464 17A15 15 0 0 0 449 2L17,2A15 15 0 0 0 2 17A15 15 0 0 0 17 32Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="5" y="17" text-anchor="start" fill="rgb(0,0,0)" dominant-baseline="central">&gt;  https://www.website.com</text>
+</svg>

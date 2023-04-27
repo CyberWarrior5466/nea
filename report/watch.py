@@ -1,13 +1,14 @@
-from inotify.adapters import Inotify
-import inotify.adapters
 import subprocess
 import os
+from inotify.adapters import Inotify
+import inotify.adapters
 
 
 def handle_event(event_handler: Inotify, directory: str, cmd: str) -> None:
     event_handler.add_watch(directory)
     for event in event_handler.event_gen(yield_nones=False):
         _, type_names, path, filename = event
+        print(type_names)
         if filename in os.listdir(path) and type_names == ["IN_MODIFY"]:
             print(f"{path=}, {filename=}, {type_names=}")
             subprocess.call(cmd, shell=True)

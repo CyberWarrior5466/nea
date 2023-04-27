@@ -153,7 +153,7 @@ Both programs are website, making it convenient as the user does not have to dow
 
 Another disadvantage is that both solutions are limited to the IB computer science syllabus and not AQA's. Focusing my project on AQA's 'pseudo-code' will make my project unique. My solution should also be open source like the first example allowing the user to view the source code to better understand how their code was interpreted.
 
-## Project Requirements
+## Project requirements
 
 1. Create a tree-walk interpreter for all the features in AQA's 'pseudo-code' command set including but not limited to: 
    
@@ -192,31 +192,85 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 # Documented design
 
-## Language Choice
+## Language choice
 
 To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* (ISBN 9780990582939) by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming which is the main language feature I will use to structure my code. I also intend to use modules and split my code across multiple files to separate concerns.
 
 ## Addresssing redundancy
 
-Python has a number of langauge features and libraries to help write more concise code. 
+Python has a number of langauge features and libraries to help write more concise code. My project takes advantage of dataclasses, match statement and the click library for building terminal user interfaces.
 
-# Rule 1
-\_\_Description\_\_ for rule 1.
+### Dataclass
+
+Python dataclasses are a more convenient method for defining classes in python. Using them reduces a large amount of boiler plate, as we do not have to create getters and setters in this `Example` class. Moreover using dataclass also creates a `__str__` function for us atomatically.
 
 \Begin{multicols}{2}
-## Good
-```c
-int foo (void) 
-{
-    int i;
-}
-```
+``` {.python .numberLines}
+from typing import any
 
-## Bad
-```c
-int foo (void) {
-    int i;
-}
+class Example:
+  def __init__(attribute: Any) -> None:
+    self.attribute = attribute
+
+  def get_attribute() -> Any:
+    return self.attribute
+
+  def set_attribute(
+    attribute: Any
+  ) -> None:
+    self.attribute = attribute
+
+  def __str__() -> str:
+    return f"Example({attribute})"
+
+```
+\columnbreak
+
+``` {.python .numberLines}
+from dataclasses import dataclass
+
+@dataclass
+class Example:
+    attribute: Any
+```
+\End{multicols}
+
+\
+
+## Using python's match statement
+Python's match statement was introduced recently in python 3.10. Using the match statements allows for deep structural pattern matching using wildcards
+
+
+\Begin{multicols}{2}
+**Vanilla python class**
+``` {.python .numberLines}
+from typing import any
+
+class Example:
+  def __init__(attribute: Any) -> None:
+    self.attribute = attribute
+
+  def get_attribute() -> Any:
+    return self.attribute
+
+  def set_attribute(
+    attribute: Any
+  ) -> None:
+    self.attribute = attribute
+
+  def __str__() -> str:
+    return f"Example({attribute})"
+
+```
+\columnbreak
+
+
+``` {.python .numberLines}
+from dataclasses import dataclass
+
+@dataclass
+class Example:
+    attribute: Any
 ```
 \End{multicols}
 
@@ -381,9 +435,21 @@ Moreover the meta-characters `(*)`,  `(?)` and `(|)` will be used. The `(*)` mea
 ![](assets/primary.svg)
 
 
-## User Interface
+## User interface
+
+My program will have two user interfaces: a command line interface as well as a web based ide. The web based ide will need to have an editor and output windows with three buttons. One to run the code, one to server as a link to documentation and another button to toggle between a light and dark theme.
+
+\pagebreak
+![prototype of online ide ](assets/website.svg)
+
+The fronted for my online ide will be build in plain html and css. For the backend i'll use fastapi for its type safety. The way it will work is whe  the user enters in code and clicks the 'Run' button, the frontend will sesnd a http `GET` request to the fastapi server, with the body or the request containint the code the user entered in. When the fastapi server recieves this respone, it will evalute the AQA pseudo-code and return a respone consisted of the output of the code. This output is then displayed in the output window.
+
+![GET response](assets/server.svg)
 
 My program will have a basic command line interface. It should let the user pick from running the program via the Read Eval Print Loop (REPl), passing in the program as a string, or reading in the program as a file. The program should also display a helpful message when the program is called with the `---help` flag. Below shows a draft of what this might look like.
+
+\pagebreak
+
 
 ``` {.bash .numberLines}
 # display help message
@@ -405,7 +471,7 @@ Error: cannot specify both filename and cmd at same time
 # starting the repl (read-eval-print-loop)
 $ python aqainterpreter.py
 > OUTPUT 'Hi!'
-Hi!
+Hi!****
 
 # program read in from file
 $ python aqainterpreter.py input.txt
@@ -432,11 +498,11 @@ Hi!
 
 ![](assets/classes.svg)
 
-## project structure
+## Project structure
 
 \TECHNICAL_SOLUTION
 
-## syntax highlighting
+## Syntax highlighting
 
 Another one my clients needs was to produce syntax highlighting for the vscode editor. Due to time limitations, I instead prioritised the syntax highlighting of the code snippets in this document. This document was produced in pandoc which accepts KDE-style XML syntax definition files so I wrote one AQA pseudo-code. Unfortunately I couldn't get comments to work which is why AQA pseudo-code comments appear black in this documents whereas they appear green in python snippets. The XML file below contains regular expressions and is a lot more of a declarative style compared to the tokenizer and parse I wrote in python. In fact its only 114 lines compared to my scanner which is 203.
 
@@ -576,7 +642,7 @@ pandoc metadata.yaml report.md \
 
 To perform quality assurance on my project, I created several unit tests inside of the `test_.py` file. These tests where run using pythons `pytest` library. The `pytest` library automatically runs all functions and files prefixed with `test_` hence the strange name `test_.py`. Here is a more detailed snippet of all the code samples that where used as testing. However as the set of string matched by a context free grammar is infinite, it is impossible to test every pseudo-code input that can be run by my program. Therefore my testing covers the main language features I managed to implement and a couple extra pseudo-code programs that make use of multiple language features at once.
 
-## testing expressions
+## Testing expressions
 
 ``` {.aqa .numberLines}
 OUTPUT 1 + 1  # 2
@@ -598,19 +664,19 @@ OUTPUT 1 ≤ 0    # False
 OUTPUT 1 <= 1   # True
 ```
 
-## testing comments
+## Testing comments
 ``` {.aqa .numberLines}
 # a comments
 ```
 
-## testing assignment
+## Testing assignment
 ``` {.aqa .numberLines}
 a <- 0
 a <- a + 1
 OUTPUT a   # 1
 ```
 
-## testing assignment
+## Testing assignment
 ``` {.aqa .numberLines}
 IF True
    OUTPUT "yes"
@@ -627,7 +693,7 @@ IF True
 ENDIF  # "yes"
 ```
 
-## testing while loops
+## Testing while loops
 ``` {.aqa .numberLines}
 a <- 1
 WHILE a <= 3 DO
@@ -651,7 +717,7 @@ WHILE count != 2
 ENDWHILE  # 1, 1, 2, 3, 5, 8 
 ```
 
-## testing for loops
+## Testing for loops
 ``` {.aqa .numberLines}
 FOR a <- 1 TO 1
    OUTPUT a
@@ -715,7 +781,7 @@ END
 
 Here are the tokens and the ast generated by my program for a couple of the tests as showing them all would be too long.
 
-### program 1
+### Example program 1
 
 ``` {.aqa .numberLines}
 OUTPUT 1 + 2 * 3
@@ -749,7 +815,7 @@ OUTPUT 1 + 2 * 3
 ]
 ```
 
-### program 2
+### Example program 2
 
 ``` {.aqa .numberLines}
 IF True
@@ -789,7 +855,7 @@ ENDIF
 ]
 ```
 
-### program 3
+### Example program 3
 
 ``` {.aqa .numberLines}
 FOR a <- 1 TO 12
@@ -923,9 +989,58 @@ END
 ```
 
 \pagebreak
+
 # Evaluation
 
-My program achieves a large number of my project requirements so I consider it a success. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. I also didn't implement any of the functions including the call stack but i did have all the data types. Another thing that is missing where constants and arrays.
+
+## [Project Requirements](#project-requirements)
+
+**The requirements for this project are repeated again heree so you do not have to flick back to the analysis section.**
+
+1. Create a tree-walk interpreter for all the features in AQA's 'pseudo-code' command set including but not limited to: 
+   
+   - `REPEAT`, `WHILE`, `FOR`, `IF`, `RECORD`, `SUBROUTINE` constructs
+   
+   - `INPUT`, `OUTPUT`, `LEN`, `POSITION`, `SUBSTRING`, `RANDOM_INT` functions
+   
+   - `STRING`, `INT`, `REAL`, `BOOL` types
+   
+   - `INPUT`, `OUTPUT` operations
+   
+   - variables, constants and arrays
+   
+   If it is not possible to implement all of these features, the the language should at least be Turing complete. For a language to be considered Turing complete it needs at lease arithmetic operations, control flow (`WHILE` / `REPEAT` loops), and access to arbitrary memory (arrays)
+
+2. Additionally I would like to make keywords case insensitive giving the use the ability to style code to his preference.
+
+3. The program should accept a large range of input. For example the 'pseudo-code' command set uses the unicode multiply sign `(×)` whereas most programming languages use an `(*)` as it can be typed on a traditional keyboard. My program should accept both of these symbols, making it adaptable. A table of these special symbols is show below.
+   
+   | Traditional | Unicode |
+   | :---------: | :-----: |
+   |      *      |   ×     |
+   |      /      |   ÷     |
+   |     !=      |  `!=`   |
+   |     <=      |  `<=`   |
+   |     >=      |  `>=`   |
+   |     <-      |  `←`    |
+
+4. Robust error handling, informing the user of what line syntax errors have occurred.
+
+5. Create on online IDE for users to quickly try out the language without having to install any extra language tools their local machine.
+
+6. Add syntax highlighting to highlight keywords and constructs, following the colours of the atom text editor, as it was my clients preference. 
+
+----
+
+## Assesing whether the requirements where met
+
+My program achieves a large number of my project requirements so overall I consider it a success. 
+
+1. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. A `REPEAT` loop is just syntatic sugar for a `WHILE` loop where the condition is evaluated at the end instead of at the start, so i would argue this objective was not paramount. 
+   
+   No `SUBROUTINE` or function logic was implemented which would of required the use of requires using a call stack. None of the functions where implemented which would of additionally required implementing a call stack. All of the data types where implemented being based of python's builting types.
+   
+   variables 
 Since I din't implement arrays, my solution wasn't turning complete, but it did feature control flow so at least we where half way there.
 
 My project was expressive enough to write some novel programs such a fibonacci sequence and display the times tables. And I successfully implemented a scanner, parser and a tree-walk interpreter.
@@ -1005,4 +1120,3 @@ If the code editor looks familiar it is because it uses the monaco editor which 
 
 
 Objective 6 was also met as you can have no doubt seen the syntax highlighting for AQA code snippets many times in this document. The code for which is also explained in the technical solution.
-

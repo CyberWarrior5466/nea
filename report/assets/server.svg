@@ -1,0 +1,13 @@
+<svg xmlns='http://www.w3.org/2000/svg' class="pikchr" viewBox="0 0 263.52 181.44">
+<path d="M2,136L110,136L110,64L2,64Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="56" y="100" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">client</text>
+<path d="M153,136L261,136L261,64L153,64Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
+<text x="207" y="100" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central">server</text>
+<polygon points="207,64 203,53 211,53" style="fill:rgb(0,0,0)"/>
+<path d="M56,64L56,47L207,47L207,59"  style="fill:none;stroke-width:2.16;stroke-linejoin:round;stroke:rgb(0,0,0);" />
+<polygon points="56,136 60,148 51,148" style="fill:rgb(0,0,0)"/>
+<path d="M207,136L207,154L56,154L56,142"  style="fill:none;stroke-width:2.16;stroke-linejoin:round;stroke:rgb(0,0,0);" />
+<text x="77" y="12" text-anchor="start" fill="rgb(0,0,0)" dominant-baseline="central">GET /api/run</text>
+<text x="77" y="32" text-anchor="start" fill="rgb(0,0,0)" dominant-baseline="central">code: "OUTPUT 'hi'"</text>
+<text x="77" y="169" text-anchor="start" fill="rgb(0,0,0)" dominant-baseline="central">response: "hi"</text>
+</svg>

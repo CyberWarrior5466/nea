@@ -1,0 +1,9 @@
+C: box "client"
+move .4*boxwid
+S: box "server"
+L1: arrow from C.top up 2*arrowwid then right even with S then to S.top
+L2: arrow from S.bottom down 2*arrowwid then left even with C then to C.bottom
+
+"GET /api/run" ljust "code: \"OUTPUT 'hi'\"" ljust with .s at 0.5*boxwid left of L1.n
+
+"response: \"hi\"" ljust with .n at 0.5*boxwid left of L2.s

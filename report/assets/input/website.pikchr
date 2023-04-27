@@ -1,0 +1,9 @@
+B1: box "editor" wid 2*boxwid ht 4*boxht
+box "output" wid 2*boxwid ht 4*boxht with .w at 20px right of previous.end
+
+R: box "Run  ▶️" fit with .sw at B1.nw
+box "Docs  📄" fit
+box " ⭕ " fit
+
+
+oval "   https://www.website.com" ljust fit wid 4*boxwid+20px with .w at 0.75*boxht above R.w

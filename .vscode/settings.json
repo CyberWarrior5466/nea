@@ -1,6 +1,6 @@
 {
     "[markdown]": {
-        "editor.fontFamily": "calibri, Carlito"
+        // "editor.fontFamily": "calibri, Carlito"
     },
     "cSpell.enabled": true,
     "cSpell.words": [
