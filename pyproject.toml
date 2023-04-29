@@ -19,4 +19,4 @@ Source = "https://github.com/CyberWarrior5466/nea"
 
 
 [tool.hatch.envs.default]
-dependencies = ["black", "inotify", "pytest"]
+dependencies = ["pytest"]

@@ -198,11 +198,7 @@ To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The ro
 
 ## Addresssing redundancy
 
-Python has a number of langauge features and libraries to help write more concise code. My project takes advantage of dataclasses, match statement and the click library for building terminal user interfaces.
-
-### Dataclass
-
-Python dataclasses are a more convenient method for defining classes in python. Using them reduces a large amount of boiler plate, as we do not have to create getters and setters in this `Example` class. Moreover using dataclass also creates a `__str__` function for us atomatically.
+Python has a number of langauge features and libraries to help write more concise code. My project takes especially takes advantage of dataclasses. Using them reduces a large amount of boiler plate, as we do not have to manually create getters and setters .in this `Example` class. Moreover using dataclass also creates a `__str__` function for us atomatically.
 
 \Begin{multicols}{2}
 ``` {.python .numberLines}
@@ -235,44 +231,6 @@ class Example:
 ```
 \End{multicols}
 
-\
-
-## Using python's match statement
-Python's match statement was introduced recently in python 3.10. Using the match statements allows for deep structural pattern matching using wildcards
-
-
-\Begin{multicols}{2}
-**Vanilla python class**
-``` {.python .numberLines}
-from typing import any
-
-class Example:
-  def __init__(attribute: Any) -> None:
-    self.attribute = attribute
-
-  def get_attribute() -> Any:
-    return self.attribute
-
-  def set_attribute(
-    attribute: Any
-  ) -> None:
-    self.attribute = attribute
-
-  def __str__() -> str:
-    return f"Example({attribute})"
-
-```
-\columnbreak
-
-
-``` {.python .numberLines}
-from dataclasses import dataclass
-
-@dataclass
-class Example:
-    attribute: Any
-```
-\End{multicols}
 
 ## High level system overview
 
