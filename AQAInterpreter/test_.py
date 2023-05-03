@@ -2,11 +2,7 @@
 pytest AQAInterpreter --verbose
 """
 
-import AQAInterpreter
-
-
-def run(*lines: str) -> str:
-    return AQAInterpreter.run("\n".join(lines))
+from AQAInterpreter import run
 
 
 def test_expressions():
@@ -33,46 +29,63 @@ def test_comments():
     assert run("# comment") == ""
 
 
+# fmt: off
 def test_assignment():
-    assert run("a <- 0", "a <- a + 1", "OUTPUT a") == "1\n"
+    assert run("""
+    a <- 0
+    a <- a + 1
+    OUTPUT a
+    """) == "1\n"
 
 
 def test_if_statements():
-    assert run('IF True OUTPUT "yes" ENDIF') == "yes\n"
-    assert run('IF True OUTPUT "" OUTPUT "" ENDIF') == "\n\n"
-    assert run('IF False OUTPUT "yes" ENDIF') == ""
-    assert run('IF False OUTPUT "yes" ELSE OUTPUT "no" ENDIF') == "no\n"
-    assert run('IF True IF True OUTPUT "yes" ENDIF ENDIF') == "yes\n"
+    assert run("""
+    IF True THEN
+        OUTPUT "hi"
+    ENDIF
+    """) == "hi\n"
+
+    assert run("""
+    IF False:
+        OUTPUT "should not fire"
+    ELSE:
+        OUTPUT "this should"
+    ENDIF
+    """) == "this should\n"
+
+    assert run("""
+    IF True
+        IF True
+            OUTPUT "nested"
+        ENDIF
+    ENDIF
+    """) == "nested\n"
 
 
 def test_while_loops():
-    assert (
-        run("a <- 1", "while a <= 3 DO", "output a", "a <- a + 1", "endwhile")
-        == "1\n2\n3\n"
-    )
+    assert run("""
+    a <- 1
+    WHILE a <= 3 DO
+        OUTPUT a
+        a <- a + 1
+    ENDWHILE
+    """) == "1\n2\n3\n"
 
-    # fibonacci sequence
-    assert (
-        run(
-            "a <- 1",
-            "b <- 1",
-            "c <- 2",
-            "count <- 0",
-            "WHILE count != 2",
-            "    OUTPUT a",
-            "    a <- b + c",
-            "    OUTPUT b",
-            "    b <- c + a",
-            "    OUTPUT c",
-            "    c <- a + b",
-            "    count <- count + 1",
-            "ENDWHILE",
-        )
-        == "1\n1\n2\n3\n5\n8\n"
-    )
+    assert run("""
+    a <- 3
+    WHILE a >= 0 DO
+        OUTPUT a
+        a <- a - 1
+    ENDWHILE
+    """) == "3\n2\n1\n"
+
 
 
 def test_for_loops():
+    assert run("""
+    FOR a <- 1 TO 1
+    """)
+
     assert (
         run("FOR a <- 1 TO 1", "OUTPUT a", "ENDFOR")
         == run("FOR a <- 1 TO 1 STEP 1", "OUTPUT a", "ENDFOR")
@@ -120,3 +133,19 @@ def test_for_loops():
         )
         == "1\n1\n\n1\n2\n\n2\n1\n\n2\n2\n\n"
     )
+
+    # fibonacci sequence
+    assert run("""
+    a <- 1
+    b <- 1
+    c <- 2
+    FOR _ <- 1 TO 2
+        OUTPUT a,
+        a <- b + c,
+        OUTPUT b,
+        b <- c + a,
+        OUTPUT c,
+        c <- a + b,
+        count <- count + 1,
+    ENDWHILE
+    """) == "1\n2\n3\n"

@@ -223,7 +223,7 @@ class Parser:
             if self._match_token(ELSE):
                 while not self._match_token(END):
                     if self._peek().type == EOF:
-                        raise error(self._peek(), "Expected END after IF statement")
+                        raise self._error(self._peek(), "Expected END after IF statement")
                     stmt = self._statement()
                     if stmt is not None:
                         else_branch.extend(stmt)
@@ -245,9 +245,9 @@ class Parser:
                 return self._if_statement()
             elif self.tokens[self._current].type == EOF:
                 return
-            self._current += 1
-            return
-
+            else:
+                errors.error(self._peek(), "unexpected token")
+            
     def _var_declaration(self) -> tuple[Var]:
         name = self._consume(IDENTIFIER, "Expect variable name. ")
         initialiser = self._expression() if self._match_token(ASSIGNMENT) else None
@@ -261,8 +261,8 @@ class Parser:
                     return self._statement_not_var()
                 elif token.type == ASSIGNMENT:
                     return self._var_declaration()
-        except AQAParseError as e:
-            errors.error(e.token, e.message)
+        except AQAParseError as parse_error:
+            errors.error(parse_error.token, parse_error.message)
             self._synchronize()
             return None
 

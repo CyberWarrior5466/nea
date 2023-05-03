@@ -175,12 +175,12 @@ Another disadvantage is that both solutions are limited to the IB computer scien
    
    | Traditional | Unicode |
    | :---------: | :-----: |
-   |      *      |   ×     |
-   |      /      |   ÷     |
+   |      *      |    ×    |
+   |      /      |    ÷    |
    |     !=      |  `!=`   |
    |     <=      |  `<=`   |
    |     >=      |  `>=`   |
-   |     <-      |  `←`    |
+   |     <-      |   `←`   |
 
 4. Robust error handling, informing the user of what line syntax errors have occurred.
 
@@ -196,49 +196,172 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 
 To translate 'pseudo-code' I am going ot build a *tree-walk* interpreter. The rough structure of my implementation is based on a book called *Crafting Interpreters* (ISBN 9780990582939) by *Robert Nystrom* which is written in *Java*. I have decided to use *Python* instead as it has a simple and readable syntax and is dynamically typed. This means I can re-use *python's* base types, which support string concatenation and integers of arbitrary precision meaning that integers will never overflow. *Python's* slower performance is not an issue as having a robust solution is higher priority and python is widely understood and is a popular language. Python is also multi-paradigm and supports OOP programming which is the main language feature I will use to structure my code. I also intend to use modules and split my code across multiple files to separate concerns.
 
-## Addresssing redundancy
+## Addressing redundancy
 
-Python has a number of langauge features and libraries to help write more concise code. My project takes especially takes advantage of dataclasses. Using them reduces a large amount of boiler plate, as we do not have to manually create getters and setters .in this `Example` class. Moreover using dataclass also creates a `__str__` function for us atomatically.
+Python has a number of language features and libraries to help write more concise code. Including dataclasses, pattern matching, and creating terminal user interfaces with the click library.
+
+### Using dataclass
+
+Dataclasses reduces a large amount of boiler plate normally required when working with classes. Here we use the builtin `@dataclass` decorator automatically creating an  `__init__` and `__repr__` method for us. Moreover, we can use the dot notation `instance.attribute` instead of having to define a separate getter and setter method for `attribute`. Our class definition goes from 15 lines to just 3.
 
 \Begin{multicols}{2}
 ``` {.python .numberLines}
-from typing import any
+from typing import Any
+
 
 class Example:
-  def __init__(attribute: Any) -> None:
-    self.attribute = attribute
+    def __init__(self, attribute: Any):
+        self.attribute = attribute
 
-  def get_attribute() -> Any:
-    return self.attribute
+    def get_attribute(self):
+        return self.attribute
 
-  def set_attribute(
+    def set_attribute(
+        self, attribute: Any
+    ):
+        self.attribute = attribute
+
+    def __str__(self):
+        attribute = repr(self.attribute)
+        return f"Example({attribute})"
+
+
+instance = Example("foo")
+
+# prints `Example('foo')`
+print(instance)
+
+# prints `bar`
+instance.set_attribute("bar")
+print(instance.get_attribute())
+```
+
+\columnbreak
+
+
+``` {.python .numberLines}
+from dataclasses import dataclass
+
+
+@dataclass
+class Example:
     attribute: Any
-  ) -> None:
-    self.attribute = attribute
 
-  def __str__() -> str:
-    return f"Example({attribute})"
+
+instance = Example("foo")
+
+# prints `Example(instance='foo')`
+print(instance)
+
+# prints `bar`
+instance.attribute = "bar"
+print(instance.attribute)
+```
+\End{multicols}
+
+
+### Using match statement
+
+Python's match statement was introduced in 3.10. Using an `if` statement we have to manually check that the `tokens` list contains at least two characters otherwise accessing `tokens[0]` would raise and index error. Using a `match` statement, we don't have to worry about this. The `match` example also contains a wildcard `(*)` capturing any remaining characters, and storing them in a variable. The underscore denotes an unused variable.
+
+\Begin{multicols}{2}
+``` {.python .numberLines}
+tokens = list(input())
+
+if (
+    len(tokens) >= 2
+    and tokens[0] == "<"
+    and tokens[1] == "-"
+):
+    print("assignment")
 
 ```
 \columnbreak
 
 ``` {.python .numberLines}
-from dataclasses import dataclass
+tokens = list(input())
 
-@dataclass
-class Example:
-    attribute: Any
+match tokens:
+    case ["<", "-", *_]:
+        print("assignment")
+
+    case _: pass
 ```
 \End{multicols}
 
+### Using the click library
+
+Writing a program to take in command line arguments can be a chore. A manual approach like the first example doesn't scale well if there are lots of options. However, using a library like click allows for much more concise code, automatically creating a `--help` method from the function docstring and providing error handling on incorrect usage.
+
+``` {.python .numberLines}
+import inspect
+import sys
+
+
+match sys.argv: # pyright: reportMatchNotExhaustive=false
+    case [script_name, *other_args] if "--help" in other_args:
+        print(inspect.cleandoc(f"""
+            Usage: {script_name} [OPTIONS] [NAME]
+
+            Prints "Hello, NAME!", or simply "Hello, World!" if a name is not specified.
+
+            Options:
+            --help  Show this message and exit.
+        """))
+
+    case [script_name, name, *_]:
+        print(f"Hello, {name}!")
+
+    case [script_name]:
+        print("Hello, World!")
+
+    case [script_name]:
+        print(inspect.cleandoc(f"""
+            Usage: {script_name} [OPTIONS] [NAME]
+            Try '{script_name} --help' for help.
+
+            Argument error
+        """))
+
+        sys.exit(2)
+```
+
+``` {.python .numberLines}
+import click
+
+@click.command
+@click.argument("name", required=False, default="World")
+def hello(name: str = "world"):
+    """Prints "Hello, NAME!", or simply "Hello, World!" if a name is not specified."""
+    click.echo(f"Hello, {name}!")
+
+hello() # pylint: disable=no-value-for-parameter
+```
+\
+
+```bash
+$ python main.py --help
+Usage: main.py [OPTIONS] [NAME]
+
+  Prints "Hello, NAME!", or simply "Hello, World!" if a name is not specified.
+
+Options:
+  --help  Show this message and exit.
+
+$ python main.py Ali
+Hello, Ali!
+
+$ python main.py
+Hello, World!
+```
 
 ## High level system overview
+
+**Scanning**
 
 Converting 'pseudo-code' to *machine code* is comprised of several stages. After the user's source code is read in from a file or *stdin* it is stored in a variable of type string and resides in memory. The first main stage is known as scanning of tokenizing where the alphabet of characters are grouped together to form tokens that represent the grammar and punctuation of the language.
 
 During this stage lexical analysis is performed to group the right amount of characters into the right token. Some tokens are made up of single characters such as  (+) and (-). Whereas other tokens are made up of a set number of characters  such as FOR and IF.
-
-STRING and  NUMBER literals are made up of a variable number of characters and need to be handled correctly. If the number 3 is found inside of a string, it should be treated as part of the STRING literal and not its own NUMBER literal. Therefore our scanner program will need to treat the same character differently depending on its state such as whether it has seen an opening `"` or `'`. The NUMBER literals include floats so the scanner should also handle decimal points correctly.
 
 **Source code**
 
@@ -256,6 +379,8 @@ STRING and  NUMBER literals are made up of a variable number of characters and n
              i <- i + 1
          ENDWHILE                              ←─ ENDWHILE token
 ```
+
+STRING and NUMBER literals are made up of a variable number of characters and need to be handled correctly. If the number 3 is found inside of a string, it should be treated as part of the STRING literal and not its own NUMBER literal. Therefore our scanner program will need to treat the same character differently depending on its state such as whether it has seen an opening `"` or `'`. This makes an OOP model a suitable paradigm for implementing a scanner. The NUMBER literals include floats so the scanner should also handle decimal points correctly.
 
 **Table of tokens**
 
@@ -287,34 +412,35 @@ STRING and  NUMBER literals are made up of a variable number of characters and n
 | EOF        |                       |
 
 
-**Abstract Syntax Tree**
-
-Looking in the table, the scanner has produced 18 separate tokens including an EOF (End Of File) token. The variable `i` also given a special  IDENTIFIER token. We can use a hashmap  data structure to store the value of `i` as it is incremented at the end of the for loop, so that it is printed correctly on the fifth line.
+Looking in the table, the scanner has produced 18 separate tokens including an EOF (End Of File) token. The variable `i` also given a special IDENTIFIER token. This table is all that is needed for the next stage, parsing.
 
 **Parsing**
 
 The next step is parsing, where we convert the alphabet of tokens into expressions.  This will be modelled using an as an Abstract Syntax Tree (AST). This nesting of the nodes inside a tree allows us to represent the nesting or or `FOR` and `IF` blocks. As well as correctly defining the order of operations of expressions following BIDMAS.
 
 To do this the parser could use two possible methods to recognize the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
-To do this the parser could use two possible methods to recognize the start and end of out `FOR` and `IF` blocks. Method 1 involves counting indentation levels which would require our scanner to emit INDENT tokens matching tab character or spaces. This can be complicated and erroneous where the user inconsistently mixes tabs and spaces. However, it would make the use of `ENFOR` and `ENDIF` keywords optional. 
 
-The second method is completely ignoring the indentation and only looking at the `ENDFOR` and `ENDIF` to determine the end of our `FOR` and `IF` blocks. This is simpler and less error-prone as it makes leading spaces or tab optional, but the user can still include them for readability. Therefore, this is the design i'll chose to use.
+The second method is completely ignoring the indentation and only looking at the `ENDFOR` and `ENDIF` to determine the end of our `FOR` and `IF` blocks. This is simpler and a lot easier to implement as we can make leading spaces and tabs insignificant, but the user can still include them for readability. Therefore, this is the design i'll chose to use.
 
 That aside, after parsing our AST looks like this:
 
 ![](assets/syntax_tree_edit.svg)
 
+**syntax tree**
+
 During this stage the parser performs syntactic analysis, mapping tokens to `WHILE` and `IF` The parser sees a `WHILE` token so it knows what follows has to be a condition. Every statement thereafter is nested inside of the `WHILE` block until the parser sees the `ENDWHILE` token, A Tree data structure to represent the order of operations. The final stage is interpreting this tree.
 
-The tree is interpreted from the leaves to the root. The source doe is made up of two statements. The first is the variable declaration `i <- 1` and the next is the `WHILE` loop. The while loop is then made of the condition `i <= 5` and two statements. The two statements are the `IF` statement and another assignment `i <- i + 1`. The `IF` statement also consists of a condition `i = 3`, only a single `=` and not a double `==`. This is because an `<-` is used as the assignment operator, and so the comparison operator hence is a single equal sign, compared to other languages. The `IF` statement has a then and else branch each consisting of a single `OUTPUT` statement. Each construct like the `WHILE` and the `IF` can nest any amount of statements.
+The tree is interpreted from the leaves to the root. The source node is made up of two statements. The first is the variable declaration `i <- 1` and the next is the `WHILE` loop. The while loop is then made of the condition `i <= 5` and two statements. The two statements are the `IF` statement and another assignment `i <- i + 1`. The `IF` statement also consists of a condition `i = 3`, only a single `=` and not a double `==`. This is because an `<-` is used as the assignment operator, and so the comparison operator hence is a single equal sign, compared to other languages. The `IF` statement has a then and else branch each consisting of a single `OUTPUT` statement. Each construct like the `WHILE` and the `IF` can nest any amount of statements.
 
 A symbol table is used to keep track of the `i` variable as its value changes throughout the program. From here instead of traversing the tree and emitting byte code, we'll take a simpler but less efficient approach and run the python equivalent for each statement. So the `OUTPUT` is then mapped to the python `print()` statement.
 
-## Language syntax
+## Language grammar
 
-Backus-naur (BNF) is useful notation for describing the grammar of languages. BNF is a series of rules, consisting of a head and a body making up a production. The head is on the LHS of the `'::='` and the body is on RHS of the `'::='`. A rule can either be *terminal* or *non-terminal*. A *terminal* production matches string literals, number literals or tokens. A *non-terminal* production matches other rules. Note: keywords are case insensitive so `PRINT` or `print` or any other casing is perfectly valid. Although this gives the user less options for valid variable names, this gives the language more flexibility in the valid source code it accepts. Each BNF statement will be accompanied by a syntax diagram, for a clearer explanation.
+Backus-naur (BNF) is useful notation for describing the grammar of languages. BNF is a series of rules, consisting of a head and a body making up a production. The head is on the LHS of the `'::='` and the body is on RHS of the `'::='`. A rule can either be *terminal* or *non-terminal*. A *terminal* production matches string literals, number literals or tokens. A *non-terminal* production matches other rules.
 
-Moreover the meta-characters `(*)`,  `(?)` and `(|)` will be used. The `(*)` means zero or more, the `(?)` means zero or one and the `(|)` means or.
+Note: keywords are case insensitive so `PRINT` or `print` or any other casing is perfectly valid. Although this gives the user less options for valid variable names, this gives the language more flexibility in the valid source code it accepts. Each BNF statement will be accompanied by a syntax diagram also known as a railroad diagram, for a clearer explanation.
+
+The meta-characters `(*)`,  `(?)` and `(|)` are used. The `(*)` means zero or more, the `(?)` means zero or one and the `(|)` means or.
 
 `<program> ::= <declarations> "EOF"`
 
@@ -392,22 +518,24 @@ Moreover the meta-characters `(*)`,  `(?)` and `(|)` will be used. The `(*)` mea
 
 ![](assets/primary.svg)
 
+\pagebreak
 
 ## User interface
 
 My program will have two user interfaces: a command line interface as well as a web based ide. The web based ide will need to have an editor and output windows with three buttons. One to run the code, one to server as a link to documentation and another button to toggle between a light and dark theme.
 
-\pagebreak
+### Online IDE
+
 ![prototype of online ide ](assets/website.svg)
 
-The fronted for my online ide will be build in plain html and css. For the backend i'll use fastapi for its type safety. The way it will work is whe  the user enters in code and clicks the 'Run' button, the frontend will sesnd a http `GET` request to the fastapi server, with the body or the request containint the code the user entered in. When the fastapi server recieves this respone, it will evalute the AQA pseudo-code and return a respone consisted of the output of the code. This output is then displayed in the output window.
+The fronted for my online ide will be build in plain html and css. For the backend i'll use fastapi for its type safety. The way it will work is whe  the user enters in code and clicks the 'Run' button, the frontend will send a http `GET` request to the fastapi server, with the body or the request containing the code the user entered in. When the fastapi server receives this response, it will evaluate the AQA pseudo-code and return a response consisted of the output of the code. This output is then displayed in the output window.
 
 ![GET response](assets/server.svg)
 
+
+### CLI interface
+
 My program will have a basic command line interface. It should let the user pick from running the program via the Read Eval Print Loop (REPl), passing in the program as a string, or reading in the program as a file. The program should also display a helpful message when the program is called with the `---help` flag. Below shows a draft of what this might look like.
-
-\pagebreak
-
 
 ``` {.bash .numberLines}
 # display help message
@@ -429,7 +557,7 @@ Error: cannot specify both filename and cmd at same time
 # starting the repl (read-eval-print-loop)
 $ python aqainterpreter.py
 > OUTPUT 'Hi!'
-Hi!****
+Hi!
 
 # program read in from file
 $ python aqainterpreter.py input.txt
@@ -439,22 +567,40 @@ Hi!
 $ python aqainterpreter.py --cmd "OUTPUT 'Hi!'"
 Hi!
 ```
+\pagebreak
 
+## Class, hierarchy diagrams
+
+Below I have produces a class diagram as well a hierarchy chart showing the rough structure of my project.  The code for my project is also available on a public github repo at  [https://github.com/CyberWarrior5466/nea](https://github.com/CyberWarrior5466/nea).
+
+**module hierarchy**
+
+![Hierarchy diagram](assets/packages.svg){ width=30% }
+
+**Class diagrams**
+
+![Scanner](assets/scanner.svg){ width=30% }
+![Parser](assets/parser.svg){ width=20% }
+![Symbol Table](assets/symbol_table.svg){ width=30% }
+
+![Class diagram](assets/classes.png)
 
 \pagebreak
 # Technical Solution
 
-**module hierarchy**
+## Grade A/B algorithms used
 
-![](assets/packages.svg){ width=30% }
+![Table A](assets/table_a.png)
 
-**Class diagrams**
+My program uses a number of complex data structures and algorithms involved in translating pseudo-code. A hash table is used in the `SymbolTable` class in the `environment.py` file. which  is used to keep track of variables as the change throughout the execution of an AQA pseudo-code program.
 
-![](assets/scanner.svg){ width=30% }
-![](assets/parser.svg){ width=20% }
-![](assets/symbol_table.svg){ width=30% }
+My program uses complex OOP; In `interpreter.py` each class inherits from either the `Expr` of `Stmt` interface. Each class has a `.interpret()` method and the `If` and `While` class call `.interpret()` on their children, which is an example of polymorphism. These classes are instantiated in the `parser.py` file.
 
-![](assets/classes.svg)
+The list operations `.append()` is used on line 17  in `scanner.py`. And the `.extent()` method is used on line 274 in `parse.py`. Complex pattern matching occurs in the `_scan_token()` method on line 48 in `scanner.py` using pythons match statement as described in [addressing redundancy section](#using-match-statement).
+
+![Table B](assets/table_b.png)
+
+AQA pseudo-code is read in from a text file in line 45 and 46 in `main.py`
 
 ## Project structure
 
@@ -975,12 +1121,12 @@ END
    
    | Traditional | Unicode |
    | :---------: | :-----: |
-   |      *      |   ×     |
-   |      /      |   ÷     |
+   |      *      |    ×    |
+   |      /      |    ÷    |
    |     !=      |  `!=`   |
    |     <=      |  `<=`   |
    |     >=      |  `>=`   |
-   |     <-      |  `←`    |
+   |     <-      |   `←`   |
 
 4. Robust error handling, informing the user of what line syntax errors have occurred.
 

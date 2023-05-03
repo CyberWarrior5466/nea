@@ -10,5 +10,5 @@
 <path d="M155,86L188,86L188,56L155,56Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
 <text x="171" y="71" text-anchor="middle" fill="rgb(0,0,0)" dominant-baseline="central"> ⭕ </text>
 <path d="M17,32L449,32A15 15 0 0 0 464 17A15 15 0 0 0 449 2L17,2A15 15 0 0 0 2 17A15 15 0 0 0 17 32Z"  style="fill:none;stroke-width:2.16;stroke:rgb(0,0,0);" />
-<text x="5" y="17" text-anchor="start" fill="rgb(0,0,0)" dominant-baseline="central">&gt;  https://www.website.com</text>
+<text x="5" y="17" text-anchor="start" fill="rgb(0,0,0)" dominant-baseline="central">   https://www.website.com</text>
 </svg>

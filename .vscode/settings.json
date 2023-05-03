@@ -1,13 +1,17 @@
 {
     "[markdown]": {
-        // "editor.fontFamily": "calibri, Carlito"
+        "editor.fontFamily": "calibri, Carlito"
     },
     "cSpell.enabled": true,
     "cSpell.words": [
         "AQA's",
         "aqainterpreter",
         "BIDMAS",
+        "cleandoc",
         "colours",
+        "columnbreak",
+        "dataclass",
+        "dataclasses",
         "ENDFOR",
         "endrecord",
         "endsub",
@@ -15,17 +19,22 @@
         "ENDWHILE",
         "ENDWWHILE",
         "ENFOR",
+        "fastapi",
         "GCSE",
         "infp",
         "inotify",
+        "multicols",
         "Naur",
         "Nystrom",
         "pagebreak",
         "pandoc",
         "PAREN",
+        "pylint",
         "pyproject",
+        "pyright",
         "pytest",
         "Reece",
+        "repr",
         "startswith",
         "texlive",
         "Todos",
@@ -35,5 +44,8 @@
     ],
     "python.defaultInterpreterPath": "~/.local/share/hatch/env/virtual/aqainterpreter/HIL0LsBw/aqainterpreter/bin/python",
     "cSpell.enableFiletypes": ["!yaml"],
-    "cSpell.language": "en-GB"
+    "cSpell.language": "en-GB",
+    "pylint.importStrategy": "useBundled",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

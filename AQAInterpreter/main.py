@@ -30,7 +30,7 @@ def run(source: str, debug: bool = False) -> str:
     return "".join(output)
 
 
-@click.command()
+@click.command
 @click.argument("filename", required=False)
 @click.option("-c", "--cmd")
 @click.option("-d", "--debug", is_flag=True, default=False, help="Show tokens and ast")
