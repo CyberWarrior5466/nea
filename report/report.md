@@ -139,7 +139,7 @@ function translate(line) {
 }
 
 ```
-![http://ibcomp.fis.edu/pseudocode/pcode.html](assets/screenshot1.png){width=85% align=centre}
+![http://ibcomp.fis.edu/pseudocode/pcode.html](assets/screenshot1.png){width=70% align=centre}
 
 \pagebreak
 
@@ -191,6 +191,56 @@ Another disadvantage is that both solutions are limited to the IB computer scien
 \pagebreak
 
 # Documented design
+## User interface
+
+My program will have two user interfaces: a web based ide as well as a command line interface. The web based ide is intended for quickly testing out AQA-pseudo-code programs, whereas the CLI is intended for local development or large pseudo-code programs.
+
+### Online IDE
+
+![prototype of online ide ](assets/website.svg)
+
+The web based ide will need to have an editor and output windows with three buttons. One to run the code, one to server as a link to documentation and another button to toggle between a light and dark theme.
+
+The fronted for my online ide will be build in plain html and css. For the backend i'll use fastapi for its type safety. The way it will work is whe  the user enters in code and clicks the 'Run' button, the frontend will send a http `GET` request to the fastapi server, with the body or the request containing the code the user entered in. When the fastapi server receives this response, it will evaluate the AQA pseudo-code and return a response consisted of the output of the code. This output is then displayed in the output window.
+
+![GET response](assets/server.svg)
+
+
+### CLI interface
+
+My program will have a basic command line interface. It should let the user pick from running the program via the Read Eval Print Loop (REPl), passing in the program as a string, or reading in the program as a file. The program should also display a helpful message when the program is called with the `---help` flag. Below shows a draft of what this might look like.
+
+``` {.bash .numberLines}
+# display help message
+$ python aqainterpreter.py --help
+Usage: aqainterpreter.py [OPTIONS] [FILENAME]
+
+Options:
+  -c, --cmd TEXT
+  --help          Show this message and exit.
+
+
+# incorrect usage
+$ python aqainterpreter.py filename -c cmd
+Usage: aqainterpreter.py [OPTIONS] [FILENAME]
+Try 'aqainterpreter.py --help' for help.
+
+Error: cannot specify both filename and cmd at same time
+
+# starting the repl (read-eval-print-loop)
+$ python aqainterpreter.py
+> OUTPUT 'Hi!'
+Hi!
+
+# program read in from file
+$ python aqainterpreter.py input.txt
+Hi!
+
+# program passed in as a string
+$ python aqainterpreter.py --cmd "OUTPUT 'Hi!'"
+Hi!
+```
+\pagebreak
 
 ## Language choice
 
@@ -256,6 +306,19 @@ print(instance)
 # prints `bar`
 instance.attribute = "bar"
 print(instance.attribute)
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 \End{multicols}
 
@@ -286,6 +349,8 @@ match tokens:
         print("assignment")
 
     case _: pass
+
+
 ```
 \End{multicols}
 
@@ -329,6 +394,7 @@ match sys.argv: # pyright: reportMatchNotExhaustive=false
 ``` {.python .numberLines}
 import click
 
+
 @click.command
 @click.argument("name", required=False, default="World")
 def hello(name: str = "world"):
@@ -337,7 +403,6 @@ def hello(name: str = "world"):
 
 hello() # pylint: disable=no-value-for-parameter
 ```
-\
 
 ```bash
 $ python main.py --help
@@ -520,54 +585,6 @@ The meta-characters `(*)`,  `(?)` and `(|)` are used. The `(*)` means zero or mo
 
 \pagebreak
 
-## User interface
-
-My program will have two user interfaces: a command line interface as well as a web based ide. The web based ide will need to have an editor and output windows with three buttons. One to run the code, one to server as a link to documentation and another button to toggle between a light and dark theme.
-
-### Online IDE
-
-![prototype of online ide ](assets/website.svg)
-
-The fronted for my online ide will be build in plain html and css. For the backend i'll use fastapi for its type safety. The way it will work is whe  the user enters in code and clicks the 'Run' button, the frontend will send a http `GET` request to the fastapi server, with the body or the request containing the code the user entered in. When the fastapi server receives this response, it will evaluate the AQA pseudo-code and return a response consisted of the output of the code. This output is then displayed in the output window.
-
-![GET response](assets/server.svg)
-
-
-### CLI interface
-
-My program will have a basic command line interface. It should let the user pick from running the program via the Read Eval Print Loop (REPl), passing in the program as a string, or reading in the program as a file. The program should also display a helpful message when the program is called with the `---help` flag. Below shows a draft of what this might look like.
-
-``` {.bash .numberLines}
-# display help message
-$ python aqainterpreter.py --help
-Usage: aqainterpreter.py [OPTIONS] [FILENAME]
-
-Options:
-  -c, --cmd TEXT
-  --help          Show this message and exit.
-
-
-# incorrect usage
-$ python aqainterpreter.py filename -c cmd
-Usage: aqainterpreter.py [OPTIONS] [FILENAME]
-Try 'aqainterpreter.py --help' for help.
-
-Error: cannot specify both filename and cmd at same time
-
-# starting the repl (read-eval-print-loop)
-$ python aqainterpreter.py
-> OUTPUT 'Hi!'
-Hi!
-
-# program read in from file
-$ python aqainterpreter.py input.txt
-Hi!
-
-# program passed in as a string
-$ python aqainterpreter.py --cmd "OUTPUT 'Hi!'"
-Hi!
-```
-\pagebreak
 
 ## Class, hierarchy diagrams
 
@@ -744,146 +761,17 @@ pandoc metadata.yaml report.md \
 \pagebreak
 # Testing
 
-To perform quality assurance on my project, I created several unit tests inside of the `test_.py` file. These tests where run using pythons `pytest` library. The `pytest` library automatically runs all functions and files prefixed with `test_` hence the strange name `test_.py`. Here is a more detailed snippet of all the code samples that where used as testing. However as the set of string matched by a context free grammar is infinite, it is impossible to test every pseudo-code input that can be run by my program. Therefore my testing covers the main language features I managed to implement and a couple extra pseudo-code programs that make use of multiple language features at once.
+To perform quality assurance on my project, I created several unit tests inside of the `test_.py` file. These tests where run using python's `pytest` library. The `pytest` library automatically runs all functions and files prefixed with `test_` hence the strange name `test_.py`. As the set of string matched by a context free grammar is infinite, it is impossible to test every possible pseudo-code combination. Therefore my testing covers the main language features I managed to implement and a couple extra pseudo-code programs that make use of multiple language features at once.
 
-## Testing expressions
+\TESTS
 
-``` {.aqa .numberLines}
-OUTPUT 1 + 1  # 2
-OUTPUT 1 - 1  # 0
-OUTPUT -1     # -1
-OUTPUT 2 * 1  # 2
-OUTPUT 2 × 1  # 2
-OUTPUT 2 / 1  # 2.0
-OUTPUT 2 ÷ 1  # 2.0
+Here is a screenshot showing all the tests passing inside of pytest.
 
-OUTPUT "hi" + "÷"  # "hi÷"
-OUTPUT "a" * 3     # "aaa"
-
-OUTPUT 1 > 0    # True
-OUTPUT 1 ≥ 0    # True
-OUTPUT 1 >= 1   # True
-OUTPUT 1 < 0    # False
-OUTPUT 1 ≤ 0    # False
-OUTPUT 1 <= 1   # True
-```
-
-## Testing comments
-``` {.aqa .numberLines}
-# a comments
-```
-
-## Testing assignment
-``` {.aqa .numberLines}
-a <- 0
-a <- a + 1
-OUTPUT a   # 1
-```
-
-## Testing assignment
-``` {.aqa .numberLines}
-IF True
-   OUTPUT "yes"
-ENDIF  # yes
-
-IF False
-   OUTPUT "yes"
-ENDIF  # "yes"
-
-IF True
-   IF True
-      OUTPUT "yes"
-   ENDIF
-ENDIF  # "yes"
-```
-
-## Testing while loops
-``` {.aqa .numberLines}
-a <- 1
-WHILE a <= 3 DO
-   OUTPUT a
-   a <- a + 1
-ENDWHILE  # 1, 2, 3
-
-# fibonacci sequence
-a <- 1
-b <- 1
-c <- 2
-count <- 0
-WHILE count != 2
-    OUTPUT a
-    a <- b + c
-    OUTPUT b
-    b <- c + a
-    OUTPUT c
-    c <- a + b
-    count <- count + 1
-ENDWHILE  # 1, 1, 2, 3, 5, 8 
-```
-
-## Testing for loops
-``` {.aqa .numberLines}
-FOR a <- 1 TO 1
-   OUTPUT a
-ENDFOR # 1
-
-FOR a <- 1 TO 1 STEP 1
-   OUTPUT a
-ENDFOR # 1
-
-FOR a <- 1 TO 1 STEP -1
-   OUTPUT a
-ENDFOR # 1
-
-FOR a <- 1 TO 3
-   OUTPUT a
-ENDFOR # 1, 2, 3
-
-FOR a <- 1 TO 3 STEP 1
-   OUTPUT a
-ENDFOR # 1, 2, 3
-
-FOR a <- 3 TO 1
-   OUTPUT a
-ENDFOR # 3, 2, 1
-
-FOR a <- 3 TO 1 STEP -1
-   OUTPUT a
-ENDFOR # 3, 2, 1
-
-FOR a <- 1 TO 5 STEP 2
-   OUTPUT a
-ENDFOR # 1, 3, 5
-
-FOR a <- 5 TO 1 STEP -2
-   OUTPUT a
-ENDFOR # 5, 3, 1
-
-FOR a <- 1 TO 2
-   FOR b <- 1 TO 2
-       OUTPUT a
-       OUTPUT b
-       OUTPUT ''
-   ENDFOR
-ENDFOR  # 1,1  1,2  2,1  2,2
-
-FOR a <- 1 TO 12
-    FOR b <- 1 TO 12
-        OUTPUT a + " × " + b + " = " + (a * b)
-    END
-END
-# 1 × 1 = 1
-# 1 × 2 = 2
-# 1 × 3 = 3
-# 1 × 4 = 4
-# 1 × 5 = 5
-# 1 × 6 = 6
-# ... all the times tables up to 12 × 12
-```
+![Pytest output](assets/pytest.png)
 
 ## Tokens and AST
 
-Here are the tokens and the ast generated by my program for a couple of the tests as showing them all would be too long.
+My program has an optional `--debug`. When this flag is passed the list of tokens and the Abstract Syntax Tree is also printed in addition to the normal output of the program. Showing the tokens list and AST for every one of my units tests would be tedious, so below is a sample of three programs.
 
 ### Example program 1
 
@@ -1099,7 +987,7 @@ END
 
 ## [Project Requirements](#project-requirements)
 
-**The requirements for this project are repeated again heree so you do not have to flick back to the analysis section.**
+**The requirements for this project are repeated again here so you do not have to flick back to the analysis section.**
 
 1. Create a tree-walk interpreter for all the features in AQA's 'pseudo-code' command set including but not limited to: 
    
@@ -1136,11 +1024,11 @@ END
 
 ----
 
-## Assesing whether the requirements where met
+## Assessing whether the requirements where met
 
 My program achieves a large number of my project requirements so overall I consider it a success. 
 
-1. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. A `REPEAT` loop is just syntatic sugar for a `WHILE` loop where the condition is evaluated at the end instead of at the start, so i would argue this objective was not paramount. 
+1. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. A `REPEAT` loop is just syntactic sugar for a `WHILE` loop where the condition is evaluated at the end instead of at the start, so i would argue this objective was not paramount. 
    
    No `SUBROUTINE` or function logic was implemented which would of required the use of requires using a call stack. None of the functions where implemented which would of additionally required implementing a call stack. All of the data types where implemented being based of python's builting types.
    

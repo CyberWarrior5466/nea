@@ -1,5 +1,0 @@
-IF False THEN
-    OUTPUT "true"
-ELSE
-    OUTPUT "skjasd"
-ENDIF

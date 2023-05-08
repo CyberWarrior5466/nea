@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-lst = (
+files_list = (
     (".gitignore", "text"),
     ("LICENSE", "text"),
     ("pyproject.toml", "toml"),
@@ -16,14 +16,15 @@ lst = (
     ("AQAInterpreter/environment.py", "python"),
     ("AQAInterpreter/parser.py", "python"),
     ("AQAInterpreter/interpreter.py", "python"),
-    ("AQAInterpreter/test_.py", "python"),
 )
 
+tests_list = (("AQAInterpreter/test_.py", "python"),)
 
-out = (
+
+files_out = (
     "```\n"
     + subprocess.run(
-        f"tree --prune -P '{'|'.join(Path(row[0]).name for row in lst)}'",
+        f"tree --prune -P '{'|'.join(Path(row[0]).name for row in files_list)}'",
         shell=True,
         text=True,
         capture_output=True,
@@ -31,7 +32,7 @@ out = (
     ).stdout.rstrip()
     + "\n```"
 )
-
+tests_out = ""
 
 TEMPLATE = """
 ## {}
@@ -41,18 +42,20 @@ TEMPLATE = """
 """
 
 
-for file, file_ext in lst:
-    out += TEMPLATE.format(file, file_ext, open(file, encoding="utf-8").read())
+for file, file_ext in files_list:
+    files_out += TEMPLATE.format(file, file_ext, Path(file).read_text(encoding="utf-8"))
 
+for file, file_ext in tests_list:
+    tests_out += TEMPLATE.format(file, file_ext, Path(file).read_text(encoding="utf-8"))
 
-with open(sys.argv[1], encoding="utf-8") as infp:
-    content = infp.read()
+file_path = Path(sys.argv[1])
 
-content = content.replace("\\TECHNICAL_SOLUTION", out)
+content = file_path.read_text(encoding="utf-8")
+content = content.replace("\\TECHNICAL_SOLUTION", files_out)
+content = content.replace("\\TESTS", tests_out)
 
 if len(sys.argv) == 3:
     for char in ("│", "╭", "─", "├", "└", "∕", "≠", "≤", "≥"):
         content = content.replace(char, "")
 
-with open(sys.argv[1], "w", encoding="utf-8") as outfile:
-    outfile.write(content)
+file_path.write_text(content, encoding="utf-8")

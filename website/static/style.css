@@ -1,0 +1,54 @@
+@font-face {
+    font-family: bootstrap-icons;
+    src: url("bootstrap-icons.woff2");
+}
+
+:root {
+    --size: 35px;
+    --margin: max(var(--size), 5vw);
+}
+
+html {
+    margin-left: var(--margin);
+    margin-right: var(--margin);
+    margin-top: var(--size);
+    margin-bottom: var(--size);
+}
+
+body {
+    font-family: bootstrap-icons, system-ui, sans-serif;
+    margin: 0;
+}
+
+#output {
+    overflow: auto;
+    font-family: monospace;
+}
+
+#monaco-editor {
+    overflow: auto;
+}
+
+.content {
+    margin-top: 0.5em;
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border: 1px solid gray;
+    border-radius: var(--bs-border-radius);
+
+    /*
+     *  100vh - is the full height
+     *  2*var(--size) - is html margin-top and margin-bottom
+     *  0.5em - is h2 margin-bottom 
+     *  2*var(--bs-border-width) - is the 2*1px border
+     *  1.5em - is the button padding
+     *  1.25em - is the button font-size
+     */
+    height: calc(100vh - 2*var(--size) - 0.5em - calc(1.375em + 1.5vw) - 2*var(--bs-border-width) - 1.5em - 1.25em);
+}
+
+.content>* {
+    width: calc(50vw - var(--margin));
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>browser-amd-editor</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <script src="theme.js"></script>
+
+  <!-- <h2>AQA Pseudo-code interpreter</h2> -->
+  <!-- <br /> -->
+
+  <button type="button" class="btn btn-success btn-sm" onclick="run()">
+    <i class="bi bi-play-fill"></i> Run
+  </button>
+
+  <button type="button" class="btn btn-danger btn-sm" onclick="clearOutput()">
+    <i class="bi bi-trash-fill"></i> Clear Output
+  </button>
+
+  <button type="button" class="btn btn-primary btn-sm" onclick="changeTheme()">
+    <i class="bi bi-circle-half"></i> Theme
+  </button>
+
+  <a href="https://filestore.aqa.org.uk/resources/computing/AQA-8525-NG-PC.PDF" class="btn btn-primary btn-sm">
+    <i class="bi bi-book-half"></i> Docs
+  </a>
+
+  <a href="https://github.com/CyberWarrior5466/nea" class="btn btn-primary btn-sm">
+    <i class="bi bi-github"></i> Github
+  </a>
+
+  <div class="content">
+    <div id="monaco-editor"></div>
+    <div id="output"></div>
+  </div>
+
+  <script src="vs/loader.js"></script>
+  <script src="src.js"></script>
+</body>
+
+</html>

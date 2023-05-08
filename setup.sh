@@ -28,6 +28,7 @@
 # hatch shell
 
 # # publish to pypi
+# # increment version in `pyproject.toml`
 # hatch build && hatch publish && rm -rf dist
 #   # go on https://pypi.org
 #   # get a token https://pypi.org/help/#apitoke

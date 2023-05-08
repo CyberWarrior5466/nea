@@ -29,6 +29,7 @@
         "pagebreak",
         "pandoc",
         "PAREN",
+        "pydantic",
         "pylint",
         "pyproject",
         "pyright",
@@ -40,12 +41,10 @@
         "Todos",
         "transpiling",
         "unterminated",
+        "uvicorn",
         "xelatex"
     ],
     "python.defaultInterpreterPath": "~/.local/share/hatch/env/virtual/aqainterpreter/HIL0LsBw/aqainterpreter/bin/python",
     "cSpell.enableFiletypes": ["!yaml"],
     "cSpell.language": "en-GB",
-    "pylint.importStrategy": "useBundled",
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
 }

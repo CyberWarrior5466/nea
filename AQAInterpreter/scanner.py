@@ -190,9 +190,9 @@ class Scanner:
                     self._add(PRINT)
                 else:
                     self._add(IDENTIFIER)
-
-            case _:
-                errors.error(self._line, "Unexpected character")
+            case [character, *_]:
+                errors.report(self._line, character, "Unexpected character")
+                self._current += 1
 
     def scan_tokens(self) -> list[Token]:
         """takes in `source` and performs lexical analysis emitting tokens"""

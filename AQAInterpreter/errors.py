@@ -1,6 +1,5 @@
 from AQAInterpreter.tokens import *
 from dataclasses import dataclass
-import sys
 
 
 @dataclass
@@ -14,16 +13,15 @@ class AQAParseError(RuntimeError):
     message: str
 
 
-def report(line: int, where: str, message: str) -> None:
-    print(f"[line {line}] Error {where}: {message}", file=sys.stderr)
+def report(line: str, where: str, message: str, output: list[str]):
+    output.append(f"[{line}] Error '{where}': {message}")
 
 
-def error(token: Token | int, message: str) -> None:
+def error(token: Token | int, message: str, output: list[str]):
     if isinstance(token, Token):
-        if token.type == NEWLINE:
-            report(token.line, "at end of line", message)
-        else:
-            report(token.line, " at '" + token.lexeme + "'", message)
+        line = "end of file" if token.type == EOF else f"line {token.line}"
+        where = "end of line" if token.type == NEWLINE else token.lexeme
+        report(line, where, message, output)
     else:
-        line = token
-        report(line, "", message)
+        report("line {token}", "", message, output)
+

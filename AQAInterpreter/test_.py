@@ -73,7 +73,7 @@ def test_while_loops():
 
     assert run("""
     a <- 3
-    WHILE a >= 0 DO
+    WHILE a >= 1 DO
         OUTPUT a
         a <- a - 1
     ENDWHILE
@@ -84,68 +84,72 @@ def test_while_loops():
 def test_for_loops():
     assert run("""
     FOR a <- 1 TO 1
-    """)
+        OUTPUT a
+    ENDFOR
+    """) == run("""
+    FOR a <- 1 TO 1 STEP 1
+        OUTPUT a
+    ENDFOR
+    """) == run("""
+    FOR a <- 1 TO 1 STEP -1
+        OUTPUT a
+    ENDFOR
+    """) == "1\n"
 
-    assert (
-        run("FOR a <- 1 TO 1", "OUTPUT a", "ENDFOR")
-        == run("FOR a <- 1 TO 1 STEP 1", "OUTPUT a", "ENDFOR")
-        == run("FOR a <- 1 TO 1 STEP -1", "OUTPUT a", "ENDFOR")
-        == "1\n"
-    )
-    assert (
-        run("FOR a <- 1 TO 3", "OUTPUT a", "ENDFOR")
-        == run("FOR a <- 1 TO 3 STEP 1", "OUTPUT a", "ENDFOR")
-        == "1\n2\n3\n"
-    )
+    assert run("""
+    FOR a <- 1 TO 3
+        OUTPUT a
+    ENDFOR
+    """) == run("""
+    FOR a <- 1 TO 3 STEP 1
+        OUTPUT a
+    ENDFOR
+    """) == "1\n2\n3\n"
 
-    assert (
-        run("FOR a <- 3 TO 1", "OUTPUT a", "ENDFOR")
-        == run("FOR a <- 3 TO 1 STEP -1", "OUTPUT a", "ENDFOR")
-        == "3\n2\n1\n"
-    )
+    assert run("""
+    FOR a <- 3 TO 1
+        OUTPUT a
+    ENDFOR
+    """) == run("""
+    FOR a <- 3 TO 1 STEP -1
+        OUTPUT a
+    ENDFOR
+    """) == "3\n2\n1\n"
 
-    assert run("FOR a <- 1 TO 5 STEP 2", "OUTPUT a", "ENDFOR") == "1\n3\n5\n"
-    assert run("FOR a <- 5 TO 1 STEP -2", "OUTPUT a", "ENDFOR") == "5\n3\n1\n"
+    assert run("""
+    FOR a <- 1 TO 5 STEP 2
+        OUTPUT a
+    ENDFOR
+    """) == "1\n3\n5\n"
 
-    # nested for loop
-    assert (
-        run(
-            "FOR a <- 1 TO 2",
-            "   FOR b <- 1 TO 2",
-            "       OUTPUT a",
-            "       OUTPUT b",
-            "       OUTPUT ''",
-            "   ENDFOR",
-            "ENDFOR",
-        )
-        == "1\n1\n\n1\n2\n\n2\n1\n\n2\n2\n\n"
-    )
+    assert run("""
+    FOR a <- 5 TO 1 STEP -2
+        OUTPUT a
+    ENDFOR
+    """) == "5\n3\n1\n"
 
-    assert (
-        run(
-            "FOR a <- 1 TO 2",
-            "   FOR b <- 1 TO 2",
-            "       OUTPUT a",
-            "       OUTPUT b",
-            "       OUTPUT ''",
-            "   ENDFOR",
-            "ENDFOR",
-        )
-        == "1\n1\n\n1\n2\n\n2\n1\n\n2\n2\n\n"
-    )
+    assert run("""
+    FOR a <- 1 TO 2
+        FOR b <- 1 TO 2
+            OUTPUT a
+            OUTPUT b
+            OUTPUT ""
+        ENDFOR
+    ENDFOR
+    """) == "1\n1\n\n1\n2\n\n2\n1\n\n2\n2\n\n"
 
     # fibonacci sequence
     assert run("""
     a <- 1
     b <- 1
     c <- 2
-    FOR _ <- 1 TO 2
-        OUTPUT a,
-        a <- b + c,
-        OUTPUT b,
-        b <- c + a,
-        OUTPUT c,
-        c <- a + b,
-        count <- count + 1,
+    FOR count <- 0 TO 4
+        OUTPUT a
+        a <- b + c
+        OUTPUT b
+        b <- c + a
+        OUTPUT c
+        c <- a + b
+        count <- count + 1
     ENDWHILE
-    """) == "1\n2\n3\n"
+    """) == "1\n1\n2\n3\n5\n8\n13\n21\n34\n"

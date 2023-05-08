@@ -1,8 +1,4 @@
-"""main program for AQAInterpreter module"""
-
-from pprint import pprint
 import click
-
 from AQAInterpreter.scanner import Scanner
 from AQAInterpreter.parser import Parser
 
@@ -12,22 +8,21 @@ def run(source: str, debug: bool = False) -> str:
 
     source += "\n"
     if debug:
-        print(source)
+        click.echo(source)
 
     tokens = Scanner(source).scan_tokens()
     if debug:
-        pprint(tokens)
-        print()
+        click.echo(tokens)
 
     output: list[str] = []
-    statements = Parser(tokens).parse()
+    statements = Parser(tokens, output).parse()
     if debug:
-        print(statements)
+        click.echo(statements)
 
     for statement in statements:
         statement.interpret(output)
 
-    return "".join(output)
+    return "\n".join(output) + "\n"
 
 
 @click.command
@@ -43,13 +38,14 @@ def main(filename: str, cmd: str, debug: bool):
 
     if filename:
         with open(filename, encoding="utf-8") as infp:
-            cmd = infp.read()
+            click.echo(run(infp.read(), debug=debug).rstrip())
+    elif cmd:
+        click.echo(run(cmd, debug=debug).rstrip())
     else:
+        # run REPL
         while True:
             click.echo(run(input("> "), debug=debug).rstrip())
 
-    click.echo(run(cmd, debug=debug).rstrip())
-
 
 if __name__ == "__main__":
-    main()
+    main()  # pylint: disable=no-value-for-parameter

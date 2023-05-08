@@ -116,7 +116,7 @@ class Print(Stmt):
     expression: Expr
 
     def interpret(self, output: list[str]):
-        output.append(str(self.expression.interpret()) + "\n")
+        output.append(str(self.expression.interpret()))
 
 
 @dataclass

@@ -5,10 +5,11 @@ from AQAInterpreter import errors
 @dataclass
 class Parser:
     tokens: list[Token]
+    output: list[str]
     _current: int = 0
 
     def _error(self, token: Token, message: str):
-        errors.error(token, message)
+        errors.error(token, message, self.output)
         return AQAParseError(token, message)
 
     def _match_token(self, *token_types: str) -> bool:
@@ -71,7 +72,7 @@ class Parser:
         elif self._match_token(IDENTIFIER):
             return Variable(self._previous())
 
-        raise error(self._peek(), "Expect expression")
+        raise self._error(self._peek(), "Expect expression")
 
     def _unary(self) -> Expr:
         if self._match_token(NOT, MINUS):
@@ -142,7 +143,7 @@ class Parser:
 
         while not self._match_token(END):
             if self._peek().type == EOF:
-                raise error(self._peek(), "Expected END after WHILE loop")
+                raise self._error(self._peek(), "Expected END after WHILE loop")
 
             if (stmt := self._statement()) is not None:
                 statements.extend(stmt)
@@ -181,7 +182,7 @@ class Parser:
 
         while not self._match_token(END):
             if self._peek().type == EOF:
-                raise self._error(self._peek(), "Expected TO inside FOR loop")
+                raise self._error(self._peek(), "Expected END after FOR loop")
             if (stmt := self._statement()) is not None:
                 statements += stmt
 
@@ -210,8 +211,7 @@ class Parser:
         then_branch: list[Stmt] = []
         else_branch: list[Stmt] = []
 
-        if self._peek().type in {THEN, COLON}:
-            self._match_token(THEN, COLON)
+        self._match_token(THEN, COLON)
 
         while not self._match_token(END):
             if self._peek().type == EOF:
@@ -221,9 +221,13 @@ class Parser:
                 then_branch.extend(stmt)
 
             if self._match_token(ELSE):
+                self._match_token(COLON)
+
                 while not self._match_token(END):
                     if self._peek().type == EOF:
-                        raise self._error(self._peek(), "Expected END after IF statement")
+                        raise self._error(
+                            self._peek(), "Expected END after IF statement"
+                        )
                     stmt = self._statement()
                     if stmt is not None:
                         else_branch.extend(stmt)
@@ -243,11 +247,10 @@ class Parser:
                 return self._for_statement()
             elif self._match_token(IF):
                 return self._if_statement()
-            elif self.tokens[self._current].type == EOF:
-                return
             else:
-                errors.error(self._peek(), "unexpected token")
-            
+                errors.error(self._peek(), "unexpected token", self.output)
+                self._advance()
+
     def _var_declaration(self) -> tuple[Var]:
         name = self._consume(IDENTIFIER, "Expect variable name. ")
         initialiser = self._expression() if self._match_token(ASSIGNMENT) else None
@@ -262,9 +265,12 @@ class Parser:
                 elif token.type == ASSIGNMENT:
                     return self._var_declaration()
         except AQAParseError as parse_error:
-            errors.error(parse_error.token, parse_error.message)
+            errors.error(parse_error.args[0], parse_error.args[1], self.output)
             self._synchronize()
             return None
+
+        # our program is blank
+        self._advance()
 
     def parse(self):
         statements: list[Stmt] = []
