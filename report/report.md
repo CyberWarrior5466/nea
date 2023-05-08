@@ -594,6 +594,7 @@ Below I have produces a class diagram as well a hierarchy chart showing the roug
 # Technical Solution
 
 ## Grade A/B algorithms used
+
 ![Table A](assets/table_a.png)
 
 My program uses a number of complex data structures and algorithms involved in translating pseudo-code. A hash table is used in the `SymbolTable` class in the `environment.py` file. which  is used to keep track of variables as the change throughout the execution of an AQA pseudo-code program.
@@ -1033,26 +1034,25 @@ My program achieves a large number of my project requirements so overall I consi
    No `SUBROUTINE` or function logic was implemented which would of required the use of requires using a call stack. None of the functions where implemented which would of additionally required implementing a call stack. All of the data types where implemented being based of python's built-in types. Variables were implemented but not arrays. Due to the lack or arrays, my program wasn't turing complete. But the use of control flow allows for some level of expressiveness. For example I was able to write a fibonacci sequence and a times tables program.
 
 2.  Objective two was met. This was not difficult and is implemented by the `.lower()` in `self.source[self._start : self._current].lower()` on line 160 of `scanner.py`
-3.  
-4.   The capitalisation of all the keywords in this documents was purely stylistic. Objective three was also fully met, due to more effort in `scanner.py`. Infant there aren't any other languages that support special symbols like `<-`, `<=`, `!=`, `÷` unless you use a special font with ligatures. The support of these symbols means my projects is more suitable for the source code to be printed.
+   
+3.   The story is the same of objective three. Special symbols like `<-`, `<=`, `!=`, `÷` are rarely used in other languages as they are difficult to type on a traditional keyboard. Fonts with ligature support are often used to emulate these symbols. My project works natively with the respective unicode characters working well for print and copy pasting examples from exam papers. The implementation is shown in `scanner.py` on line 62.
 
-Objective 4 was also met. My program shows helpful error messages. For example if the user entered:
+4. Objective four was also met. For example:
 
-``` {.aqa .numberLines}
-IF True
-    OUTPUT "HI"
-```
+    ``` {.aqa .numberLines}
+    IF True
+        OUTPUT "HI"
+    ```
 
-Then due to the logic in line 217-8 (and 225-226) in `parser.py`:
+    Then due to the logic in line 217-8 (and 225-226) in `parser.py`:
 
-``` {.python .numberLines}
-if self._peek().type == EOF:
-    raise self._error(self._peek(), "Expected END after IF statement")`
-```
+    ``` {.python .numberLines}
+    if self._peek().type == EOF:
+        raise self._error(self._peek(), "Expected END after IF statement")`
+    ```
 
-The user would see the message `[line 3] Error  at '': Expected END after IF statement`. This message clearly informs to the programmer that he forgot and `END` statement and the end of his `IF` statement and shows the line the parser encountered this error. This is triggered because the parser ran in to the `EOF` (End Of File) token whilst the `IF` had not been closed. Due to this example and others in `parser.py` I would conclude that my program does indeed feature robust error handling and useful error messages.
+    The user would see the message `[line 3] Error  at '': Expected END after IF statement`. This message clearly informs to the programmer that he forgot and `END` statement and the end of his `IF` statement and shows the line the parser encountered this error. This is triggered because the parser ran in to the `EOF` (End Of File) token whilst the `IF` had not been closed. Due to this example and others in `parser.py` I would conclude that my program does indeed feature robust error handling and useful error messages.
 
-Objective five was not quite met. I did have a prototype of an online IDE that would allow people to run pseudo-code right in their browser without having to have a python environment setup. Below is a screenshot as well as the HTML. However I didn't have time to hook it to my AQA interpreter or deploy it live on the web.
+5. Objective 5 was met. A screenshot of the online IDE is shown at the end of the [Grade A/B algorithms used](#grade-ab-algorithms-used) section. The website features a light and dark mode toggle improving accessibility. And the input window uses the monaco editor which powers vscode, giving access to rich shortcuts. However this adds another 500ms to the page delay. And the website does not feature the ability to save or load source code from a file or local browser storage, which was a feature present in two [existing solutions](#analysis-of-existing-solutions) solutions for IB pseudo-code.
 
-If the code editor looks familiar it is because it uses the monaco editor which also powers vscode for my client.
-
+6. Objective 6  was partially met. Syntax highlighting was defined in a format used to produce this document as described in the [Syntax highlighting section](#syntax-highlighting). However syntax highlighting was not defined for vscode for my client. Hence atom syntax highlighting wasn't available
