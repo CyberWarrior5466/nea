@@ -1,0 +1,1 @@
+![](report/assets/diagram.png){width=50%}

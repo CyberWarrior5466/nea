@@ -4,23 +4,22 @@
 
 ## Background
 
-Pseudo-code is a series of code like statements used to describe an existing algorithm or plan out a new one. Everyone has their own unique style of writing pseudo-code. It might look something like a recipe books with clear individual steps to follow. Or it could look something like an existing high level language, with compilers or interpreters already available.
+Pseudo-code is a series of code like statements used to describe an existing algorithm or plan out a new one. Everyone has their own unique style of writing pseudo-code whether that be something like a recipe books with clear individual steps to follow or much closer to an existing high level language.
 
-Pseudo-code is 'problem-oriented', the idea being you first write your solution in pseudo-code, and then when the time comes to program a solution,  your brain is free to think about the specific implementation details of the chosen high-level language. Therefore, the purpose of writing pseudo-code is to prototype and plan.
+Pseudo-code is 'problem-oriented', the idea being you first write your solution in pseudo-code, and then when the time comes to program a solution,  your brain is free to think about the specific implementation details of the chosen high-level language. Therefore, the primary purpose of writing pseudo-code is to prototype and plan.
 
-However some people find writing pseudo-code may be tedious or boring, and would prefer going straight into an  interpreted weakly-typed scripting languages such as python or java-script that trade robustness for rapid iteration speeds, enabling faster prototyping.
+However other people may find writing pseudo-code may be tedious or boring, and would prefer going straight into an interpreted weakly-typed scripting languages such as python or java-script that trade robustness for rapid iteration speeds, enabling faster prototyping, reducing the need of pseudo-code.
 
+**The imprecision of natural language**
 
-**the imprecision of natural language**
-
-Pseudo-code can also have ambiguity. For example some languages like lua start array indexing at `1` so `array[1]` returns the first element `"a"`.
+One of the problems with Pseudo-code is ambiguity. This is not an issue for real languages which have strict rules that are followed by a translator. For example the lua programming language starts indexing arrays at `1`. So in this snippet, `array[1]` returns the first element `"a"`.
 ``` {.lua .numberLines}
 -- lua code
 array = {"a", "b", "c"}
 print(array[1])   -- prints`a`
 ```
 
-However other languages like python start array indexing  at `0` so `array[1]` in this case returns the second element `"b"`
+But a lot of other languages like python start array indexing at `0`, so `array[1]`returns `"b"`
 
 ``` {.python .numberLines}
 # python code
@@ -28,27 +27,17 @@ array = ["a", "b", "c"]
 print(array[1])  # prints `b`
 ```
 
-Imagine if both of these snippets where written in pseudo-code instead of a well defined language. It would be impossible to determine correctly whether the program was intended to print `a` or `b`. There are many other ways ambiguity can be introduced in pseudo-code, for example inclusive/exclusive for loops, rounding floats or the use of `Nil` or `None` types. 
+If both of these snippets where written in pseudo-code instead of a well defined language, then It would be impossible to determine correctly whether the program was intended to print `a` or `b`. There are many other ways ambiguity can be introduced in pseudo-code, for example inclusive/exclusive for loops, rounding floats, or the use of `Nil` or `None` types. 
 
-However general purpose pseudo-code is very different to AQA's pseudo-code, which is both referred to as Pseudo-code and has strict rules. 
-
-``` {.python .numberLines}
-# AQA Pseudo-code
-array = ["a", "b", "c"]
-OUTPUT array[1]
-```
-
-Following the spec, arrays in AQA Pseudo-code start indexing at `0` so therefore the  is `b`.  Due to the consistency of the spec, we where  able to unambiguously determine the output. 
-
-This consistency means that it would be possible to write a translator, that would take any set of pseudo-code following the AQA's style and convert it to the corresponding machine code. This blurs the lines between the pseudo-code and *real languages*.
+For this reason AQA pseudocode is forced to follow a well-designed language specification, blurring the lines between the pseudo-code and *real languages*. I will create a formal language following at leas a subset of AQA's pseudo-code, sufficient for translation to machine code.
 
 ## Justification
 
-Some people may argue that a translator for AQA code would be unnecessary and would hinder students. It is mainly used for offline on-paper examinations without a computer. So having  a tool to generate machine code would not be needed as it  may confuse students to what the purpose of pseudo-code is. Furthermore where a working algorithm is needed it would be sufficient to manually translate AQA pseudo-code to an existing high level language where a compiler or translator is already available.
+Some people may argue such a translator to be unnecessary especially for offline on-paper examinations, where having machine code would not be useful. And where a working program is needed, one can manually translated pseudo-code to an existing high level language with an existing translator already available.
 
-However I would argue that an AQA code translator would have real world uses not just as a research project. For example using this tool,  it would give students more experience and knowledge of AQA code, which would aid reading and comprehension skills. Moreover, it would mean that manually rewriting AQA code into another high level language for example python would be unheeded. And it would avoid the chances of bugs being introduced in the rewrite saving students a large amount of time.
+However, a pseudo-code translator would give students more experience, aid reading and comprehension skills in an exam environment. And it would make pseudo-code following AQA's style more valuable as manual translation would not be required, saving students a large amount of time.
 
-It could also help teachers help teachers who could demonstrate automatically tracing an algorithm using a debugger or aid examiners in marking. However the problem is mainly begin solved for students to aid learning, so I will attempt to find a student as my primary client.
+It would even be possible to automatically trace algorithms and create a trace table which would help teacher in doing demonstrations. This would work by keeping a watch on variables like debugging tools already available for high level languages. However the problem is mainly begin solved for students, by a student which is the use case I will focus on.
 
 
 ## Research
@@ -93,9 +82,7 @@ I have chosen to involve as student named Reece in year 10, who is interested in
 
 ## Analysis of research
 
-Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customizable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritize core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
-Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customizable themes to be present in any development environment they use. Specifically my client expects first class support in  vscode, pycharm and repl-it. However my goal will be to prioritize core language features and getting a working AQA pseudo-code translator before tackling the editor features my client requests.
-
+Students that are interested in coding care a lot about aesthetics and developer experience. They expect tools like auto-completion and customizable themes to be present in developer environment. Specifically support for IDEs such as vscode, pycharm and repl-it. I will prioritize core language features and getting a working AQA pseudo-code translator stable before tackling more specific IDE features.
 
 ## Background
 
@@ -596,17 +583,17 @@ Below I have produces a class diagram as well a hierarchy chart showing the roug
 
 **Class diagrams**
 
+
 ![Scanner](assets/scanner.svg){ width=30% }
 ![Parser](assets/parser.svg){ width=20% }
 ![Symbol Table](assets/symbol_table.svg){ width=30% }
 
-![Class diagram](assets/classes.png)
+![Classes](assets/classes.png)
 
 \pagebreak
 # Technical Solution
 
 ## Grade A/B algorithms used
-
 ![Table A](assets/table_a.png)
 
 My program uses a number of complex data structures and algorithms involved in translating pseudo-code. A hash table is used in the `SymbolTable` class in the `environment.py` file. which  is used to keep track of variables as the change throughout the execution of an AQA pseudo-code program.
@@ -615,11 +602,24 @@ My program uses complex OOP; In `interpreter.py` each class inherits from either
 
 The list operations `.append()` is used on line 17  in `scanner.py`. And the `.extent()` method is used on line 274 in `parse.py`. Complex pattern matching occurs in the `_scan_token()` method on line 48 in `scanner.py` using pythons match statement as described in [addressing redundancy section](#using-match-statement).
 
+The online IDE part of my program makes use of client and server side scripting. A HTTP POST request is defined in `src.js`  in the `request()` function on line 18. This POST request is then handled by the client  in `app.py` on line 17.
+
 ![Table B](assets/table_b.png)
 
-AQA pseudo-code is read in from a text file in line 45 and 46 in `main.py`
+For grade B algorithms, a text file containing the users AQA pseudo-code is read on lines 45 and 46 in [`main.py`](#AQAInterpreter.main.py)
+
+\pagebreak
+
+![](assets/website-dark.png){align=centre}
+
+![Online IDE](assets/website.png){align=centre}
+
+![API Docs](assets/docs.png)
+
+\pagebreak
 
 ## Project structure
+
 
 \TECHNICAL_SOLUTION
 
@@ -1028,16 +1028,13 @@ END
 
 My program achieves a large number of my project requirements so overall I consider it a success. 
 
-1. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. A `REPEAT` loop is just syntactic sugar for a `WHILE` loop where the condition is evaluated at the end instead of at the start, so i would argue this objective was not paramount. 
+1. The first objective was partially met. I implemented `WHILE`, `FOR` and `IF` statements but missed out on `REPEAT`, `RECORD` and `SUBROUTINE` statements. A `REPEAT` loop is just syntactic sugar for a `WHILE` loop where the condition is evaluated at the end instead of at the start, so I would argue this objective was not paramount. 
    
-   No `SUBROUTINE` or function logic was implemented which would of required the use of requires using a call stack. None of the functions where implemented which would of additionally required implementing a call stack. All of the data types where implemented being based of python's builting types.
-   
-   variables 
-Since I din't implement arrays, my solution wasn't turning complete, but it did feature control flow so at least we where half way there.
+   No `SUBROUTINE` or function logic was implemented which would of required the use of requires using a call stack. None of the functions where implemented which would of additionally required implementing a call stack. All of the data types where implemented being based of python's built-in types. Variables were implemented but not arrays. Due to the lack or arrays, my program wasn't turing complete. But the use of control flow allows for some level of expressiveness. For example I was able to write a fibonacci sequence and a times tables program.
 
-My project was expressive enough to write some novel programs such a fibonacci sequence and display the times tables. And I successfully implemented a scanner, parser and a tree-walk interpreter.
-
-Objective two and three where met fully. My program has case insensitive keywords due to the `.lower()` in `self.source[self._start : self._current].lower()` in `scanner.py` on line 160. The capitalisation of all the keywords in this documents was purely stylistic. Objective three was also fully met, due to more effort in `scanner.py`. Infant there aren't any other languages that support special symbols like `<-`, `<=`, `!=`, `÷` unless you use a special font with ligatures. The support of these symbols means my projects is more suitable for the source code to be printed.
+2.  Objective two was met. This was not difficult and is implemented by the `.lower()` in `self.source[self._start : self._current].lower()` on line 160 of `scanner.py`
+3.  
+4.   The capitalisation of all the keywords in this documents was purely stylistic. Objective three was also fully met, due to more effort in `scanner.py`. Infant there aren't any other languages that support special symbols like `<-`, `<=`, `!=`, `÷` unless you use a special font with ligatures. The support of these symbols means my projects is more suitable for the source code to be printed.
 
 Objective 4 was also met. My program shows helpful error messages. For example if the user entered:
 
@@ -1059,56 +1056,3 @@ Objective five was not quite met. I did have a prototype of an online IDE that w
 
 If the code editor looks familiar it is because it uses the monaco editor which also powers vscode for my client.
 
-``` html
-<!DOCTYPE html>
-<html>
-
-<head>
-	<title>browser-amd-editor</title>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-</head>
-
-<body>
-	<h2>Monaco Editor Sample</h2>
-	<button onclick="run()">click me</button>
-	<div id="container" style="width: 800px; height: 600px; border: 1px solid grey">
-    </div>
-
-	<script
-    src=
-    'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js'
-    >
-    </script>
-
-	<script>
-		// fetch(document.URL + "api/run")
-
-		console.log(document.URL);
-		require.config(
-            {
-            paths:{
-             vs:'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs'
-            }}
-        );
-
-		require(['vs/editor/editor.main'], function () {
-			window.editor = monaco.editor.create(
-                document.getElementById('container'), {
-				value: 'print("Hi")',
-				language: 'python'
-			});
-		});
-
-		function run() {
-			console.log(window.editor.getValue());
-		}
-    </script>
-</body>
-
-</html>
-```
-
-![](assets/screenshot3.png)
-
-
-Objective 6 was also met as you can have no doubt seen the syntax highlighting for AQA code snippets many times in this document. The code for which is also explained in the technical solution.

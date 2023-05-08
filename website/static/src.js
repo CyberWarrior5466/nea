@@ -12,6 +12,9 @@ require(["vs/editor/editor.main"], function () {
   );
 });
 
+
+// make request to /api/run
+
 async function request() {
   const code = window.editor.getValue();
 
@@ -27,11 +30,6 @@ async function request() {
     }
   ).then((response) => response.json());
 }
-
-
-
-
-// make request to /api/run
 
 run = () => {
   // replace \n with <br> from https://stackoverflow.com/a/5076492

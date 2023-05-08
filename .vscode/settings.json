@@ -32,6 +32,7 @@
         "pydantic",
         "pylint",
         "pyproject",
+        "pyreverse",
         "pyright",
         "pytest",
         "Reece",

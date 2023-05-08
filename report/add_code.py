@@ -16,6 +16,11 @@ files_list = (
     ("AQAInterpreter/environment.py", "python"),
     ("AQAInterpreter/parser.py", "python"),
     ("AQAInterpreter/interpreter.py", "python"),
+    ("website/app.py", "python"),
+    ("website/static/index.html", "html"),
+    ("website/static/src.js", "javascript"),
+    ("website/static/theme.js", "javascript"),
+    ("website/static/style.css", "css"),
 )
 
 tests_list = (("AQAInterpreter/test_.py", "python"),)

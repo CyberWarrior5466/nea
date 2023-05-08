@@ -3,6 +3,7 @@ now:
 - [] SPECIFY PAGES THAT NEED TO BE IN COLOUR WHEN SUBMITTING IN TEAMS
 
 In holidays:
+- [ ] rewrite in rust and compile to wasm
 - [ ] Add optional `:` in FOR loop
 - [ ] add functions, classes, rewrite in another language
 - [ ] add arrays

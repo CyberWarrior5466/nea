@@ -1,3 +1,3 @@
 from AQAInterpreter import run
 
-print(run("print"))
+print(run("print"))w
