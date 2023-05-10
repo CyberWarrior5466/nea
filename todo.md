@@ -2,6 +2,7 @@ now:
 - [X] remove extra pseudo-code in testing section copied from `test_.py` file, instead but dump of `test_.py` in it the testing section and screenshot of `pytest AQAinterpreter --verbose` showing passing tests.
 
 In holidays:
+- [ ] look into python lark
 - [ ] rewrite in rust and compile to wasm
 - [ ] Add optional `:` in FOR loop
 - [ ] add functions, classes, rewrite in another language
