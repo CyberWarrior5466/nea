@@ -1,6 +1,5 @@
 now:
 - [X] remove extra pseudo-code in testing section copied from `test_.py` file, instead but dump of `test_.py` in it the testing section and screenshot of `pytest AQAinterpreter --verbose` showing passing tests.
-- [] SPECIFY PAGES THAT NEED TO BE IN COLOUR WHEN SUBMITTING IN TEAMS
 
 In holidays:
 - [ ] rewrite in rust and compile to wasm
