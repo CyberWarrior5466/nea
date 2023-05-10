@@ -10,8 +10,7 @@
             "request": "launch",
             // "program": "${file}",
             "program": "AQAInterpreter${pathSeparator}main.py",
-            "args": ["--cmd", "hi", "--debug"],
-            // "args": ["input.txt", "--debug"],
+            "args": ["input.txt", "--debug", "-t"],
             "console": "integratedTerminal",
             "justMyCode": true
         }

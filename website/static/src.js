@@ -14,8 +14,11 @@ require(["vs/editor/editor.main"], function () {
 
 
 // make request to /api/run
-
-async function request() {
+/**
+ * Represents a book.
+ * @param {boolean} flag
+ */
+async function request(flag) {
   const code = window.editor.getValue();
 
   return await fetch(
@@ -26,17 +29,27 @@ async function request() {
         accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ code: code }),
+      body: JSON.stringify({ code: code, transpile: flag }),
     }
   ).then((response) => response.json());
 }
 
 run = () => {
   // replace \n with <br> from https://stackoverflow.com/a/5076492
-  request().then(
+  request(false).then(
     (value) =>
     (document.getElementById("output").innerHTML =
       document.getElementById("output").innerHTML + "> " +
+      value.replace(/\n/g, "<br>"))
+  );
+};
+
+transpile = () => {
+  // replace \n with <br> from https://stackoverflow.com/a/5076492
+  request(true).then(
+    (value) =>
+    (document.getElementById("output").innerHTML =
+      document.getElementById("output").innerHTML +
       value.replace(/\n/g, "<br>"))
   );
 };

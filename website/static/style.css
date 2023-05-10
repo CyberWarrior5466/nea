@@ -23,6 +23,7 @@ body {
 #output {
     overflow: auto;
     font-family: monospace;
+    white-space: pre;
 }
 
 #monaco-editor {

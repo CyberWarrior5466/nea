@@ -12,12 +12,13 @@ app = FastAPI()
 
 class Code(BaseModel):
     code: str
+    transpile: bool = False
 
 
 @app.post("/api/run")
 def main(code: Code):
     "Takes in AQA pseudo-code and returns the output."
-    return AQAInterpreter.run(code.code)
+    return AQAInterpreter.run(code.code, transpile=code.transpile)
 
 
 app.mount("/", StaticFiles(directory="website/static", html=True), name="static")
