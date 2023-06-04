@@ -10,3 +10,4 @@ In holidays:
 - [ ] make a transpiler to python
 - [ ] make parser match Var() if so then do `_var_decl()` instead of looking ahead for ASSIGNMENT token
 - [ ] switch to vite instead of importing files locally
+- [ ] see if https://stackoverflow.com/q/59933946 fixes StringIO | TextIO type hint
